@@ -39,6 +39,10 @@ on:
 env:
   PYTHON_VERSION: "3.11"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   # ───────────────────────────────────────────
   # SETUP — shared across all stages
@@ -482,4 +486,3 @@ jobs:
           print(f"- By evidence    : {s.get('by_evidence_status', {})}")
           print(f"- By priority    : {s.get('by_priority', {})}")
           EOF
-
