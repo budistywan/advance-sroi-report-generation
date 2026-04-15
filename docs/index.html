@@ -420,7 +420,7 @@ header{background:#1a3a6b;border-bottom:1px solid #122448;padding:0 20px;height:
           <div class="adv-sec-label">GitHub Connection</div>
           <div class="field">
             <label>Repository (owner/repo)</label>
-            <input type="text" id="cfg-repo" placeholder="budistywan/advance-sroi-report-generation">
+            <input type="text" id="cfg-repo" placeholder="budistywan/advance-sroi-report-generation" value="budistywan/advance-sroi-report-generation">
           </div>
           <div class="field">
             <label>Personal Access Token</label>
@@ -909,6 +909,8 @@ async function triggerA2() {
   }
 
   // ── Step 4: Trigger workflow dispatch ────────────────
+  showA2Log('info', '4/4 · Menunggu repo sinkron...');
+  await new Promise(r => setTimeout(r, 3000));
   showA2Log('info', '4/4 · Mentrigger GitHub Actions A2...');
   try {
     const res = await fetch(
