@@ -49,8 +49,9 @@ VALID_SUBSTANCE_BASES   = {"manual_audit", "backlog_derived", "config_declared",
 CONTENT_SOURCE_PRIORITY = [
     "text",
     ("items", 0, "text"),
+    ("items", 0, "label"),   # fix: metric_card dan block dengan items.label
+    "title",                  # fix: pindah sebelum headers[0] agar judul block diutamakan
     ("headers", 0),
-    "title",
     "caption",
     ("rows", 0, 0),
     "label",
