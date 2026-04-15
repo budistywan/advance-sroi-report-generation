@@ -1104,6 +1104,7 @@ async function pollWorkflowStatus(repo, pat) {
 
       } else if (conclusion === 'success') {
         showA2Log('ok', `✅ Run #${runNum} selesai — success`);
+        await fetchRunArtifacts(repo, pat, lastRunId);
         autoLoadA2Output(repo, pat, ghUrl);
 
       } else {
@@ -1118,7 +1119,29 @@ async function pollWorkflowStatus(repo, pat) {
   setTimeout(poll, 12000); // tunggu 12 detik sebelum poll pertama
 }
 
-// Fetch log failure dari Jobs API — tampilkan step yang gagal + error message
+// Fetch dan tampilkan artifacts dari run
+async function fetchRunArtifacts(repo, pat, runId) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${repo}/actions/runs/${runId}/artifacts`,
+      { headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github.v3+json' } }
+    );
+    if (!res.ok) return;
+    const data = await res.json();
+    const artifacts = data.artifacts || [];
+    if (artifacts.length === 0) return;
+
+    showA2Log('info', `\n📦 Artifacts (${artifacts.length}):`);
+    artifacts.forEach(a => {
+      const size = a.size_in_bytes < 1024
+        ? `${a.size_in_bytes} B`
+        : `${(a.size_in_bytes/1024).toFixed(1)} KB`;
+      // Link ke halaman artifact di GitHub (download butuh login)
+      const url = `https://github.com/${repo}/actions/runs/${runId}/artifacts/${a.id}`;
+      showA2Log('ok', `  ↓ ${a.name}  (${size})  → ${url}`);
+    });
+  } catch(e) { /* silent */ }
+}
 async function fetchFailureLog(repo, pat, runId, ghUrl) {
   showA2Log('info', '🔍 Mengambil detail error dari GitHub Actions...');
   try {
