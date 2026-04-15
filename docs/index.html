@@ -236,6 +236,18 @@ header{background:#1a3a6b;border-bottom:1px solid #122448;padding:0 20px;height:
 .pipe-step.error .pipe-step-label{color:var(--red);}
 .pipe-step-status{font-size:10px;font-family:var(--mono);color:var(--text3);}
 
+/* LOG PANEL — single card, compact */
+.log-panel{border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);margin-top:8px;overflow:hidden;display:none;}
+.log-latest{padding:8px 10px;font-size:11px;font-family:var(--mono);line-height:1.5;min-height:32px;display:flex;align-items:flex-start;gap:6px;word-break:break-word;white-space:pre-wrap;}
+.log-latest.ok{color:var(--green);background:var(--green-light);}
+.log-latest.err{color:var(--red);background:var(--red-light);}
+.log-latest.warn{color:var(--yellow-text);background:var(--yellow-bg);}
+.log-latest.info{color:var(--blue);background:var(--blue-light);}
+.log-footer{display:flex;align-items:center;justify-content:space-between;padding:4px 10px;border-top:1px solid var(--border);background:var(--surface);}
+.log-count{font-size:10px;color:var(--text3);font-family:var(--mono);}
+.log-copy{font-size:10px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:var(--mono);padding:2px 6px;border-radius:3px;transition:background .12s,color .12s;}
+.log-copy:hover{background:var(--surface2);color:var(--blue);}
+
 /* MOBILE */
 .mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);height:52px;z-index:100;}
 .mob-nav-tabs{display:flex;height:100%;}
@@ -349,7 +361,14 @@ header{background:#1a3a6b;border-bottom:1px solid #122448;padding:0 20px;height:
           ▶ Ekstrak Substansi  <span style="opacity:.6;font-size:10px;font-weight:400;">(A2)</span>
         </button>
       </div>
-      <div id="a2-status" style="margin-top:8px; display:none;"></div>
+      <div id="a2-log-panel" class="log-panel">
+        <div class="log-latest info" id="a2-log-latest">—</div>
+        <div class="log-footer">
+          <span class="log-count" id="a2-log-count">0 entri</span>
+          <button class="log-copy" onclick="copyA2Log()" id="a2-log-copy-btn">📋 salin log</button>
+        </div>
+      </div>
+      <div id="a2-status" style="display:none;"></div>
 
       <div class="divider"></div>
 
@@ -834,7 +853,7 @@ async function triggerA2() {
   }
 
   el.style.display = 'block';
-  el.innerHTML = '';  // clear log sebelumnya
+  clearA2Log();  // clear buffer + UI sebelum run baru
   setPipeStep('a2', 'running', 'menyiapkan...');
 
   // ── Step 1: Push block_identity_packet.json ke repo ──
@@ -976,22 +995,61 @@ async function pushFileToRepo(repo, pat, path, content, message) {
   };
 }
 
-// Tampilkan log A2 — append ke panel, tidak overwrite
+// Log buffer — simpan semua entri
+const a2LogBuffer = [];
+
+// Tampilkan log A2 — hanya update baris terakhir di UI, buffer semua
 function showA2Log(type, msg) {
-  const el = document.getElementById('a2-status');
-  el.style.display = 'block';
+  // Append ke buffer
+  a2LogBuffer.push({ type, msg, time: new Date().toLocaleTimeString('id-ID') });
+
+  // Tampilkan log panel
+  const panel  = document.getElementById('a2-log-panel');
+  const latest = document.getElementById('a2-log-latest');
+  const count  = document.getElementById('a2-log-count');
+  panel.style.display = 'block';
+
+  // Update tampilan baris terakhir saja
   const cls = { ok:'ok', error:'err', warn:'warn', info:'info' }[type] || 'info';
-  const line = document.createElement('div');
-  line.className = `notice ${cls}`;
-  line.style.cssText = 'margin-top:4px; white-space:pre-wrap; font-family:var(--mono); font-size:10px;';
-  line.textContent = msg;
-  el.appendChild(line);
-  el.scrollTop = el.scrollHeight;
+  latest.className = `log-latest ${cls}`;
+  latest.textContent = msg;
+
+  // Update counter
+  count.textContent = `${a2LogBuffer.length} entri`;
 }
 
 function clearA2Log() {
-  const el = document.getElementById('a2-status');
-  el.innerHTML = '';
+  a2LogBuffer.length = 0;
+  const panel  = document.getElementById('a2-log-panel');
+  const latest = document.getElementById('a2-log-latest');
+  const count  = document.getElementById('a2-log-count');
+  panel.style.display = 'none';
+  latest.className = 'log-latest info';
+  latest.textContent = '—';
+  count.textContent = '0 entri';
+}
+
+async function copyA2Log() {
+  const btn = document.getElementById('a2-log-copy-btn');
+  const text = a2LogBuffer
+    .map(e => `[${e.time}] [${e.type.toUpperCase()}] ${e.msg}`)
+    .join('\n');
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ tersalin';
+    setTimeout(() => { btn.textContent = '📋 salin log'; }, 2000);
+  } catch(e) {
+    // Fallback kalau clipboard API tidak tersedia
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ tersalin';
+    setTimeout(() => { btn.textContent = '📋 salin log'; }, 2000);
+  }
 }
 
 async function pollWorkflowStatus(repo, pat) {
@@ -1031,30 +1089,25 @@ async function pollWorkflowStatus(repo, pat) {
       );
 
       if (status !== 'completed') {
-        // Update baris terakhir saja (running status)
-        const existing = document.getElementById('a2-poll-status');
-        const msg = `⏳ Run #${runNum} · ${status} · attempt ${attempts}/${maxAttempts}  →  <a href="${ghUrl}" target="_blank" style="color:var(--blue);">Lihat di GitHub ↗</a>`;
-        if (existing) {
-          existing.innerHTML = msg;
+        const msg = `⏳ Run #${runNum} · ${status} · attempt ${attempts}/${maxAttempts}`;
+        // Update entri terakhir di buffer kalau sudah ada polling entry
+        const lastEntry = a2LogBuffer[a2LogBuffer.length - 1];
+        if (lastEntry && lastEntry.msg.startsWith('⏳')) {
+          lastEntry.msg = msg;
+          lastEntry.time = new Date().toLocaleTimeString('id-ID');
+          const latest = document.getElementById('a2-log-latest');
+          latest.textContent = msg + `  → ${ghUrl}`;
         } else {
-          const line = document.createElement('div');
-          line.id = 'a2-poll-status';
-          line.className = 'notice info';
-          line.style.cssText = 'margin-top:4px; font-size:11px;';
-          line.innerHTML = msg;
-          document.getElementById('a2-status').appendChild(line);
+          showA2Log('info', msg + `  → ${ghUrl}`);
         }
         setTimeout(poll, 10000);
 
       } else if (conclusion === 'success') {
         showA2Log('ok', `✅ Run #${runNum} selesai — success`);
-        document.getElementById('a2-poll-status')?.remove();
         autoLoadA2Output(repo, pat, ghUrl);
 
       } else {
-        // FAILURE — fetch detail log
         showA2Log('error', `✗ Run #${runNum} selesai — ${conclusion}`);
-        document.getElementById('a2-poll-status')?.remove();
         await fetchFailureLog(repo, pat, lastRunId, ghUrl);
       }
     } catch(e) {
