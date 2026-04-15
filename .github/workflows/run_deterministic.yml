@@ -29,6 +29,9 @@ on:
 env:
   PYTHON_VERSION: "3.11"
 
+permissions:
+  contents: write
+
 jobs:
   # ───────────────────────────────────────────
   # A1 — Block ID Injector
@@ -177,11 +180,17 @@ jobs:
         run: rm -f data/input/_merged_for_a1.json
 
       - name: Commit output
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "[A1] block_identity_packet.json — auto-generated"
-          file_pattern: "data/output/block_identity_packet.json"
-          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/output/block_identity_packet.json
+          # Hanya commit jika ada perubahan
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan pada output, skip commit."
+          else
+            git commit -m "[A1] block_identity_packet.json — auto-generated"
+            git push origin HEAD
+          fi
 
   # ───────────────────────────────────────────
   # SCHEMA VALIDATOR (review gate)
