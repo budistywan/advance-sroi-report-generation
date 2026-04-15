@@ -7,461 +7,258 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
-/* ═══════════════════════════════════════════════════
-   DESIGN TOKENS
-   ═══════════════════════════════════════════════════ */
 :root {
-  --bg:          #f5f7fa;
-  --surface:     #ffffff;
-  --surface2:    #f0f2f5;
-  --surface3:    #e8eaf0;
-  --border:      #e4e7ec;
-  --border2:     #d0d5dd;
-  --text:        #101828;
-  --text2:       #475467;
-  --text3:       #98a2b3;
-  --blue:        #1a3a6b;
-  --blue-light:  #eef1f8;
-  --blue-mid:    #bfcde8;
-  --green:       #0d7b74;
-  --green-light: #eaf6f5;
-  --green-mid:   #9fd8d4;
-  --yellow-text: #92400e;
-  --yellow-bg:   #fffbeb;
-  --yellow-border:#f0c97a;
-  --red:         #c0392b;
-  --red-light:   #fdf2f1;
-  --red-mid:     #f5a89e;
-  --sans: 'Plus Jakarta Sans', sans-serif;
-  --mono: 'JetBrains Mono', monospace;
-  --radius:    8px;
-  --radius-sm: 5px;
-  --shadow:    0 1px 3px rgba(16,24,40,.07), 0 1px 2px rgba(16,24,40,.04);
+  --bg:#f5f7fa; --surface:#fff; --surface2:#f0f2f5; --surface3:#e8eaf0;
+  --border:#e4e7ec; --border2:#d0d5dd;
+  --text:#101828; --text2:#475467; --text3:#98a2b3;
+  --blue:#1a3a6b; --blue-light:#eef1f8; --blue-mid:#bfcde8;
+  --green:#0d7b74; --green-light:#eaf6f5; --green-mid:#9fd8d4;
+  --yellow-text:#92400e; --yellow-bg:#fffbeb; --yellow-border:#f0c97a;
+  --red:#c0392b; --red-light:#fdf2f1; --red-mid:#f5a89e;
+  --sans:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --radius:8px; --radius-sm:5px;
+  --shadow:0 1px 3px rgba(16,24,40,.07),0 1px 2px rgba(16,24,40,.04);
 }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px;line-height:1.5;}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+header{background:#1a3a6b;border-bottom:1px solid #122448;padding:0 20px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10;}
+.h-logo{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.h-left{display:flex;align-items:center;gap:10px;}
+.h-title{font-size:14px;font-weight:600;color:#fff;}
+.h-sub{font-size:11px;color:rgba(255,255,255,.45);margin-left:2px;}
+.h-right{display:flex;gap:8px;align-items:center;}
 
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  height: 100vh;
-  display: flex; flex-direction: column;
-  overflow: hidden;
-  font-size: 13px; line-height: 1.5;
-}
+/* BADGE */
+.badge{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);}
+.badge.on-surface{border-color:var(--border);background:var(--surface2);color:var(--text2);}
+.badge.green{background:var(--green-light);border-color:var(--green-mid);color:var(--green);}
+.badge.blue{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);}
+.badge.red{background:var(--red-light);border-color:var(--red-mid);color:var(--red);}
+.badge.yellow{background:var(--yellow-bg);border-color:var(--yellow-border);color:var(--yellow-text);}
+.bdot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.bdot.pulse{animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ═══════════════════════════════════════════════════
-   HEADER
-   ═══════════════════════════════════════════════════ */
-header {
-  background: #1a3a6b;
-  border-bottom: 1px solid #122448;
-  padding: 0 20px;
-  height: 50px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
-  box-shadow: var(--shadow);
-  z-index: 10;
-}
-.h-logo {
-  width: 26px; height: 26px; border-radius: 6px;
-  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.22); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; flex-shrink: 0;
-}
-.h-left  { display: flex; align-items: center; gap: 10px; }
-.h-title { font-size: 14px; font-weight: 600; color: #fff; }
-.h-sub   { font-size: 11px; color: rgba(255,255,255,.45); margin-left: 2px; }
-.h-right { display: flex; gap: 8px; align-items: center; }
+/* LAYOUT */
+.main{display:grid;grid-template-columns:290px 1fr;flex:1;overflow:hidden;}
+.panel{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.panel:last-child{border-right:none;}
+.panel-hd{padding:13px 16px 9px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.panel-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;}
+.panel-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.panel-body{flex:1;overflow-y:auto;padding:14px 16px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+#panel-main{display:flex;flex-direction:column;overflow:hidden;}
+.main-toolbar{padding:9px 16px;border-bottom:1px solid var(--border);display:flex;gap:6px;align-items:center;flex-shrink:0;background:var(--surface);}
+.main-content{flex:1;overflow-y:auto;padding:20px 24px;scrollbar-width:thin;}
+.main-footer{border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;flex-shrink:0;max-height:148px;background:var(--surface);}
+.footer-pane{padding:10px 16px;overflow-y:auto;}
+.footer-pane+.footer-pane{border-left:1px solid var(--border);}
+.footer-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;}
 
-/* ═══════════════════════════════════════════════════
-   BADGE
-   ═══════════════════════════════════════════════════ */
-.badge {
-  font-size: 11px; font-weight: 500;
-  padding: 2px 9px; border-radius: 20px;
-  display: inline-flex; align-items: center; gap: 5px;
-  border: 1px solid rgba(255,255,255,.2);
-  background: rgba(255,255,255,.1); color: rgba(255,255,255,.85);
-}
-.badge.on-surface { border-color: var(--border); background: var(--surface2); color: var(--text2); }
-.badge.green { background: var(--green-light); border-color: var(--green-mid); color: var(--green); }
-.badge.blue  { background: var(--blue-light);  border-color: var(--blue-mid);  color: var(--blue); }
-.badge.red   { background: var(--red-light);   border-color: var(--red-mid);   color: var(--red); }
-.badge.yellow { background: var(--yellow-bg);  border-color: var(--yellow-border); color: var(--yellow-text); }
-.bdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-.bdot.pulse { animation: pulse 1.8s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+/* SECTION LABEL */
+.sec-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
 
-/* ═══════════════════════════════════════════════════
-   LAYOUT
-   ═══════════════════════════════════════════════════ */
-.main {
-  display: grid;
-  grid-template-columns: 290px 1fr;
-  flex: 1;
-  overflow: hidden;
-}
-.panel {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  overflow: hidden;
-}
-.panel:last-child { border-right: none; }
-.panel-hd {
-  padding: 13px 16px 9px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.panel-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; }
-.panel-sub   { font-size: 11px; color: var(--text3); margin-top: 1px; }
-.panel-body  {
-  flex: 1; overflow-y: auto; padding: 14px 16px;
-  scrollbar-width: thin; scrollbar-color: var(--border2) transparent;
-}
+/* CARD */
+.card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;}
+.card-blue{background:var(--blue-light);border-color:var(--blue-mid);}
+.card-yellow{background:var(--yellow-bg);border-color:var(--yellow-border);}
+.card-green{background:var(--green-light);border-color:var(--green-mid);}
+.card-red{background:var(--red-light);border-color:var(--red-mid);}
+.card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;color:var(--text3);}
+.card-blue .card-label{color:var(--blue);}
+.card-yellow .card-label{color:var(--yellow-text);}
+.card-green .card-label{color:var(--green);}
+.card-title{font-size:15px;font-weight:700;line-height:1.3;}
+.card-sub{font-size:11px;color:var(--text2);margin-top:2px;font-family:var(--mono);}
 
-/* Right panel structure */
-#panel-main { display: flex; flex-direction: column; overflow: hidden; }
-.main-toolbar {
-  padding: 9px 16px; border-bottom: 1px solid var(--border);
-  display: flex; gap: 6px; align-items: center;
-  flex-shrink: 0; background: var(--surface);
-}
-.main-content {
-  flex: 1; overflow-y: auto; padding: 20px 24px;
-  scrollbar-width: thin; scrollbar-color: var(--border2) transparent;
-}
-.main-footer {
-  border-top: 1px solid var(--border);
-  display: grid; grid-template-columns: 1fr 1fr;
-  flex-shrink: 0; max-height: 148px; background: var(--surface);
-}
-.footer-pane { padding: 10px 16px; overflow-y: auto; }
-.footer-pane + .footer-pane { border-left: 1px solid var(--border); }
-.footer-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 7px; }
+/* FORM */
+.field{margin-bottom:10px;display:flex;flex-direction:column;}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:3px;}
+.field input,.field select,.field textarea{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);padding:6px 9px;font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s,box-shadow .15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,58,107,.12);}
+.field textarea{resize:vertical;min-height:80px;font-family:var(--sans);font-size:13px;line-height:1.7;}
+.token-wrap{position:relative;}
+.token-wrap input{padding-right:70px;}
+.token-show{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:var(--mono);padding:2px;}
 
-/* ═══════════════════════════════════════════════════
-   SECTION LABEL
-   ═══════════════════════════════════════════════════ */
-.sec-label {
-  font-size: 10px; font-weight: 700; color: var(--text3);
-  text-transform: uppercase; letter-spacing: .1em;
-  margin-bottom: 8px; padding-bottom: 5px;
-  border-bottom: 1px solid var(--border);
-}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);border-radius:var(--radius-sm);padding:6px 12px;font-size:12px;font-weight:500;font-family:var(--sans);cursor:pointer;transition:all .12s;white-space:nowrap;box-shadow:var(--shadow);}
+.btn:hover{background:var(--surface2);color:var(--text);}
+.btn:active{transform:scale(.98);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
+.btn.primary:hover{background:#122448;}
+.btn.success{background:var(--green);border-color:var(--green);color:#fff;font-weight:600;}
+.btn.success:hover{background:#0a6860;}
+.btn.danger{color:var(--red);border-color:var(--red-mid);}
+.btn.ghost{border-color:transparent;background:transparent;box-shadow:none;color:var(--text2);}
+.btn.ghost:hover{background:var(--surface2);color:var(--text);}
+.btn.sm{padding:4px 9px;font-size:11px;}
+.btn.full{width:100%;}
+.btn-grp{display:flex;flex-direction:column;gap:7px;}
 
-/* ═══════════════════════════════════════════════════
-   CARD
-   ═══════════════════════════════════════════════════ */
-.card {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px;
-}
-.card-blue   { background: var(--blue-light);   border-color: var(--blue-mid); }
-.card-yellow { background: var(--yellow-bg);     border-color: var(--yellow-border); }
-.card-green  { background: var(--green-light);   border-color: var(--green-mid); }
-.card-red    { background: var(--red-light);     border-color: var(--red-mid); }
-.card-label  { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; color: var(--text3); }
-.card-blue   .card-label { color: var(--blue); }
-.card-yellow .card-label { color: var(--yellow-text); }
-.card-green  .card-label { color: var(--green); }
-.card-red    .card-label { color: var(--red); }
-.card-title  { font-size: 15px; font-weight: 700; line-height: 1.3; }
-.card-sub    { font-size: 11px; color: var(--text2); margin-top: 2px; font-family: var(--mono); }
+/* ACCORDION */
+.adv-btn{width:100%;display:flex;align-items:center;justify-content:space-between;background:none;border:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text2);padding:9px 0;border-top:1px solid var(--border);transition:color .12s;}
+.adv-btn:hover{color:#1a3a6b;}
+.adv-arrow{font-size:10px;transition:transform .2s;}
+.adv-arrow.open{transform:rotate(180deg);}
+.adv-body{display:none;padding-top:14px;}
+.adv-body.open{display:block;}
+.adv-sec{margin-bottom:14px;}
+.adv-sec-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;}
 
-/* ═══════════════════════════════════════════════════
-   FORM
-   ═══════════════════════════════════════════════════ */
-.field { margin-bottom: 10px; display: flex; flex-direction: column; }
-.field label { display: block; font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 3px; }
-.field input, .field select, .field textarea {
-  width: 100%; background: var(--surface);
-  border: 1px solid var(--border2); border-radius: var(--radius-sm);
-  color: var(--text); padding: 6px 9px;
-  font-size: 12px; font-family: var(--mono); outline: none;
-  transition: border-color .15s, box-shadow .15s;
-}
-.field input:focus, .field select:focus, .field textarea:focus {
-  border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,58,107,.12);
-}
-.field textarea { resize: vertical; min-height: 80px; font-family: var(--sans); font-size: 13px; line-height: 1.7; }
-.field select option { font-family: var(--sans); }
-.token-wrap { position: relative; }
-.token-wrap input { padding-right: 44px; }
-.token-show {
-  position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
-  font-size: 10px; color: var(--text3); cursor: pointer; background: none; border: none;
-  font-family: var(--mono); padding: 2px;
-}
-.token-show:hover { color: #1a3a6b; }
+/* TECH DETAIL */
+.tech-detail{background:var(--surface2);border-radius:var(--radius-sm);padding:8px 10px;margin-top:6px;}
+.td-row{display:flex;flex-direction:column;margin-bottom:6px;}
+.td-row:last-child{margin-bottom:0;}
+.td-key{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.td-val{font-size:11px;color:var(--text2);font-family:var(--mono);margin-top:1px;word-break:break-all;}
 
-/* ═══════════════════════════════════════════════════
-   BUTTONS
-   ═══════════════════════════════════════════════════ */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  border: 1px solid var(--border2); background: var(--surface); color: var(--text2);
-  border-radius: var(--radius-sm); padding: 6px 12px;
-  font-size: 12px; font-weight: 500; font-family: var(--sans);
-  cursor: pointer; transition: all .12s; white-space: nowrap;
-  box-shadow: var(--shadow);
-}
-.btn:hover    { background: var(--surface2); color: var(--text); }
-.btn:active   { transform: scale(.98); }
-.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
-.btn.primary { background: var(--blue);  border-color: var(--blue);  color: #fff; font-weight: 600; }
-.btn.primary:hover { background: #122448; }
-.btn.success { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
-.btn.success:hover { background: #0a6860; }
-.btn.danger  { color: var(--red); border-color: var(--red-mid); }
-.btn.danger:hover  { background: var(--red-light); }
-.btn.ghost   { border-color: transparent; background: transparent; box-shadow: none; color: var(--text2); }
-.btn.ghost:hover   { background: var(--surface2); color: var(--text); }
-.btn.sm   { padding: 4px 9px; font-size: 11px; }
-.btn.full { width: 100%; }
-.btn-grp  { display: flex; flex-direction: column; gap: 7px; }
+/* NOTICE */
+.notice{border-radius:var(--radius-sm);padding:8px 10px;font-size:11px;margin-top:6px;line-height:1.5;}
+.notice.err{background:var(--red-light);border:1px solid var(--red-mid);color:var(--red);}
+.notice.warn{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow-text);}
+.notice.info{background:var(--blue-light);border:1px solid var(--blue-mid);color:var(--blue);}
+.notice.ok{background:var(--green-light);border:1px solid var(--green-mid);color:var(--green);}
 
-/* ═══════════════════════════════════════════════════
-   ACCORDION
-   ═══════════════════════════════════════════════════ */
-.adv-btn {
-  width: 100%; display: flex; align-items: center; justify-content: space-between;
-  background: none; border: none; cursor: pointer;
-  font-family: var(--sans); font-size: 12px; font-weight: 600;
-  color: var(--text2); padding: 9px 0;
-  border-top: 1px solid var(--border); transition: color .12s;
-}
-.adv-btn:hover { color: #1a3a6b; }
-.adv-arrow { font-size: 10px; transition: transform .2s; }
-.adv-arrow.open { transform: rotate(180deg); }
-.adv-body { display: none; padding-top: 14px; }
-.adv-body.open { display: block; }
-.adv-sec { margin-bottom: 14px; }
-.adv-sec-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .09em; margin-bottom: 8px; }
+/* VI + SR */
+.vi{display:flex;align-items:flex-start;gap:5px;font-size:11px;line-height:1.5;margin-bottom:3px;}
+.vi .ic{flex-shrink:0;}
+.vi.ok{color:var(--green);}
+.vi.warn{color:var(--yellow-text);}
+.vi.err{color:var(--red);}
+.vi.dim{color:var(--text3);}
+.sr{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
+.sr .sk{color:var(--text2);font-weight:500;}
+.sr .sv{color:var(--text);font-family:var(--mono);}
 
-/* ═══════════════════════════════════════════════════
-   TECH DETAIL
-   ═══════════════════════════════════════════════════ */
-.tech-detail { background: var(--surface2); border-radius: var(--radius-sm); padding: 8px 10px; margin-top: 6px; }
-.td-row { display: flex; flex-direction: column; margin-bottom: 6px; }
-.td-row:last-child { margin-bottom: 0; }
-.td-key { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing:.06em; }
-.td-val { font-size: 11px; color: var(--text2); font-family: var(--mono); margin-top: 1px; word-break: break-all; }
+/* TIMELINE */
+.tl{margin-bottom:14px;}
+.tl-item{display:flex;align-items:center;gap:9px;padding:4px 0;font-size:12px;color:var(--text3);}
+.tl-item.done{color:var(--text2);}
+.tl-item.done .tl-dot{background:var(--green);}
+.tl-item.active{color:var(--text);font-weight:500;}
+.tl-item.active .tl-dot{background:#1a3a6b;animation:pulse 1.5s infinite;}
+.tl-item.failed{color:var(--red);}
+.tl-item.failed .tl-dot{background:var(--red);}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;}
 
-/* ═══════════════════════════════════════════════════
-   STATUS / NOTICE
-   ═══════════════════════════════════════════════════ */
-.notice {
-  border-radius: var(--radius-sm); padding: 8px 10px;
-  font-size: 11px; margin-top: 6px; line-height: 1.5;
-}
-.notice.err  { background: var(--red-light);    border: 1px solid var(--red-mid);    color: var(--red); }
-.notice.warn { background: var(--yellow-bg);     border: 1px solid var(--yellow-border); color: var(--yellow-text); }
-.notice.info { background: var(--blue-light);    border: 1px solid var(--blue-mid);   color: var(--blue); }
-.notice.ok   { background: var(--green-light);   border: 1px solid var(--green-mid);  color: var(--green); }
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:12px 0;}
 
-/* ═══════════════════════════════════════════════════
-   VALIDATION ITEMS + SUMMARY ROWS
-   ═══════════════════════════════════════════════════ */
-.vi { display: flex; align-items: flex-start; gap: 5px; font-size: 11px; line-height: 1.5; margin-bottom: 3px; }
-.vi .ic { flex-shrink: 0; font-size: 11px; }
-.vi.ok   { color: var(--green); }
-.vi.warn { color: var(--yellow-text); }
-.vi.err  { color: var(--red); }
-.vi.dim  { color: var(--text3); }
-.sr { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
-.sr .sk { color: var(--text2); font-weight: 500; }
-.sr .sv { color: var(--text); font-family: var(--mono); }
+/* UPLOAD SLOT */
+.upload-slot{border:2px dashed var(--border2);border-radius:var(--radius);padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.upload-slot:hover{border-color:var(--blue);background:var(--blue-light);}
+.upload-slot.loaded{border-style:solid;border-color:var(--green-mid);background:var(--green-light);}
+.upload-slot.error{border-style:solid;border-color:var(--red-mid);background:var(--red-light);}
+.upload-slot .slot-icon{font-size:18px;flex-shrink:0;}
+.upload-slot .slot-body{flex:1;min-width:0;}
+.upload-slot .slot-name{font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.upload-slot.loaded .slot-name{color:var(--green);}
+.upload-slot.error .slot-name{color:var(--red);}
+.upload-slot .slot-hint{font-size:10px;color:var(--text3);margin-top:1px;}
+.upload-slot .slot-clear{flex-shrink:0;font-size:10px;color:var(--text3);cursor:pointer;padding:2px 5px;border-radius:3px;}
+.upload-slot .slot-clear:hover{background:var(--surface3);color:var(--red);}
 
-/* ═══════════════════════════════════════════════════
-   TIMELINE
-   ═══════════════════════════════════════════════════ */
-.tl { margin-bottom: 14px; }
-.tl-item { display: flex; align-items: center; gap: 9px; padding: 4px 0; font-size: 12px; color: var(--text3); }
-.tl-item.done   { color: var(--text2); }
-.tl-item.done   .tl-dot { background: var(--green); }
-.tl-item.active { color: var(--text); font-weight: 500; }
-.tl-item.active .tl-dot { background: #1a3a6b; animation: pulse 1.5s infinite; }
-.tl-item.failed { color: var(--red); }
-.tl-item.failed .tl-dot { background: var(--red); }
-.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); flex-shrink: 0; transition: background .2s; }
+/* NAV ITEM */
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;color:var(--text2);margin-bottom:2px;transition:background .12s,color .12s;border:1px solid transparent;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);font-weight:600;}
+.nav-item .nav-code{font-family:var(--mono);font-size:10px;color:var(--text3);}
+.nav-item.active .nav-code{color:var(--blue);}
+.nav-health{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.nav-health.high{background:var(--green);}
+.nav-health.medium{background:var(--yellow-border);}
+.nav-health.low{background:var(--red);}
+.nav-health.none{background:var(--border2);}
 
-/* ═══════════════════════════════════════════════════
-   DIVIDER
-   ═══════════════════════════════════════════════════ */
-.divider { height: 1px; background: var(--border); margin: 12px 0; }
+/* PARA BLOCK */
+.para-block{margin-bottom:14px;}
+.para-header{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.para-id{font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0;}
+.para-kind{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border-radius:3px;background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
+.para-kind.lead{background:var(--blue-light);color:var(--blue);border-color:var(--blue-mid);}
+.para-kind.closing{background:var(--green-light);color:var(--green);border-color:var(--green-mid);}
+.para-kind.note{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
+.para-sensitivity{font-size:10px;padding:1px 6px;border-radius:3px;border:1px solid;flex-shrink:0;}
+.para-sensitivity.low{background:var(--green-light);color:var(--green);border-color:var(--green-mid);}
+.para-sensitivity.medium{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
+.para-sensitivity.high{background:var(--red-light);color:var(--red);border-color:var(--red-mid);}
 
-/* ═══════════════════════════════════════════════════
-   NAV ITEMS (bab list)
-   ═══════════════════════════════════════════════════ */
-.nav-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 10px; border-radius: var(--radius-sm); cursor: pointer;
-  font-size: 12px; color: var(--text2); margin-bottom: 2px;
-  transition: background .12s, color .12s;
-  border: 1px solid transparent;
-}
-.nav-item:hover { background: var(--surface2); color: var(--text); }
-.nav-item.active { background: var(--blue-light); border-color: var(--blue-mid); color: var(--blue); font-weight: 600; }
-.nav-item .nav-code { font-family: var(--mono); font-size: 10px; color: var(--text3); }
-.nav-item.active .nav-code { color: var(--blue); }
-.nav-health {
-  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-}
-.nav-health.high   { background: var(--green); }
-.nav-health.medium { background: var(--yellow-border); }
-.nav-health.low    { background: var(--red); }
-.nav-health.none   { background: var(--border2); }
+/* ENRICHMENT */
+.enr-card{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius-sm);padding:9px 11px;margin-top:6px;margin-bottom:10px;}
+.enr-header{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.enr-id{font-family:var(--mono);font-size:10px;color:var(--yellow-text);}
+.enr-type{font-size:10px;font-weight:600;color:var(--yellow-text);text-transform:uppercase;letter-spacing:.06em;}
+.enr-text{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px;}
+.enr-actions{display:flex;gap:6px;}
 
-/* ═══════════════════════════════════════════════════
-   PARAGRAPH BLOCK (main editor)
-   ═══════════════════════════════════════════════════ */
-.para-block { margin-bottom: 14px; }
-.para-header {
-  display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
-}
-.para-id { font-family: var(--mono); font-size: 10px; color: var(--text3); flex-shrink: 0; }
-.para-kind {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: .06em; padding: 2px 6px; border-radius: 3px;
-  background: var(--surface2); color: var(--text3); border: 1px solid var(--border);
-}
-.para-kind.lead      { background: var(--blue-light); color: var(--blue); border-color: var(--blue-mid); }
-.para-kind.transition { background: var(--surface3); color: var(--text2); }
-.para-kind.closing   { background: var(--green-light); color: var(--green); border-color: var(--green-mid); }
-.para-kind.note      { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
-.para-synth { font-size: 10px; color: var(--text3); font-style: italic; margin-left: auto; }
-.para-sensitivity {
-  font-size: 10px; padding: 1px 6px; border-radius: 3px; border: 1px solid; flex-shrink: 0;
-}
-.para-sensitivity.low    { background: var(--green-light); color: var(--green); border-color: var(--green-mid); }
-.para-sensitivity.medium { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
-.para-sensitivity.high   { background: var(--red-light); color: var(--red); border-color: var(--red-mid); }
+/* SUB HEADER */
+.sub-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.sub-id{font-family:var(--mono);font-size:10px;color:var(--text3);}
+.sub-title{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.sub-mode{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:3px;border:1px solid;}
+.sub-mode.build{background:var(--green-light);color:var(--green);border-color:var(--green-mid);}
+.sub-mode.guarded_build{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
+.sub-mode.hold{background:var(--red-light);color:var(--red);border-color:var(--red-mid);}
 
-/* ═══════════════════════════════════════════════════
-   ENRICHMENT CANDIDATE CARD
-   ═══════════════════════════════════════════════════ */
-.enr-card {
-  background: var(--yellow-bg); border: 1px solid var(--yellow-border);
-  border-radius: var(--radius-sm); padding: 9px 11px; margin-top: 6px; margin-bottom: 10px;
-}
-.enr-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-.enr-id { font-family: var(--mono); font-size: 10px; color: var(--yellow-text); }
-.enr-type { font-size: 10px; font-weight: 600; color: var(--yellow-text); text-transform: uppercase; letter-spacing: .06em; }
-.enr-text { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
-.enr-actions { display: flex; gap: 6px; }
+/* ISSUE ROW */
+.issue-row{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.issue-row:last-child{border-bottom:none;}
+.issue-sev{flex-shrink:0;font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:3px;border:1px solid;}
+.issue-sev.low{background:var(--surface2);color:var(--text3);border-color:var(--border);}
+.issue-sev.medium{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
+.issue-sev.high{background:var(--red-light);color:var(--red);border-color:var(--red-mid);}
+.issue-sev.critical{background:var(--red);color:#fff;border-color:var(--red);}
+.issue-body{flex:1;}
+.issue-dim{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:2px;}
+.issue-desc{color:var(--text2);line-height:1.5;}
+.issue-action{flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--text3);padding:2px 6px;background:var(--surface2);border-radius:3px;border:1px solid var(--border);}
 
-/* ═══════════════════════════════════════════════════
-   UPLOAD ZONE
-   ═══════════════════════════════════════════════════ */
-.upload-zone {
-  border: 2px dashed var(--border2); border-radius: var(--radius);
-  padding: 20px 16px; text-align: center; cursor: pointer;
-  transition: border-color .15s, background .15s; margin-bottom: 12px;
-}
-.upload-zone:hover { border-color: var(--blue); background: var(--blue-light); }
-.upload-zone.drag  { border-color: var(--blue); background: var(--blue-light); }
-.upload-icon { font-size: 22px; margin-bottom: 6px; }
-.upload-label { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 3px; }
-.upload-sub   { font-size: 11px; color: var(--text3); }
+/* EMPTY STATE */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;color:var(--text3);gap:8px;}
+.empty-state .es-icon{font-size:28px;opacity:.5;}
+.empty-state .es-title{font-size:13px;font-weight:600;color:var(--text2);}
+.empty-state .es-sub{font-size:11px;max-width:260px;line-height:1.5;}
 
-/* ═══════════════════════════════════════════════════
-   EMPTY STATE
-   ═══════════════════════════════════════════════════ */
-.empty-state {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; padding: 48px 24px; text-align: center;
-  color: var(--text3); gap: 8px;
-}
-.empty-state .es-icon { font-size: 28px; opacity: .5; }
-.empty-state .es-title { font-size: 13px; font-weight: 600; color: var(--text2); }
-.empty-state .es-sub   { font-size: 11px; max-width: 260px; line-height: 1.5; }
+/* PIPELINE STATUS */
+.pipe-step{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);}
+.pipe-step:last-child{border-bottom:none;}
+.pipe-step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;}
+.pipe-step.done .pipe-step-dot{background:var(--green);}
+.pipe-step.running .pipe-step-dot{background:var(--blue);animation:pulse 1.2s infinite;}
+.pipe-step.error .pipe-step-dot{background:var(--red);}
+.pipe-step-label{font-size:12px;color:var(--text2);flex:1;}
+.pipe-step.done .pipe-step-label{color:var(--text);}
+.pipe-step.running .pipe-step-label{color:var(--blue);font-weight:600;}
+.pipe-step.error .pipe-step-label{color:var(--red);}
+.pipe-step-status{font-size:10px;font-family:var(--mono);color:var(--text3);}
 
-/* ═══════════════════════════════════════════════════
-   SUBSECTION HEADER
-   ═══════════════════════════════════════════════════ */
-.sub-header {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 4px;
-}
-.sub-id    { font-family: var(--mono); font-size: 10px; color: var(--text3); }
-.sub-title { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
-.sub-mode  {
-  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
-  padding: 2px 7px; border-radius: 3px; border: 1px solid;
-}
-.sub-mode.build         { background: var(--green-light);  color: var(--green);       border-color: var(--green-mid); }
-.sub-mode.guarded_build { background: var(--yellow-bg);    color: var(--yellow-text); border-color: var(--yellow-border); }
-.sub-mode.hold          { background: var(--red-light);    color: var(--red);          border-color: var(--red-mid); }
+/* MOBILE */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);height:52px;z-index:100;}
+.mob-nav-tabs{display:flex;height:100%;}
+.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;font-size:10px;font-weight:500;color:var(--text3);border:none;background:none;font-family:var(--sans);transition:color .15s;}
+.mob-tab.active{color:#1a3a6b;}
+.mob-tab .tab-icon{font-size:16px;line-height:1;}
 
-/* ═══════════════════════════════════════════════════
-   CONSISTENCY ISSUES (B5 / C1)
-   ═══════════════════════════════════════════════════ */
-.issue-row {
-  display: flex; gap: 8px; align-items: flex-start;
-  padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 11px;
+@media(max-width:768px){
+  body{overflow:auto;height:auto;min-height:100vh;}
+  .main{display:block;padding-bottom:60px;}
+  .panel{display:none;border-right:none;min-height:calc(100vh - 110px);}
+  #panel-main{min-height:calc(100vh - 110px);}
+  .main-footer{max-height:none;grid-template-columns:1fr;}
+  .footer-pane+.footer-pane{border-left:none;border-top:1px solid var(--border);}
+  .panel.mob-active{display:flex;}
+  .mob-nav{display:block;}
 }
-.issue-row:last-child { border-bottom: none; }
-.issue-sev {
-  flex-shrink: 0; font-size: 10px; font-weight: 700; text-transform: uppercase;
-  padding: 2px 6px; border-radius: 3px; border: 1px solid;
-}
-.issue-sev.low      { background: var(--surface2); color: var(--text3); border-color: var(--border); }
-.issue-sev.medium   { background: var(--yellow-bg); color: var(--yellow-text); border-color: var(--yellow-border); }
-.issue-sev.high     { background: var(--red-light); color: var(--red); border-color: var(--red-mid); }
-.issue-sev.critical { background: var(--red); color: #fff; border-color: var(--red); }
-.issue-body { flex: 1; }
-.issue-dim  { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 2px; }
-.issue-desc { color: var(--text2); line-height: 1.5; }
-.issue-action {
-  flex-shrink: 0; font-family: var(--mono); font-size: 10px;
-  color: var(--text3); padding: 2px 6px; background: var(--surface2);
-  border-radius: 3px; border: 1px solid var(--border);
-}
-
-/* ═══════════════════════════════════════════════════
-   MOBILE NAV
-   ═══════════════════════════════════════════════════ */
-.mob-nav {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--surface); border-top: 1px solid var(--border);
-  height: 52px; z-index: 100; box-shadow: 0 -2px 8px rgba(16,24,40,.06);
-}
-.mob-nav-tabs { display: flex; height: 100%; }
-.mob-tab {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 3px;
-  cursor: pointer; font-size: 10px; font-weight: 500;
-  color: var(--text3); border: none; background: none;
-  font-family: var(--sans); transition: color .15s;
-}
-.mob-tab.active { color: #1a3a6b; }
-.mob-tab .tab-icon { font-size: 16px; line-height: 1; }
-
-@media (max-width: 768px) {
-  body { overflow: auto; height: auto; min-height: 100vh; }
-  header { padding: 0 14px; position: sticky; top: 0; z-index: 50; }
-  .h-sub { display: none; }
-  .main { display: block; padding-bottom: 60px; }
-  .panel { display: none; border-right: none; border-bottom: 1px solid var(--border); min-height: calc(100vh - 110px); }
-  #panel-main { min-height: calc(100vh - 110px); }
-  .main-footer { max-height: none; grid-template-columns: 1fr; }
-  .footer-pane + .footer-pane { border-left: none; border-top: 1px solid var(--border); }
-  .panel.mob-active { display: flex; }
-  .panel-hd { padding: 10px 14px 8px; }
-  .mob-nav { display: block; }
-}
-@media (max-width: 400px) { .card-title { font-size: 14px; } }
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="h-left">
     <div class="h-logo">M</div>
@@ -481,58 +278,85 @@ header {
   <!-- ── PANEL KIRI ── -->
   <div class="panel mob-active" id="panel-left">
     <div class="panel-hd">
-      <div class="panel-title">Dokumen</div>
-      <div class="panel-sub" id="panel-sub-label">Muat JSON untuk memulai</div>
+      <div class="panel-title">Pipeline</div>
+      <div class="panel-sub" id="panel-sub-label">Muat chapter files untuk mulai</div>
     </div>
     <div class="panel-body">
 
-      <!-- Dokumen Aktif -->
-      <div class="card card-blue" style="margin-bottom:14px;" id="doc-identity-card">
+      <!-- Dokumen aktif -->
+      <div class="card card-blue" style="margin-bottom:14px;">
         <div class="card-label">Dokumen Aktif</div>
         <div class="card-title" id="doc-title">—</div>
-        <div class="card-sub" id="doc-sub">Belum dimuat</div>
+        <div class="card-sub" id="doc-sub">Belum ada file dimuat</div>
       </div>
 
-      <!-- Upload / Load -->
-      <div class="sec-label">Muat Data Pipeline</div>
+      <!-- Upload Section -->
+      <div class="sec-label">Upload Chapter Files</div>
 
-      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
-        <div class="upload-icon">📂</div>
-        <div class="upload-label">Pilih file JSON</div>
-        <div class="upload-sub">chapter_editorial_packet · narrative_draft · consistency_lock_result</div>
-      </div>
-      <input type="file" id="file-input" accept=".json" style="display:none" onchange="handleFileUpload(event)">
-
-      <div class="field" style="margin-bottom:12px;">
-        <label>Atau tempel URL GitHub raw</label>
-        <div style="display:flex; gap:6px;">
-          <input type="text" id="url-input" placeholder="https://raw.githubusercontent.com/..." style="flex:1;">
-          <button class="btn sm primary" onclick="loadFromUrl()">Muat</button>
+      <!-- Slot 1: bab7 -->
+      <div class="upload-slot" id="slot-bab7" onclick="document.getElementById('input-bab7').click()">
+        <div class="slot-icon">📄</div>
+        <div class="slot-body">
+          <div class="slot-name" id="slot-bab7-name">chapter_semantic_bab7.json</div>
+          <div class="slot-hint" id="slot-bab7-hint">Bab inti substansi (biasanya bab 7)</div>
         </div>
+        <span class="slot-clear" id="slot-bab7-clear" style="display:none" onclick="clearSlot('bab7',event)">✕</span>
       </div>
+      <input type="file" id="input-bab7" accept=".json" style="display:none" onchange="handleSlotUpload('bab7',event)">
+
+      <!-- Slot 2: rest -->
+      <div class="upload-slot" id="slot-rest" onclick="document.getElementById('input-rest').click()">
+        <div class="slot-icon">📄</div>
+        <div class="slot-body">
+          <div class="slot-name" id="slot-rest-name">chapters_semantic_rest.json</div>
+          <div class="slot-hint" id="slot-rest-hint">Bab-bab lainnya</div>
+        </div>
+        <span class="slot-clear" id="slot-rest-clear" style="display:none" onclick="clearSlot('rest',event)">✕</span>
+      </div>
+      <input type="file" id="input-rest" accept=".json" style="display:none" onchange="handleSlotUpload('rest',event)">
+
+      <div style="margin-top:10px;">
+        <button class="btn primary full" id="btn-run-a1" disabled onclick="runA1()">
+          ▶ Proses Dokumen  <span style="opacity:.6;font-size:10px;font-weight:400;">(A1)</span>
+        </button>
+      </div>
+
+      <div id="a1-status" style="margin-top:8px; display:none;"></div>
+
+      <div class="divider"></div>
+
+      <!-- Trigger A2 -->
+      <div class="sec-label">Pipeline Actions</div>
+
+      <div class="pipe-step" id="pipe-a1">
+        <div class="pipe-step-dot"></div>
+        <div class="pipe-step-label">A1 · Block ID Injector</div>
+        <div class="pipe-step-status" id="pipe-a1-status">—</div>
+      </div>
+      <div class="pipe-step" id="pipe-a2">
+        <div class="pipe-step-dot"></div>
+        <div class="pipe-step-label">A2 · Substance Extractor</div>
+        <div class="pipe-step-status" id="pipe-a2-status">—</div>
+      </div>
+      <div class="pipe-step" id="pipe-a3">
+        <div class="pipe-step-dot"></div>
+        <div class="pipe-step-label">A3 · Repair Backlog</div>
+        <div class="pipe-step-status" id="pipe-a3-status">—</div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <button class="btn full" id="btn-run-a2" disabled onclick="triggerA2()">
+          ▶ Ekstrak Substansi  <span style="opacity:.6;font-size:10px;font-weight:400;">(A2)</span>
+        </button>
+      </div>
+      <div id="a2-status" style="margin-top:8px; display:none;"></div>
 
       <div class="divider"></div>
 
       <!-- Navigasi Bab -->
       <div class="sec-label">Navigasi Bab</div>
       <div id="chapter-nav">
-        <div class="empty-state" style="padding:20px 0;">
-          <div class="es-icon">📄</div>
-          <div class="es-sub">Muat file JSON untuk melihat daftar bab</div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- Sprint progress -->
-      <div class="sec-label">Status Bab Ini</div>
-      <div class="tl" id="sprint-progress">
-        <div class="tl-item dim"><div class="tl-dot"></div><span>B1 · Point Builder</span></div>
-        <div class="tl-item dim"><div class="tl-dot"></div><span>B2 · Narrative Draft</span></div>
-        <div class="tl-item dim"><div class="tl-dot"></div><span>B3 · Narasi Halus</span></div>
-        <div class="tl-item dim"><div class="tl-dot"></div><span>B4 · Visual Assets</span></div>
-        <div class="tl-item dim"><div class="tl-dot"></div><span>D1–D3 · Editorial</span></div>
-        <div class="tl-item dim"><div class="tl-dot"></div><span>B5 · Konsistensi</span></div>
+        <div class="vi dim" style="padding:8px 0;"><span class="ic">·</span><span>Jalankan A1 untuk melihat bab</span></div>
       </div>
 
       <div class="divider"></div>
@@ -545,32 +369,91 @@ header {
 
       <div style="height:8px;"></div>
 
-      <!-- Advanced -->
+      <!-- Pengaturan Lanjutan -->
       <button class="adv-btn" onclick="toggleAccordion(this)">
         <span>Pengaturan Lanjutan</span>
         <span class="adv-arrow">▾</span>
       </button>
       <div class="adv-body">
+
+        <!-- Pipeline Config -->
+        <div class="adv-sec">
+          <div class="adv-sec-label">Konfigurasi Pipeline</div>
+          <div class="field">
+            <label>Document ID</label>
+            <input type="text" id="cfg-doc-id" value="esd_report_v1">
+          </div>
+          <div class="field">
+            <label>Program Code</label>
+            <input type="text" id="cfg-program" value="ESD">
+          </div>
+          <div class="field">
+            <label>Bab Substansi</label>
+            <select id="cfg-substance-chapter">
+              <option value="bab_7">bab_7 (default)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Substance Mode</label>
+            <select id="cfg-substance-mode">
+              <option value="confirmed">confirmed</option>
+              <option value="discovery">discovery</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Substance Basis</label>
+            <select id="cfg-substance-basis">
+              <option value="manual_audit">manual_audit</option>
+              <option value="backlog_derived">backlog_derived</option>
+              <option value="config_declared">config_declared</option>
+              <option value="unknown">unknown</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Non-content Block Types</label>
+            <input type="text" id="cfg-nct" value="divider, divider_thick, spacer">
+          </div>
+        </div>
+
+        <!-- GitHub Connection -->
+        <div class="adv-sec">
+          <div class="adv-sec-label">GitHub Connection</div>
+          <div class="field">
+            <label>Repository (owner/repo)</label>
+            <input type="text" id="cfg-repo" placeholder="budistywan/advance-sroi-report-generation">
+          </div>
+          <div class="field">
+            <label>Personal Access Token</label>
+            <div class="token-wrap">
+              <input type="password" id="cfg-pat" placeholder="ghp_...">
+              <button class="token-show" onclick="togglePAT()">tampilkan</button>
+            </div>
+          </div>
+          <button class="btn sm full" onclick="testGitHubConnection()" style="margin-top:4px;">
+            Tes Koneksi GitHub
+          </button>
+          <div id="gh-connection-status" style="margin-top:6px;"></div>
+        </div>
+
+        <!-- Info pipeline -->
         <div class="adv-sec">
           <div class="adv-sec-label">Info Pipeline</div>
           <div class="tech-detail">
-            <div class="td-row"><span class="td-key">Versi</span><span class="td-val" id="adv-version">—</span></div>
-            <div class="td-row"><span class="td-key">Document ID</span><span class="td-val" id="adv-doc-id">—</span></div>
-            <div class="td-row"><span class="td-key">Program</span><span class="td-val" id="adv-program">—</span></div>
+            <div class="td-row"><span class="td-key">Versi</span><span class="td-val">pipeline-v1.0</span></div>
             <div class="td-row"><span class="td-key">Aktivitas</span><span class="td-val" id="adv-activity">—</span></div>
             <div class="td-row"><span class="td-key">Generated</span><span class="td-val" id="adv-generated">—</span></div>
           </div>
         </div>
-      </div>
 
-    </div>
+      </div><!-- /adv-body -->
+
+    </div><!-- /panel-body -->
   </div><!-- /panel-left -->
 
 
   <!-- ── PANEL KANAN ── -->
   <div class="panel" id="panel-main">
 
-    <!-- Toolbar -->
     <div class="main-toolbar">
       <button class="btn sm" id="btn-prev" onclick="navigateChapter(-1)" disabled>← Sebelumnya</button>
       <button class="btn sm" id="btn-next" onclick="navigateChapter(1)"  disabled>Berikutnya →</button>
@@ -579,16 +462,14 @@ header {
       <button class="btn sm primary" id="btn-save" onclick="saveCurrentEdits()" disabled>Simpan Editan</button>
     </div>
 
-    <!-- Konten -->
     <div class="main-content" id="main-content">
       <div class="empty-state">
         <div class="es-icon">🗂</div>
-        <div class="es-title">Belum ada bab dimuat</div>
-        <div class="es-sub">Muat file JSON dari panel kiri untuk mulai membaca dan mengedit konten bab.</div>
+        <div class="es-title">Belum ada data</div>
+        <div class="es-sub">Upload chapter files di panel kiri, lalu jalankan A1 untuk mulai.</div>
       </div>
     </div>
 
-    <!-- Footer -->
     <div class="main-footer">
       <div class="footer-pane">
         <div class="footer-label">Catatan Konsistensi</div>
@@ -607,100 +488,452 @@ header {
       </div>
     </div>
 
-  </div><!-- /panel-main -->
+  </div>
+</div>
 
-</div><!-- /main -->
-
-<!-- Mobile Nav -->
 <nav class="mob-nav">
   <div class="mob-nav-tabs">
-    <button class="mob-tab active" onclick="showPanel(0)" id="tab-0">
-      <span class="tab-icon">☰</span><span>Navigasi</span>
-    </button>
-    <button class="mob-tab" onclick="showPanel(1)" id="tab-1">
-      <span class="tab-icon">📄</span><span>Dokumen</span>
-    </button>
+    <button class="mob-tab active" onclick="showPanel(0)" id="tab-0"><span class="tab-icon">☰</span><span>Pipeline</span></button>
+    <button class="mob-tab" onclick="showPanel(1)" id="tab-1"><span class="tab-icon">📄</span><span>Dokumen</span></button>
   </div>
 </nav>
-
 
 <script>
 // ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
+const slots = { bab7: null, rest: null };  // { data: parsed JSON, name: filename }
+
 let state = {
-  raw: null,           // original JSON as loaded
-  activity: null,      // detected activity type
-  chapters: [],        // normalized chapter list
-  currentChapterIdx: 0,
-  edits: {},           // { paragraphId: newText }
-  candidateDecisions: {}, // { candidateId: 'accepted' | 'rejected' }
-  loaded: false
+  raw: null, activity: null, chapters: [], currentChapterIdx: 0,
+  edits: {}, candidateDecisions: {}, loaded: false,
+  a1Result: null,
 };
 
 // ═══════════════════════════════════════════════
-// ACTIVITY DETECTION
-// Deteksi jenis JSON yang dimuat
+// A1 ENGINE — ported dari a1_block_id_injector.py
 // ═══════════════════════════════════════════════
-function detectActivity(json) {
-  const a = json.activity || '';
-  if (a === 'narrative_builder')          return 'narrative_draft';
-  if (a === 'narrative_refinement')       return 'narrative_refined';
-  if (a === 'intra_chapter_consistency_lock') return 'consistency_lock';
-  if (a === 'cross_chapter_consistency_lock') return 'cross_chapter';
-  if (a === 'point_builder')              return 'point_packet';
-  if (a === 'block_id_injector')          return 'block_identity';
-  if (a === 'substance_extractor')        return 'substance_registry';
-  if (a === 'repair_backlog_builder')     return 'repair_backlog';
-  // editorial_packet: multi-chapter living file
-  if (json.chapters && Array.isArray(json.chapters) &&
-      json.chapters[0] && json.chapters[0].subsection_drafts) return 'editorial_packet';
-  // single chapter editorial
-  if (json.subsection_drafts) return 'editorial_packet_single';
-  return 'unknown';
+
+const CONTENT_SOURCE_PRIORITY = [
+  ['text'],
+  ['items', 0, 'text'],
+  ['headers', 0],
+  ['title'],
+  ['caption'],
+  ['rows', 0, 0],
+  ['label'],
+  ['value'],
+];
+
+const RE_PUNCTUATION = /[.,!?:;"'()\[\]{}\\/=\-]/g;
+
+function normalizePrefix(raw) {
+  let s = raw.toLowerCase().trim();
+  s = s.replace(/[\n\t\r]/g, ' ');
+  s = s.replace(/_/g, ' ');           // underscore → spasi dulu
+  s = s.replace(/ +/g, ' ');
+  s = s.replace(RE_PUNCTUATION, '');
+  s = s.replace(/ +/g, ' ');         // collapse ulang
+  s = s.replace(/ /g, '_');
+  s = s.replace(/[^a-z0-9_]/g, '');
+  s = s.slice(0, 40);
+  return s || 'empty';
+}
+
+function extractContentSource(block) {
+  for (const path of CONTENT_SOURCE_PRIORITY) {
+    try {
+      let val = block;
+      let label = '';
+      for (let i = 0; i < path.length; i++) {
+        const key = path[i];
+        if (typeof key === 'number') {
+          if (!Array.isArray(val) || val.length <= key) { val = null; break; }
+          label += `[${key}]`;
+          val = val[key];
+        } else {
+          if (val === null || typeof val !== 'object') { val = null; break; }
+          label = label ? label + '.' + key : key;
+          val = val[key];
+        }
+      }
+      if (val !== null && val !== undefined && String(val).trim()) {
+        return { value: String(val), found: true, sourceKey: label };
+      }
+    } catch(e) { continue; }
+  }
+  return { value: null, found: false, sourceKey: null };
+}
+
+function runA1Engine(semanticChapters, pcb) {
+  const nonContentTypes = new Set(pcb.non_content_block_types || ['divider','divider_thick','spacer']);
+  const warnings = [], failures = [];
+  const docFingerprints = {};
+  const enrichedChapters = [];
+  let totalBlocks = 0;
+
+  for (const chapter of semanticChapters) {
+    const chapterId = chapter.chapter_id;
+    if (!chapterId) { failures.push({ code:'CHAPTER_INVALID', message:'chapter_id hilang' }); return null; }
+    const blocks = chapter.blocks || [];
+    const enrichedBlocks = [];
+
+    for (let origIdx = 0; origIdx < blocks.length; origIdx++) {
+      const block = blocks[origIdx];
+      const blockType = block.type || 'unknown';
+      const oneBase = origIdx + 1;
+      const blockRef = `${chapterId}.B${String(oneBase).padStart(3,'0')}`;
+
+      if (nonContentTypes.has(blockType)) {
+        const fp = `${chapterId}__${blockType}__structural_${origIdx}`;
+        enrichedBlocks.push({ block_ref: blockRef, block_fingerprint: fp, original_index: origIdx, ...block });
+        continue;
+      }
+
+      const { value, found, sourceKey } = extractContentSource(block);
+      let normalized;
+      if (!found) {
+        normalized = 'empty';
+        warnings.push({ code:'EMPTY_CONTENT_BLOCK', block_ref: blockRef,
+          message: `${blockRef}: tidak ada content source (type=${blockType})` });
+      } else {
+        normalized = normalizePrefix(value);
+        if (sourceKey !== 'text') {
+          warnings.push({ code:'PRIMARY_SOURCE_ABSENT', block_ref: blockRef, source_used: sourceKey,
+            message: `${blockRef}: field 'text' tidak tersedia, prefix dari '${sourceKey}'` });
+        }
+      }
+
+      const fp = `${chapterId}__${blockType}__${normalized}`;
+      if (fp in docFingerprints) {
+        failures.push({ code:'FINGERPRINT_COLLISION', block_ref: blockRef, collides_with: docFingerprints[fp], fingerprint: fp,
+          message: `COLLISION: ${blockRef} → '${fp}' sama dengan ${docFingerprints[fp]}` });
+        return { activity:'block_id_injector', status:'failed', chapters: enrichedChapters, warnings, failures,
+          summary:{ total_chapters: enrichedChapters.length, total_blocks: 0, fingerprint_collisions: 1, warnings_count: warnings.length, failure_count: failures.length } };
+      }
+      docFingerprints[fp] = blockRef;
+      enrichedBlocks.push({ block_ref: blockRef, block_fingerprint: fp, original_index: origIdx, ...block });
+    }
+
+    enrichedChapters.push({ chapter_id: chapterId, chapter_type: chapter.chapter_type || null, blocks: enrichedBlocks });
+    totalBlocks += enrichedBlocks.length;
+  }
+
+  return {
+    activity: 'block_id_injector',
+    document_id: pcb.document_id,
+    program_code: pcb.program_code,
+    generated_at: new Date().toISOString(),
+    pipeline_version: 'v1',
+    chapters: enrichedChapters,
+    summary: {
+      total_chapters: enrichedChapters.length,
+      total_blocks: totalBlocks,
+      fingerprint_collisions: 0,
+      empty_content_blocks: warnings.filter(w=>w.code==='EMPTY_CONTENT_BLOCK').length,
+      warnings_count: warnings.length,
+      failure_count: 0,
+    },
+    warnings, failures: [],
+  };
 }
 
 // ═══════════════════════════════════════════════
-// NORMALIZE — unify chapter list across activities
+// SLOT UPLOAD
 // ═══════════════════════════════════════════════
-function normalizeChapters(json, activity) {
-  switch (activity) {
-    case 'narrative_draft':
-    case 'narrative_refined':
-      return [{ chapter_id: json.chapter_id, data: json }];
+function handleSlotUpload(slotKey, event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      slots[slotKey] = { data, name: file.name };
+      updateSlotUI(slotKey, 'loaded', file.name);
+      onSlotsChanged();
+    } catch(err) {
+      updateSlotUI(slotKey, 'error', 'JSON tidak valid');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
 
-    case 'editorial_packet_single':
-      return [{ chapter_id: json.chapter_id, data: json }];
+function clearSlot(slotKey, event) {
+  event.stopPropagation();
+  slots[slotKey] = null;
+  const defaults = { bab7: 'chapter_semantic_bab7.json', rest: 'chapters_semantic_rest.json' };
+  const hints    = { bab7: 'Bab inti substansi (biasanya bab 7)', rest: 'Bab-bab lainnya' };
+  updateSlotUI(slotKey, 'empty', defaults[slotKey]);
+  document.getElementById(`slot-${slotKey}-hint`).textContent = hints[slotKey];
+  document.getElementById(`slot-${slotKey}-clear`).style.display = 'none';
+  onSlotsChanged();
+}
 
-    case 'editorial_packet':
-      return (json.chapters || []).map(c => ({ chapter_id: c.chapter_id, data: c }));
-
-    case 'consistency_lock':
-      return [{ chapter_id: json.chapter_id, data: json }];
-
-    case 'cross_chapter':
-      // group by affected chapters
-      return [{ chapter_id: 'dokumen', data: json }];
-
-    case 'point_packet':
-      return [{ chapter_id: json.chapter_id, data: json }];
-
-    case 'block_identity':
-      return (json.chapters || []).map(c => ({ chapter_id: c.chapter_id, data: c }));
-
-    case 'substance_registry':
-      return [{ chapter_id: json.substance_chapter_id || 'substansi', data: json }];
-
-    case 'repair_backlog':
-      return (json.chapter_backlogs || []).map(c => ({ chapter_id: c.chapter_id, data: c }));
-
-    default:
-      return [];
+function updateSlotUI(slotKey, state, name) {
+  const slot = document.getElementById(`slot-${slotKey}`);
+  const nameEl = document.getElementById(`slot-${slotKey}-name`);
+  const hintEl = document.getElementById(`slot-${slotKey}-hint`);
+  const clearEl = document.getElementById(`slot-${slotKey}-clear`);
+  slot.className = 'upload-slot' + (state === 'loaded' ? ' loaded' : state === 'error' ? ' error' : '');
+  nameEl.textContent = name;
+  if (state === 'loaded') {
+    hintEl.textContent = '✓ Dimuat';
+    clearEl.style.display = 'block';
+  } else if (state === 'error') {
+    hintEl.textContent = name;
+    clearEl.style.display = 'none';
   }
 }
 
+function onSlotsChanged() {
+  const hasAny = slots.bab7 || slots.rest;
+  document.getElementById('btn-run-a1').disabled = !hasAny;
+
+  // Infer chapter_id list untuk dropdown substance chapter
+  const allChapters = mergeChapters();
+  const sel = document.getElementById('cfg-substance-chapter');
+  const current = sel.value;
+  sel.innerHTML = '';
+  allChapters.forEach(ch => {
+    const opt = document.createElement('option');
+    opt.value = ch.chapter_id;
+    opt.textContent = ch.chapter_id + (ch.chapter_id === 'bab_7' ? ' (default)' : '');
+    sel.appendChild(opt);
+  });
+  // Restore atau default ke bab_7
+  if ([...sel.options].find(o => o.value === current)) sel.value = current;
+  else if ([...sel.options].find(o => o.value === 'bab_7')) sel.value = 'bab_7';
+
+  // Infer doc_id dan program dari data
+  const first = slots.bab7?.data || slots.rest?.data;
+  if (first) {
+    if (first.document_id) document.getElementById('cfg-doc-id').value = first.document_id;
+    if (first.program_code) document.getElementById('cfg-program').value = first.program_code;
+  }
+}
+
+function mergeChapters() {
+  let chapters = [];
+  // rest dulu (bab 1-6, 8-9), lalu bab7
+  for (const key of ['rest', 'bab7']) {
+    const slot = slots[key];
+    if (!slot) continue;
+    const d = slot.data;
+    if (Array.isArray(d)) chapters = chapters.concat(d);
+    else if (d.chapters) chapters = chapters.concat(d.chapters);
+    else if (d.chapter_id) chapters.push(d);
+    else if (d.semantic_chapters) chapters = chapters.concat(d.semantic_chapters);
+  }
+  return chapters;
+}
+
+function buildPCB() {
+  return {
+    document_id: document.getElementById('cfg-doc-id').value.trim() || 'sroi_doc',
+    program_code: document.getElementById('cfg-program').value.trim() || 'PROG',
+    substance_mode: document.getElementById('cfg-substance-mode').value,
+    substance_chapter_id: document.getElementById('cfg-substance-chapter').value,
+    substance_basis: document.getElementById('cfg-substance-basis').value,
+    non_content_block_types: document.getElementById('cfg-nct').value
+      .split(',').map(s => s.trim()).filter(Boolean),
+  };
+}
+
 // ═══════════════════════════════════════════════
-// LOAD JSON
+// RUN A1
+// ═══════════════════════════════════════════════
+function runA1() {
+  const chapters = mergeChapters();
+  if (chapters.length === 0) { showA1Status('error', 'Tidak ada chapter ditemukan di file yang diupload.'); return; }
+
+  const pcb = buildPCB();
+  showA1Status('running', 'Memproses...');
+  document.getElementById('btn-run-a1').disabled = true;
+
+  // Jalankan async agar UI tidak freeze
+  setTimeout(() => {
+    try {
+      const result = runA1Engine(chapters, pcb);
+      if (!result || result.failures?.length > 0) {
+        showA1Status('error', `Gagal: ${result?.failures?.[0]?.message || 'error tidak diketahui'}`);
+        document.getElementById('btn-run-a1').disabled = false;
+        return;
+      }
+      state.a1Result = result;
+      setPipeStep('a1', 'done', `${result.summary.total_blocks} blocks`);
+      showA1Status('ok', `✓ ${result.summary.total_blocks} blocks, ${result.summary.total_chapters} bab`);
+      document.getElementById('btn-run-a1').disabled = false;
+      document.getElementById('btn-run-a2').disabled = !isGitHubConfigured();
+      document.getElementById('btn-download').disabled = false;
+
+      // Load result ke viewer
+      loadJSON(result);
+    } catch(err) {
+      showA1Status('error', 'Error: ' + err.message);
+      document.getElementById('btn-run-a1').disabled = false;
+    }
+  }, 50);
+}
+
+function showA1Status(type, msg) {
+  const el = document.getElementById('a1-status');
+  el.style.display = 'block';
+  const cls = { ok:'ok', error:'err', running:'info' }[type] || 'info';
+  el.innerHTML = `<div class="notice ${cls}" style="margin-top:0;">${esc(msg)}</div>`;
+}
+
+// ═══════════════════════════════════════════════
+// GITHUB CONNECTION
+// ═══════════════════════════════════════════════
+function isGitHubConfigured() {
+  return !!document.getElementById('cfg-repo').value.trim() &&
+         !!document.getElementById('cfg-pat').value.trim();
+}
+
+async function testGitHubConnection() {
+  const repo = document.getElementById('cfg-repo').value.trim();
+  const pat  = document.getElementById('cfg-pat').value.trim();
+  const el   = document.getElementById('gh-connection-status');
+  if (!repo || !pat) {
+    el.innerHTML = '<div class="notice warn" style="margin-top:0;">Isi repo dan PAT terlebih dahulu.</div>';
+    return;
+  }
+  el.innerHTML = '<div class="notice info" style="margin-top:0;">Menguji koneksi...</div>';
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      el.innerHTML = `<div class="notice ok" style="margin-top:0;">✓ Terhubung ke <strong>${data.full_name}</strong></div>`;
+      if (state.a1Result) document.getElementById('btn-run-a2').disabled = false;
+    } else {
+      el.innerHTML = `<div class="notice err" style="margin-top:0;">Gagal: HTTP ${res.status}. Periksa repo dan PAT.</div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="notice err" style="margin-top:0;">Error koneksi: ${esc(e.message)}</div>`;
+  }
+}
+
+async function triggerA2() {
+  const repo = document.getElementById('cfg-repo').value.trim();
+  const pat  = document.getElementById('cfg-pat').value.trim();
+  const el   = document.getElementById('a2-status');
+
+  if (!repo || !pat) {
+    el.style.display = 'block';
+    el.innerHTML = '<div class="notice warn" style="margin-top:0;">Konfigurasi GitHub Connection di Pengaturan Lanjutan.</div>';
+    return;
+  }
+
+  // Push block_identity_packet.json ke repo dulu (perlu contents API)
+  el.style.display = 'block';
+  setPipeStep('a2', 'running', 'memulai...');
+
+  // 1. Trigger workflow dispatch
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${repo}/actions/workflows/run_llm.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${pat}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ref: 'main', inputs: { stage: 'A2', dry_run: 'false' } }),
+      }
+    );
+
+    if (res.status === 204) {
+      el.innerHTML = '<div class="notice ok" style="margin-top:0;">✓ A2 berhasil di-trigger. Cek tab Actions di GitHub.</div>';
+      setPipeStep('a2', 'running', 'triggered');
+      pollWorkflowStatus(repo, pat);
+    } else {
+      const body = await res.text();
+      el.innerHTML = `<div class="notice err" style="margin-top:0;">Gagal trigger: HTTP ${res.status}. ${esc(body.slice(0,200))}</div>`;
+      setPipeStep('a2', 'error', 'gagal');
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="notice err" style="margin-top:0;">Error: ${esc(e.message)}</div>`;
+    setPipeStep('a2', 'error', 'error');
+  }
+}
+
+async function pollWorkflowStatus(repo, pat) {
+  const el = document.getElementById('a2-status');
+  let attempts = 0;
+  const maxAttempts = 30; // 5 menit polling
+
+  const poll = async () => {
+    attempts++;
+    if (attempts > maxAttempts) {
+      el.innerHTML += '<div class="notice warn" style="margin-top:6px;">Polling timeout. Cek status di GitHub Actions.</div>';
+      return;
+    }
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${repo}/actions/runs?workflow_id=run_llm.yml&per_page=1`,
+        { headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github.v3+json' } }
+      );
+      const data = await res.json();
+      const run = data.workflow_runs?.[0];
+      if (!run) { setTimeout(poll, 10000); return; }
+
+      const status     = run.status;      // queued, in_progress, completed
+      const conclusion = run.conclusion;  // success, failure, null
+
+      setPipeStep('a2', status === 'completed' ? (conclusion === 'success' ? 'done' : 'error') : 'running',
+        status === 'completed' ? conclusion : status);
+
+      if (status !== 'completed') {
+        el.innerHTML = `<div class="notice info" style="margin-top:0;">A2 sedang berjalan (${status})... <a href="${run.html_url}" target="_blank" style="color:var(--blue);">Lihat di GitHub ↗</a></div>`;
+        setTimeout(poll, 10000);
+      } else if (conclusion === 'success') {
+        el.innerHTML = `<div class="notice ok" style="margin-top:0;">✓ A2 selesai. <a href="${run.html_url}" target="_blank" style="color:var(--green);">Lihat hasil ↗</a></div>`;
+        // Auto-load output dari repo
+        autoLoadA2Output(repo, pat);
+      } else {
+        el.innerHTML = `<div class="notice err" style="margin-top:0;">A2 gagal (${conclusion}). <a href="${run.html_url}" target="_blank" style="color:var(--red);">Lihat log ↗</a></div>`;
+      }
+    } catch(e) { setTimeout(poll, 10000); }
+  };
+
+  setTimeout(poll, 10000); // mulai poll setelah 10 detik
+}
+
+async function autoLoadA2Output(repo, pat) {
+  try {
+    const rawUrl = `https://raw.githubusercontent.com/${repo}/main/data/output/substance_registry.json`;
+    const res = await fetch(rawUrl, {
+      headers: { Authorization: `token ${pat}` }
+    });
+    if (res.ok) {
+      const json = await res.json();
+      loadJSON(json);
+      document.getElementById('a2-status').innerHTML +=
+        '<div class="notice ok" style="margin-top:6px;">✓ substance_registry.json dimuat otomatis.</div>';
+    }
+  } catch(e) { /* silent */ }
+}
+
+function setPipeStep(step, status, label) {
+  const el  = document.getElementById(`pipe-${step}`);
+  const lbl = document.getElementById(`pipe-${step}-status`);
+  el.className = `pipe-step ${status}`;
+  if (lbl) lbl.textContent = label || '';
+}
+
+function togglePAT() {
+  const inp = document.getElementById('cfg-pat');
+  const btn = inp.nextElementSibling;
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'sembunyikan'; }
+  else { inp.type = 'password'; btn.textContent = 'tampilkan'; }
+}
+
+// ═══════════════════════════════════════════════
+// LOAD JSON (output pipeline)
 // ═══════════════════════════════════════════════
 function loadJSON(json) {
   state.raw = json;
@@ -715,10 +948,8 @@ function loadJSON(json) {
   updateDocCard();
   buildChapterNav();
 
-  // Jika packet-level failures ada, tampilkan di main content dulu
   if (json.failures && json.failures.length > 0) {
-    const content = document.getElementById('main-content');
-    content.innerHTML = renderGroupedErrors(json.failures, json.warnings || []);
+    document.getElementById('main-content').innerHTML = renderGroupedErrors(json.failures, json.warnings || []);
     document.getElementById('toolbar-chapter-label').textContent = 'Error';
   } else {
     renderChapter(0);
@@ -728,164 +959,76 @@ function loadJSON(json) {
   document.getElementById('btn-save').disabled = false;
   document.getElementById('btn-prev').disabled = false;
   document.getElementById('btn-next').disabled = false;
+
+  document.getElementById('adv-activity').textContent  = json.activity || state.activity;
+  document.getElementById('adv-generated').textContent = json.generated_at
+    ? new Date(json.generated_at).toLocaleString('id-ID') : '—';
 }
 
 // ═══════════════════════════════════════════════
-// GROUPED ERROR RENDERER (Item 3)
-// Menampilkan failures dengan ringkasan per code,
-// lalu detail tiap entry di accordion.
+// ACTIVITY DETECTION
 // ═══════════════════════════════════════════════
-function renderGroupedErrors(failures, warnings) {
-  if (!failures || failures.length === 0) return '';
-
-  // Group by code
-  const groups = {};
-  failures.forEach(f => {
-    const code = f.code || 'UNKNOWN';
-    if (!groups[code]) groups[code] = [];
-    groups[code].push(f);
-  });
-
-  const codeLabels = {
-    CONTROL_BLOCK_INVALID: 'Konfigurasi pipeline tidak valid',
-    FINGERPRINT_COLLISION: 'Fingerprint collision terdeteksi',
-    EMPTY_CHAPTERS:        'Tidak ada chapter dalam dokumen',
-    CHAPTER_INVALID:       'Chapter tidak valid',
-    BLOCK_INVALID:         'Block tidak valid',
-  };
-
-  let html = `<div class="notice err" style="margin-bottom:16px; margin-top:0;">
-    <strong>Pipeline tidak dapat dijalankan</strong> — ${failures.length} kegagalan fatal ditemukan.
-    Data dapat diunduh untuk diperiksa, tetapi output ini tidak boleh digunakan downstream.
-  </div>`;
-
-  Object.entries(groups).forEach(([code, entries]) => {
-    const label = codeLabels[code] || code;
-    const count = entries.length;
-    const uid = 'err_' + code.toLowerCase();
-
-    html += `<div class="card card-red" style="margin-bottom:10px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:2px;">
-        <span class="issue-sev critical">FATAL</span>
-        <span style="font-size:13px; font-weight:600;">${esc(label)}</span>
-        <span class="badge red" style="margin-left:auto;">${count} pelanggaran</span>
-      </div>`;
-
-    if (count === 1) {
-      html += `<div style="font-size:12px; color:var(--red); margin-top:6px; font-family:var(--mono);">${esc(entries[0].message || '')}</div>`;
-    } else {
-      html += `
-      <button class="adv-btn" style="border-top:none; padding:6px 0 0; font-size:11px; color:var(--red);"
-        onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.adv-arrow').classList.toggle('open')">
-        <span>Lihat ${count} detail pelanggaran</span>
-        <span class="adv-arrow">▾</span>
-      </button>
-      <div class="adv-body">
-        <div class="tech-detail">`;
-      entries.forEach((e, i) => {
-        html += `<div class="td-row">
-          <span class="td-key">Pelanggaran ${i + 1}</span>
-          <span class="td-val">${esc(e.message || JSON.stringify(e))}</span>
-        </div>`;
-      });
-      html += `</div></div>`;
-    }
-
-    html += `</div>`;
-  });
-
-  // Warnings section (jika ada, tampilkan lebih ringan)
-  if (warnings && warnings.length > 0) {
-    html += `<div class="card card-yellow" style="margin-top:4px;">
-      <div class="card-label">Warnings (${warnings.length})</div>
-      <button class="adv-btn" style="border-top:none; padding:4px 0 0; font-size:11px;"
-        onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.adv-arrow').classList.toggle('open')">
-        <span>Lihat detail</span><span class="adv-arrow">▾</span>
-      </button>
-      <div class="adv-body">`;
-    warnings.forEach(w => {
-      html += `<div class="vi warn" style="margin-bottom:4px;">
-        <span class="ic">!</span>
-        <span style="font-family:var(--mono); font-size:10px;">[${w.code || '?'}] ${esc(w.message || '')}</span>
-      </div>`;
-    });
-    html += `</div></div>`;
-  }
-
-  return html;
+function detectActivity(json) {
+  const a = json.activity || '';
+  if (a === 'block_id_injector')              return 'block_identity';
+  if (a === 'narrative_builder')              return 'narrative_draft';
+  if (a === 'narrative_refinement')           return 'narrative_refined';
+  if (a === 'intra_chapter_consistency_lock') return 'consistency_lock';
+  if (a === 'cross_chapter_consistency_lock') return 'cross_chapter';
+  if (a === 'point_builder')                  return 'point_packet';
+  if (a === 'substance_extractor')            return 'substance_registry';
+  if (a === 'repair_backlog_builder')         return 'repair_backlog';
+  if (json.chapters && json.chapters[0]?.subsection_drafts) return 'editorial_packet';
+  if (json.subsection_drafts) return 'editorial_packet_single';
+  return 'unknown';
 }
 
-function handleFileUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const json = JSON.parse(e.target.result);
-      loadJSON(json);
-    } catch(err) {
-      alert('File bukan JSON valid: ' + err.message);
-    }
-  };
-  reader.readAsText(file);
-}
-
-async function loadFromUrl() {
-  const url = document.getElementById('url-input').value.trim();
-  if (!url) return;
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const json = await res.json();
-    loadJSON(json);
-  } catch(err) {
-    alert('Gagal memuat URL: ' + err.message);
+function normalizeChapters(json, activity) {
+  switch(activity) {
+    case 'narrative_draft': case 'narrative_refined': case 'editorial_packet_single':
+      return [{ chapter_id: json.chapter_id, data: json }];
+    case 'editorial_packet':
+      return (json.chapters||[]).map(c=>({ chapter_id:c.chapter_id, data:c }));
+    case 'consistency_lock':
+      return [{ chapter_id: json.chapter_id, data: json }];
+    case 'cross_chapter':
+      return [{ chapter_id: 'dokumen', data: json }];
+    case 'point_packet':
+      return [{ chapter_id: json.chapter_id, data: json }];
+    case 'block_identity':
+      return (json.chapters||[]).map(c=>({ chapter_id:c.chapter_id, data:c }));
+    case 'substance_registry':
+      return [{ chapter_id: json.substance_chapter_id||'substansi', data:json }];
+    case 'repair_backlog':
+      return (json.chapter_backlogs||[]).map(c=>({ chapter_id:c.chapter_id, data:c }));
+    default: return [];
   }
 }
 
 // ═══════════════════════════════════════════════
-// HEADER & METADATA
+// HEADER & DOC CARD
 // ═══════════════════════════════════════════════
 function updateHeader() {
   const json = state.raw;
   const dot  = document.getElementById('hdr-dot');
   const lbl  = document.getElementById('hdr-label');
-  const hdr  = document.getElementById('hdr-status');
-  dot.classList.remove('pulse');
-
   const actLabels = {
-    narrative_draft:      'Narrative Draft',
-    narrative_refined:    'Refined Narrative',
-    editorial_packet:     'Editorial Packet',
-    editorial_packet_single: 'Editorial Packet',
-    consistency_lock:     'Consistency Lock',
-    cross_chapter:        'Cross-chapter Lock',
-    point_packet:         'Point Packet',
-    block_identity:       'Block Identity',
-    substance_registry:   'Substance Registry',
-    repair_backlog:       'Repair Backlog',
-    unknown:              'JSON Dimuat'
+    block_identity:'Block Identity', narrative_draft:'Narrative Draft',
+    narrative_refined:'Refined Narrative', editorial_packet:'Editorial Packet',
+    editorial_packet_single:'Editorial Packet', consistency_lock:'Consistency Lock',
+    cross_chapter:'Cross-chapter Lock', point_packet:'Point Packet',
+    substance_registry:'Substance Registry', repair_backlog:'Repair Backlog', unknown:'JSON Dimuat'
   };
-  lbl.textContent = (actLabels[state.activity] || 'JSON Dimuat') +
-    ' · ' + state.chapters.length + ' bab';
+  dot.classList.remove('pulse');
+  lbl.textContent = (actLabels[state.activity]||'JSON Dimuat') + ' · ' + state.chapters.length + ' bab';
   dot.classList.add('pulse');
-
-  document.getElementById('adv-version').textContent  = 'pipeline-v1.0';
-  document.getElementById('adv-doc-id').textContent   = json.document_id || '—';
-  document.getElementById('adv-program').textContent  = json.program_code || '—';
-  document.getElementById('adv-activity').textContent = json.activity || state.activity;
-  document.getElementById('adv-generated').textContent = json.generated_at
-    ? new Date(json.generated_at).toLocaleString('id-ID') : '—';
 }
 
 function updateDocCard() {
   const json = state.raw;
-  const progCode = json.program_code || '';
-  const docId    = json.document_id  || '—';
-  document.getElementById('doc-title').textContent = 'Laporan SROI ' + (progCode ? '— ' + progCode : docId);
-  document.getElementById('doc-sub').textContent   = (json.program_code || '') + ' · ' +
-    state.chapters.length + ' bab dimuat';
-  document.getElementById('panel-sub-label').textContent = docId;
+  document.getElementById('doc-title').textContent = 'Laporan SROI' + (json.program_code ? ' — '+json.program_code : '');
+  document.getElementById('doc-sub').textContent   = (json.program_code||'') + ' · ' + state.chapters.length + ' bab';
+  document.getElementById('panel-sub-label').textContent = json.document_id||'—';
 }
 
 // ═══════════════════════════════════════════════
@@ -894,425 +1037,240 @@ function updateDocCard() {
 function buildChapterNav() {
   const nav = document.getElementById('chapter-nav');
   nav.innerHTML = '';
+  if (state.chapters.length === 0) {
+    nav.innerHTML = '<div class="vi dim" style="padding:8px 0;"><span>·</span><span>&nbsp;Tidak ada bab</span></div>';
+    return;
+  }
+  const chMap = {'bab_1':'I — Pendahuluan','bab_2':'II — Profil','bab_3':'III — Metodologi',
+    'bab_4':'IV — Kondisi Awal','bab_5':'V — Ideal','bab_6':'VI — Strategi',
+    'bab_7':'VII — Implementasi','bab_8':'VIII — Pembelajaran','bab_9':'IX — Penutup'};
   state.chapters.forEach((ch, idx) => {
     const el = document.createElement('div');
-    el.className = 'nav-item' + (idx === 0 ? ' active' : '');
+    el.className = 'nav-item' + (idx===0?' active':'');
     el.onclick = () => renderChapter(idx);
-
-    // health dot (from repair_backlog or consistency_lock)
-    const health = ch.data.chapter_health || ch.data.status || '';
-    const healthMap = { high: 'high', pass: 'high', medium: 'medium', pass_with_notes: 'medium', low: 'low', fail: 'low' };
-    const healthClass = healthMap[health] || 'none';
-
-    el.innerHTML = `
-      <span>${formatChapterId(ch.chapter_id)}</span>
-      <div style="display:flex; align-items:center; gap:5px;">
+    const health = ch.data?.chapter_health||ch.data?.status||'';
+    const hc = {high:'high',pass:'high',medium:'medium',pass_with_notes:'medium',low:'low',fail:'low'}[health]||'none';
+    el.innerHTML = `<span>${chMap[ch.chapter_id]||ch.chapter_id}</span>
+      <div style="display:flex;align-items:center;gap:5px;">
         <span class="nav-code">${ch.chapter_id}</span>
-        <div class="nav-health ${healthClass}"></div>
+        <div class="nav-health ${hc}"></div>
       </div>`;
     nav.appendChild(el);
   });
 }
 
-function formatChapterId(id) {
-  const map = {
-    bab_1: 'I — Pendahuluan', bab_2: 'II — Profil', bab_3: 'III — Metodologi',
-    bab_4: 'IV — Kondisi Awal', bab_5: 'V — Kondisi Ideal', bab_6: 'VI — Strategi',
-    bab_7: 'VII — Implementasi', bab_8: 'VIII — Pembelajaran', bab_9: 'IX — Penutup'
-  };
-  return map[id] || id;
-}
-
 function setActiveNav(idx) {
-  document.querySelectorAll('#chapter-nav .nav-item').forEach((el, i) => {
-    el.classList.toggle('active', i === idx);
-  });
+  document.querySelectorAll('#chapter-nav .nav-item').forEach((el,i)=>el.classList.toggle('active',i===idx));
 }
 
 // ═══════════════════════════════════════════════
-// MAIN RENDER ROUTER
+// RENDER ROUTER
 // ═══════════════════════════════════════════════
 function renderChapter(idx) {
-  if (!state.loaded || idx < 0 || idx >= state.chapters.length) return;
+  if (!state.loaded||idx<0||idx>=state.chapters.length) return;
   state.currentChapterIdx = idx;
   setActiveNav(idx);
   const ch = state.chapters[idx];
   const content = document.getElementById('main-content');
-  document.getElementById('toolbar-chapter-label').textContent = formatChapterId(ch.chapter_id);
+  document.getElementById('toolbar-chapter-label').textContent =
+    ({bab_1:'I',bab_2:'II',bab_3:'III',bab_4:'IV',bab_5:'V',bab_6:'VI',bab_7:'VII',bab_8:'VIII',bab_9:'IX'}[ch.chapter_id]||ch.chapter_id);
 
-  switch (state.activity) {
-    case 'narrative_draft':
-    case 'narrative_refined':
-    case 'editorial_packet':
-    case 'editorial_packet_single':
-      renderNarrativeChapter(ch, content);
-      break;
-    case 'consistency_lock':
-      renderConsistencyLock(ch, content);
-      break;
-    case 'cross_chapter':
-      renderCrossChapter(ch, content);
-      break;
-    case 'point_packet':
-      renderPointPacket(ch, content);
-      break;
-    case 'block_identity':
-      renderBlockIdentity(ch, content);
-      break;
-    case 'substance_registry':
-      renderSubstanceRegistry(ch, content);
-      break;
-    case 'repair_backlog':
-      renderRepairBacklog(ch, content);
-      break;
-    default:
-      content.innerHTML = `<div class="notice info" style="margin-top:0;">
-        Tipe aktivitas <code>${state.activity}</code> belum punya renderer khusus.
-        Data dapat diunduh utuh via tombol Unduh JSON.
-      </div>`;
-  }
-
+  const renderers = {
+    block_identity: renderBlockIdentity, substance_registry: renderSubstanceRegistry,
+    repair_backlog: renderRepairBacklog, consistency_lock: renderConsistencyLock,
+    cross_chapter: renderCrossChapter, point_packet: renderPointPacket,
+    narrative_draft: renderNarrativeChapter, narrative_refined: renderNarrativeChapter,
+    editorial_packet: renderNarrativeChapter, editorial_packet_single: renderNarrativeChapter,
+  };
+  const fn = renderers[state.activity];
+  if (fn) fn(ch, content);
+  else content.innerHTML = `<div class="notice info" style="margin-top:0;">Tipe aktivitas <code>${state.activity}</code> belum punya renderer.</div>`;
   updateFooter(ch);
 }
 
 // ═══════════════════════════════════════════════
-// RENDERER: NARRATIVE / EDITORIAL PACKET
-// ═══════════════════════════════════════════════
-function renderNarrativeChapter(ch, container) {
-  const data = ch.data;
-  const subsections = data.subsection_drafts || [];
-  let html = '';
-
-  if (subsections.length === 0) {
-    html = '<div class="empty-state"><div class="es-icon">📭</div><div class="es-title">Tidak ada subbab</div></div>';
-  }
-
-  subsections.forEach(sub => {
-    if (sub.status === 'skipped_hold') {
-      html += `<div class="card card-red" style="margin-bottom:14px;">
-        <div class="card-label">Hold</div>
-        <div class="sub-header">
-          <span class="sub-id">${sub.subsection_id}</span>
-          <span class="sub-title">${esc(sub.title || '')}</span>
-          <span class="sub-mode hold">hold</span>
-        </div>
-        <div class="notice warn" style="margin-top:0;">Subbab ini di-hold. Tidak dirender.</div>
-      </div>`;
-      return;
-    }
-
-    const modeClass = sub.build_mode || 'build';
-    html += `<div class="card" style="margin-bottom:14px;" data-subsection="${sub.subsection_id}">
-      <div class="sub-header">
-        <span class="sub-id">${sub.subsection_id}</span>
-        <span class="sub-title">${esc(sub.title || '')}</span>
-        <span class="sub-mode ${modeClass}">${modeClass.replace('_', ' ')}</span>
-      </div>`;
-
-    const blocks = sub.blocks || sub.paragraph_units || [];
-    blocks.forEach(block => {
-      const pid  = block.paragraph_id || block.id || '';
-      const kind = block.paragraph_kind || block.kind || 'body';
-      const sens = block.evidence_sensitivity || 'low';
-      const synth = block.synthetic ? '✦ sintetis' : '';
-      const savedText = state.edits[pid];
-      const text = savedText !== undefined ? savedText : (block.text || '');
-      const status = block.status || '';
-
-      html += `<div class="para-block" data-para-id="${pid}">
-        <div class="para-header">
-          <span class="para-id">${pid}</span>
-          <span class="para-kind ${kind}">${kind}</span>
-          <span class="para-sensitivity ${sens}">${sens}</span>
-          ${synth ? `<span class="para-synth">${synth}</span>` : ''}
-        </div>
-        <div class="field" style="margin-bottom:0;">
-          <textarea data-para-id="${pid}" onchange="recordEdit('${pid}', this.value)" rows="${Math.max(3, Math.ceil(text.length/80))}">${esc(text)}</textarea>
-        </div>`;
-
-      // claim guardrails
-      const guardrails = block.claim_guardrails || [];
-      if (guardrails.length > 0) {
-        html += `<div class="notice warn" style="margin-top:6px; font-size:10px;">
-          <strong>Guardrails:</strong> ${guardrails.map(esc).join(' · ')}
-        </div>`;
-      }
-
-      html += `</div>`;
-    });
-
-    // enrichment candidates
-    const candidates = sub.enrichment_candidates || sub.candidates || [];
-    candidates.forEach(cand => {
-      const cid = cand.candidate_id || cand.id || '';
-      const decision = state.candidateDecisions[cid];
-      if (decision === 'rejected') return;
-      const accepted = decision === 'accepted';
-      html += `<div class="enr-card" data-cid="${cid}" id="enr-${cid}">
-        <div class="enr-header">
-          <span class="enr-id">${cid}</span>
-          <span class="enr-type">${cand.candidate_type || cand.type || 'candidate'}</span>
-          ${accepted ? '<span class="badge green" style="font-size:10px;">✓ Diterima</span>' : ''}
-        </div>
-        <div class="enr-text">${esc(cand.text || cand.suggested_text || '')}</div>
-        ${!accepted ? `<div class="enr-actions">
-          <button class="btn sm primary" onclick="acceptCandidate('${cid}')">Terima</button>
-          <button class="btn sm ghost" onclick="rejectCandidate('${cid}')">Abaikan</button>
-        </div>` : ''}
-      </div>`;
-    });
-
-    // alignment status
-    const aln = sub.alignment_status;
-    if (aln) {
-      const viol = aln.guardrail_violations || [];
-      const warn = aln.provenance_warnings || [];
-      if (viol.length > 0 || warn.length > 0) {
-        html += `<div class="notice warn" style="margin-top:4px; font-size:11px;">`;
-        viol.forEach(v => { html += `⚠ Guardrail: ${esc(v)}<br>`; });
-        warn.forEach(w => { html += `⚠ Provenance: ${esc(w)}<br>`; });
-        html += `</div>`;
-      }
-    }
-
-    html += `</div>`; // /card
-  });
-
-  container.innerHTML = html;
-}
-
-// ═══════════════════════════════════════════════
-// RENDERER: CONSISTENCY LOCK (B5)
-// ═══════════════════════════════════════════════
-function renderConsistencyLock(ch, container) {
-  const data = ch.data;
-  const statusBadge = statusBadgeHtml(data.status);
-  let html = `
-    <div class="card card-blue" style="margin-bottom:16px;">
-      <div class="card-label">Intra-chapter Consistency Lock · ${data.chapter_id}</div>
-      <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
-        ${statusBadge}
-        <span style="font-size:12px; color:var(--text2);">${data.summary?.total_issues || 0} issue ditemukan</span>
-      </div>
-    </div>`;
-
-  // Dimension results
-  const dims = data.dimension_results || [];
-  if (dims.length > 0) {
-    html += `<div class="sec-label" style="margin-top:0;">Dimensi</div>`;
-    html += `<div class="card" style="margin-bottom:14px;">`;
-    dims.forEach(d => {
-      const sc = statusColor(d.status);
-      html += `<div class="issue-row">
-        <span class="issue-sev ${d.severity || 'low'}">${d.status}</span>
-        <div class="issue-body">
-          <div class="issue-dim">${d.dimension}</div>
-          <div class="issue-desc">${d.issue_count} issue${d.notes?.length ? ' · ' + d.notes.slice(0,2).map(esc).join('; ') : ''}</div>
-        </div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-
-  // Issues
-  const issues = data.issues || [];
-  if (issues.length > 0) {
-    html += `<div class="sec-label">Issue Detail</div>`;
-    issues.forEach(iss => {
-      html += `<div class="card" style="margin-bottom:10px;">
-        <div class="issue-row" style="border:none; padding:0;">
-          <span class="issue-sev ${iss.severity}">${iss.severity}</span>
-          <div class="issue-body">
-            <div class="issue-dim">${iss.consistency_issue_id} · ${iss.dimension}</div>
-            <div class="issue-desc">${esc(iss.description)}</div>
-            ${iss.paragraph_ids?.length ? `<div style="margin-top:3px; font-size:10px; font-family:var(--mono); color:var(--text3);">${iss.paragraph_ids.join(', ')}</div>` : ''}
-          </div>
-          <span class="issue-action">${iss.recommended_action}</span>
-        </div>
-      </div>`;
-    });
-  } else {
-    html += `<div class="notice ok" style="margin-top:0;">Tidak ada issue ditemukan.</div>`;
-  }
-
-  container.innerHTML = html;
-}
-
-// ═══════════════════════════════════════════════
-// RENDERER: CROSS-CHAPTER (C1)
-// ═══════════════════════════════════════════════
-function renderCrossChapter(ch, container) {
-  const data = ch.data;
-  let html = `
-    <div class="card card-blue" style="margin-bottom:16px;">
-      <div class="card-label">Cross-chapter Consistency Lock</div>
-      <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
-        ${statusBadgeHtml(data.global_status)}
-      </div>
-    </div>`;
-
-  const dims = data.dimension_reports || [];
-  if (dims.length > 0) {
-    html += `<div class="sec-label" style="margin-top:0;">Dimensi Lintas Bab</div>`;
-    dims.forEach(d => {
-      html += `<div class="card" style="margin-bottom:8px;">
-        <div class="issue-row" style="border:none; padding:0;">
-          <span class="issue-sev ${d.status === 'pass' ? 'low' : d.status === 'fail' ? 'high' : 'medium'}">${d.status}</span>
-          <div class="issue-body">
-            <div class="issue-dim">${d.dimension}</div>
-            <div class="issue-desc">${d.issue_count} issue · ${(d.affected_chapters||[]).join(', ') || '—'}</div>
-            ${(d.notes||[]).slice(0,2).map(n => `<div class="notice warn" style="margin-top:4px;">${esc(n)}</div>`).join('')}
-          </div>
-        </div>
-      </div>`;
-    });
-  }
-
-  const issues = data.issues || [];
-  if (issues.length > 0) {
-    html += `<div class="sec-label">Issue</div>`;
-    issues.forEach(iss => {
-      html += `<div class="card" style="margin-bottom:8px;">
-        <div class="issue-row" style="border:none; padding:0;">
-          <span class="issue-sev ${iss.severity}">${iss.severity}</span>
-          <div class="issue-body">
-            <div class="issue-dim">${iss.issue_id} · ${iss.dimension}</div>
-            <div class="issue-desc">${esc(iss.description)}</div>
-            <div style="font-size:10px; color:var(--text3); margin-top:2px;">${(iss.affected_chapters||[]).join(', ')}</div>
-          </div>
-          <span class="issue-action">${iss.recommended_action || ''}</span>
-        </div>
-      </div>`;
-    });
-  }
-
-  container.innerHTML = html;
-}
-
-// ═══════════════════════════════════════════════
-// RENDERER: POINT PACKET (B1)
-// ═══════════════════════════════════════════════
-function renderPointPacket(ch, container) {
-  const data = ch.data;
-  let html = `<div class="card card-blue" style="margin-bottom:16px;">
-    <div class="card-label">Point Packet · ${data.chapter_id}</div>
-    <div style="font-size:12px; color:var(--text2); margin-top:4px;">${data.chapter_role_against_substance || ''}</div>
-  </div>`;
-
-  (data.subsections || []).forEach(sub => {
-    const mc = sub.build_mode || 'build';
-    html += `<div class="card" style="margin-bottom:12px;">
-      <div class="sub-header">
-        <span class="sub-id">${sub.subsection_id}</span>
-        <span class="sub-title">${esc(sub.title)}</span>
-        <span class="sub-mode ${mc}">${mc.replace('_',' ')}</span>
-      </div>
-      <div style="font-size:12px; color:var(--text2); margin-bottom:6px;">${esc(sub.function || '')}</div>
-      ${sub.main_claim ? `<div class="notice info" style="margin-top:0; margin-bottom:6px;"><strong>Klaim utama:</strong> ${esc(sub.main_claim)}</div>` : ''}
-      ${(sub.sub_claims||[]).length > 0 ? `<div style="font-size:11px; color:var(--text2); margin-bottom:4px;">${sub.sub_claims.map(c=>`• ${esc(c)}`).join('<br>')}</div>` : ''}
-      ${(sub.claim_guardrails||[]).length > 0 ? `<div class="notice warn" style="margin-top:4px; font-size:10px;">${sub.claim_guardrails.map(esc).join(' · ')}</div>` : ''}
-    </div>`;
-  });
-
-  container.innerHTML = html;
-}
-
-// ═══════════════════════════════════════════════
-// RENDERER: BLOCK IDENTITY (A1)
+// RENDERERS
 // ═══════════════════════════════════════════════
 function renderBlockIdentity(ch, container) {
-  const data = ch.data;
-  const blocks = data.blocks || [];
+  const blocks = ch.data.blocks||[];
   let html = `<div class="card card-blue" style="margin-bottom:14px;">
-    <div class="card-label">Block Identity · ${data.chapter_id}</div>
-    <div style="font-size:12px; color:var(--text2); margin-top:4px;">${blocks.length} blocks</div>
-  </div>`;
-
-  html += `<div class="card" style="padding:8px 12px;">`;
-  blocks.forEach(b => {
-    html += `<div class="issue-row">
+    <div class="card-label">Block Identity · ${ch.chapter_id}</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${blocks.length} blocks</div>
+  </div><div class="card" style="padding:8px 12px;">`;
+  blocks.forEach(b=>{
+    html+=`<div class="issue-row">
       <div class="issue-body">
         <div class="issue-dim">${b.block_ref} · <span style="color:var(--text2);">${b.type}</span></div>
-        <div style="font-size:10px; font-family:var(--mono); color:var(--text3);">${b.block_fingerprint}</div>
-        ${b.text ? `<div class="issue-desc" style="margin-top:2px;">${esc(b.text.slice(0,120))}${b.text.length>120?'…':''}</div>` : ''}
-      </div>
-    </div>`;
+        <div style="font-size:10px;font-family:var(--mono);color:var(--text3);">${b.block_fingerprint}</div>
+        ${b.text?`<div class="issue-desc" style="margin-top:2px;">${esc(b.text.slice(0,120))}${b.text.length>120?'…':''}</div>`:''}
+      </div></div>`;
   });
-  html += `</div>`;
+  html+='</div>';
   container.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════
-// RENDERER: SUBSTANCE REGISTRY (A2)
-// ═══════════════════════════════════════════════
 function renderSubstanceRegistry(ch, container) {
-  const data = ch.data;
-  const elements = data.elements || [];
+  const elements = ch.data.elements||[];
   let html = `<div class="card card-blue" style="margin-bottom:14px;">
     <div class="card-label">Substance Registry</div>
-    <div style="font-size:12px; color:var(--text2); margin-top:4px;">${elements.length} elemen · chapter: ${data.substance_chapter_id || '—'}</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${elements.length} elemen · chapter: ${ch.data.substance_chapter_id||'—'}</div>
   </div>`;
-
-  elements.forEach(el => {
-    const priBadge = el.priority === 'high'
-      ? `<span class="badge green">${el.priority}</span>`
-      : el.priority === 'medium'
-      ? `<span class="badge yellow">${el.priority}</span>`
-      : `<span class="badge on-surface">${el.priority}</span>`;
-    html += `<div class="card" style="margin-bottom:10px;">
-      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
-        <span style="font-family:var(--mono); font-size:10px; color:var(--text3);">${el.element_id}</span>
-        <span style="font-size:12px; font-weight:600;">${esc(el.label)}</span>
-        ${priBadge}
+  elements.forEach(el=>{
+    const pb = el.priority==='high'?'green':el.priority==='medium'?'yellow':'on-surface';
+    html+=`<div class="card" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+        <span style="font-family:var(--mono);font-size:10px;color:var(--text3);">${el.element_id}</span>
+        <span style="font-size:12px;font-weight:600;">${esc(el.label)}</span>
+        <span class="badge ${pb}">${el.priority}</span>
         <span class="badge on-surface">${el.element_type}</span>
       </div>
-      <div style="font-size:12px; color:var(--text2); line-height:1.6; margin-bottom:6px;">${esc(el.summary)}</div>
-      ${(el.guardrail_notes||[]).length ? `<div class="notice warn" style="margin-top:4px; font-size:10px;">${el.guardrail_notes.map(esc).join(' · ')}</div>` : ''}
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:6px;">${esc(el.summary)}</div>
+      ${(el.guardrail_notes||[]).length?`<div class="notice warn" style="margin-top:4px;font-size:10px;">${el.guardrail_notes.map(esc).join(' · ')}</div>`:''}
     </div>`;
   });
-
   container.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════
-// RENDERER: REPAIR BACKLOG (A3)
-// ═══════════════════════════════════════════════
 function renderRepairBacklog(ch, container) {
-  const data = ch.data;
-  const issues = data.issues || [];
-  const health = data.chapter_health || '—';
-  const healthColor = { high: 'green', medium: 'yellow', low: 'red' }[health] || 'on-surface';
+  const data = ch.data, issues = data.issues||[];
+  const health = data.chapter_health||'—';
+  const hc = {high:'green',medium:'yellow',low:'red'}[health]||'on-surface';
   let html = `<div class="card card-blue" style="margin-bottom:14px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div>
-        <div class="card-label">Repair Backlog · ${data.chapter_id}</div>
-        <div style="font-size:12px; color:var(--text2); margin-top:2px;">${issues.length} issue · burden: ${(data.normalized_burden||0).toFixed(2)}</div>
-      </div>
-      <span class="badge ${healthColor}" style="margin-left:auto;">health: ${health}</span>
-    </div>
-  </div>`;
-
-  if (issues.length === 0) {
-    html += `<div class="notice ok" style="margin-top:0;">Tidak ada issue.</div>`;
-  }
-  issues.forEach(iss => {
-    html += `<div class="card" style="margin-bottom:8px;">
-      <div class="issue-row" style="border:none; padding:0;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div><div class="card-label">Repair Backlog · ${data.chapter_id}</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:2px;">${issues.length} issue · burden: ${(data.normalized_burden||0).toFixed(2)}</div></div>
+      <span class="badge ${hc}" style="margin-left:auto;">health: ${health}</span>
+    </div></div>`;
+  issues.forEach(iss=>{
+    html+=`<div class="card" style="margin-bottom:8px;">
+      <div class="issue-row" style="border:none;padding:0;">
         <span class="issue-sev ${iss.severity}">${iss.severity}</span>
         <div class="issue-body">
           <div class="issue-dim">${iss.issue_id} · ${iss.issue_type} · burden: ${iss.issue_burden}</div>
           <div class="issue-desc">${esc(iss.description)}</div>
-          ${iss.notes ? `<div style="font-size:10px; color:var(--text3); margin-top:2px;">${esc(iss.notes)}</div>` : ''}
-          <div style="margin-top:4px; display:flex; gap:6px; flex-wrap:wrap;">
+          ${iss.notes?`<div style="font-size:10px;color:var(--text3);margin-top:2px;">${esc(iss.notes)}</div>`:''}
+          <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
             <span class="issue-action">${iss.repair_action}</span>
             <span class="issue-action">dep: ${iss.dependency_to_substance}</span>
-            <span class="issue-action ${iss.ready_for_point_builder ? '' : 'issue-sev medium'}">${iss.ready_for_point_builder ? 'ready' : 'not ready'}</span>
+            <span class="issue-action">${iss.ready_for_point_builder?'ready':'not ready'}</span>
           </div>
         </div>
+      </div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderConsistencyLock(ch, container) {
+  const data = ch.data;
+  let html = `<div class="card card-blue" style="margin-bottom:16px;">
+    <div class="card-label">Consistency Lock · ${data.chapter_id}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">${statusBadgeHtml(data.status)}
+      <span style="font-size:12px;color:var(--text2);">${data.summary?.total_issues||0} issue</span>
+    </div></div>`;
+  (data.dimension_results||[]).forEach(d=>{
+    html+=`<div class="card" style="margin-bottom:8px;"><div class="issue-row" style="border:none;padding:0;">
+      <span class="issue-sev ${d.severity||'low'}">${d.status}</span>
+      <div class="issue-body"><div class="issue-dim">${d.dimension}</div>
+        <div class="issue-desc">${d.issue_count} issue${d.notes?.length?' · '+d.notes.slice(0,2).map(esc).join('; '):''}</div>
+      </div></div></div>`;
+  });
+  (data.issues||[]).forEach(iss=>{
+    html+=`<div class="card" style="margin-bottom:8px;"><div class="issue-row" style="border:none;padding:0;">
+      <span class="issue-sev ${iss.severity}">${iss.severity}</span>
+      <div class="issue-body"><div class="issue-dim">${iss.consistency_issue_id} · ${iss.dimension}</div>
+        <div class="issue-desc">${esc(iss.description)}</div>
+        ${iss.paragraph_ids?.length?`<div style="margin-top:3px;font-size:10px;font-family:var(--mono);color:var(--text3);">${iss.paragraph_ids.join(', ')}</div>`:''}
       </div>
+      <span class="issue-action">${iss.recommended_action}</span>
+    </div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderCrossChapter(ch, container) {
+  const data = ch.data;
+  let html = `<div class="card card-blue" style="margin-bottom:16px;">
+    <div class="card-label">Cross-chapter Consistency</div>
+    <div style="margin-top:4px;">${statusBadgeHtml(data.global_status)}</div></div>`;
+  (data.dimension_reports||[]).forEach(d=>{
+    html+=`<div class="card" style="margin-bottom:8px;"><div class="issue-row" style="border:none;padding:0;">
+      <span class="issue-sev ${d.status==='pass'?'low':d.status==='fail'?'high':'medium'}">${d.status}</span>
+      <div class="issue-body"><div class="issue-dim">${d.dimension}</div>
+        <div class="issue-desc">${d.issue_count} issue · ${(d.affected_chapters||[]).join(', ')||'—'}</div>
+      </div></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderPointPacket(ch, container) {
+  const data = ch.data;
+  let html = `<div class="card card-blue" style="margin-bottom:16px;">
+    <div class="card-label">Point Packet · ${data.chapter_id}</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${data.chapter_role_against_substance||''}</div></div>`;
+  (data.subsections||[]).forEach(sub=>{
+    const mc = sub.build_mode||'build';
+    html+=`<div class="card" style="margin-bottom:12px;">
+      <div class="sub-header"><span class="sub-id">${sub.subsection_id}</span>
+        <span class="sub-title">${esc(sub.title)}</span>
+        <span class="sub-mode ${mc}">${mc.replace('_',' ')}</span></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">${esc(sub.function||'')}</div>
+      ${sub.main_claim?`<div class="notice info" style="margin-top:0;margin-bottom:6px;"><strong>Klaim utama:</strong> ${esc(sub.main_claim)}</div>`:''}
+      ${(sub.claim_guardrails||[]).length?`<div class="notice warn" style="margin-top:4px;font-size:10px;">${sub.claim_guardrails.map(esc).join(' · ')}</div>`:''}
     </div>`;
   });
+  container.innerHTML = html;
+}
 
+function renderNarrativeChapter(ch, container) {
+  const data = ch.data;
+  const subsections = data.subsection_drafts||[];
+  let html = '';
+  if (subsections.length===0) { html='<div class="empty-state"><div class="es-icon">📭</div><div class="es-title">Tidak ada subbab</div></div>'; }
+  subsections.forEach(sub=>{
+    if (sub.status==='skipped_hold') {
+      html+=`<div class="card card-red" style="margin-bottom:14px;"><div class="card-label">Hold</div>
+        <div class="sub-header"><span class="sub-id">${sub.subsection_id}</span><span class="sub-title">${esc(sub.title||'')}</span>
+          <span class="sub-mode hold">hold</span></div>
+        <div class="notice warn" style="margin-top:0;">Subbab ini di-hold.</div></div>`;
+      return;
+    }
+    const mc = sub.build_mode||'build';
+    html+=`<div class="card" style="margin-bottom:14px;">
+      <div class="sub-header"><span class="sub-id">${sub.subsection_id}</span>
+        <span class="sub-title">${esc(sub.title||'')}</span>
+        <span class="sub-mode ${mc}">${mc.replace('_',' ')}</span></div>`;
+    (sub.blocks||sub.paragraph_units||[]).forEach(block=>{
+      const pid=block.paragraph_id||block.id||'', kind=block.paragraph_kind||'body', sens=block.evidence_sensitivity||'low';
+      const saved=state.edits[pid]; const text=saved!==undefined?saved:(block.text||'');
+      html+=`<div class="para-block">
+        <div class="para-header"><span class="para-id">${pid}</span>
+          <span class="para-kind ${kind}">${kind}</span>
+          <span class="para-sensitivity ${sens}">${sens}</span>
+          ${block.synthetic?'<span style="font-size:10px;color:var(--text3);font-style:italic;margin-left:auto;">✦ sintetis</span>':''}
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <textarea data-para-id="${pid}" onchange="recordEdit('${pid}',this.value)" rows="${Math.max(3,Math.ceil(text.length/80))}">${esc(text)}</textarea>
+        </div>
+        ${(block.claim_guardrails||[]).length?`<div class="notice warn" style="margin-top:6px;font-size:10px;">${block.claim_guardrails.map(esc).join(' · ')}</div>`:''}
+      </div>`;
+    });
+    (sub.enrichment_candidates||sub.candidates||[]).forEach(cand=>{
+      const cid=cand.candidate_id||cand.id||'', decision=state.candidateDecisions[cid];
+      if (decision==='rejected') return;
+      html+=`<div class="enr-card" id="enr-${cid}">
+        <div class="enr-header"><span class="enr-id">${cid}</span>
+          <span class="enr-type">${cand.candidate_type||'candidate'}</span>
+          ${decision==='accepted'?'<span class="badge green">✓ Diterima</span>':''}
+        </div>
+        <div class="enr-text">${esc(cand.text||cand.suggested_text||'')}</div>
+        ${!decision?`<div class="enr-actions">
+          <button class="btn sm primary" onclick="acceptCandidate('${cid}')">Terima</button>
+          <button class="btn sm ghost" onclick="rejectCandidate('${cid}')">Abaikan</button>
+        </div>`:''}
+      </div>`;
+    });
+    html+='</div>';
+  });
   container.innerHTML = html;
 }
 
@@ -1320,214 +1278,210 @@ function renderRepairBacklog(ch, container) {
 // FOOTER
 // ═══════════════════════════════════════════════
 function updateFooter(ch) {
-  const data = ch.data;
-  const consistency = document.getElementById('footer-consistency');
-  const issues = data.issues || [];
-
-  if (issues.length === 0) {
-    consistency.innerHTML = `<div class="vi ok"><span class="ic">✓</span><span>Tidak ada issue</span></div>`;
-  } else {
-    const crit = issues.filter(i => i.severity === 'critical');
-    const high = issues.filter(i => i.severity === 'high');
-    const med  = issues.filter(i => i.severity === 'medium');
-    consistency.innerHTML = '';
-    if (crit.length) consistency.innerHTML += `<div class="vi err"><span class="ic">✗</span><span>${crit.length} critical</span></div>`;
-    if (high.length) consistency.innerHTML += `<div class="vi err"><span class="ic">✗</span><span>${high.length} high</span></div>`;
-    if (med.length)  consistency.innerHTML += `<div class="vi warn"><span class="ic">!</span><span>${med.length} medium</span></div>`;
-    const low = issues.filter(i => i.severity === 'low');
-    if (low.length)  consistency.innerHTML += `<div class="vi dim"><span class="ic">·</span><span>${low.length} low</span></div>`;
+  const data = ch.data, issues = data.issues||[];
+  const cons = document.getElementById('footer-consistency');
+  if (issues.length===0) { cons.innerHTML='<div class="vi ok"><span class="ic">✓</span><span>Tidak ada issue</span></div>'; }
+  else {
+    const bySev = s => issues.filter(i=>i.severity===s).length;
+    cons.innerHTML = '';
+    if (bySev('critical')) cons.innerHTML+=`<div class="vi err"><span>✗</span><span>${bySev('critical')} critical</span></div>`;
+    if (bySev('high'))     cons.innerHTML+=`<div class="vi err"><span>✗</span><span>${bySev('high')} high</span></div>`;
+    if (bySev('medium'))   cons.innerHTML+=`<div class="vi warn"><span>!</span><span>${bySev('medium')} medium</span></div>`;
+    if (bySev('low'))      cons.innerHTML+=`<div class="vi dim"><span>·</span><span>${bySev('low')} low</span></div>`;
   }
-
-  // summary
-  const subs = data.subsection_drafts || data.subsections || [];
-  const paras = subs.reduce((acc, s) => acc + (s.blocks||s.paragraph_units||[]).length, 0);
-  const candidates = subs.reduce((acc, s) => acc + (s.enrichment_candidates||s.candidates||[]).length, 0);
-  const pending = candidates - Object.keys(state.candidateDecisions).length;
-  const buildModes = subs.map(s => s.build_mode).filter(Boolean);
-  const holdCount = buildModes.filter(m => m === 'hold').length;
-
-  document.getElementById('fs-status').textContent  = data.status || data.chapter_health || '—';
-  document.getElementById('fs-para').textContent    = paras > 0 ? paras + ' paragraf' : '—';
-  document.getElementById('fs-candidates').textContent = candidates > 0 ? `${pending} menunggu / ${candidates} total` : '—';
-  document.getElementById('fs-buildmode').textContent  = holdCount > 0 ? `${holdCount} hold` : buildModes.length > 0 ? 'semua aktif' : '—';
-
-  // sprint timeline
-  updateSprintTimeline(data);
-}
-
-function updateSprintTimeline(data) {
-  const tl = document.getElementById('sprint-progress');
-  const items = tl.querySelectorAll('.tl-item');
-  const activity = state.activity;
-  const stages = ['point_packet','narrative_draft','narrative_refined','editorial_packet','editorial_packet','consistency_lock'];
-  items.forEach((item, i) => {
-    item.className = 'tl-item';
-    const stageActivity = stages[i];
-    if (!stageActivity) return;
-    if (stageActivity === activity) {
-      item.classList.add('active');
-    } else if (stages.indexOf(activity) > i) {
-      item.classList.add('done');
-    }
-  });
+  const subs = data.subsection_drafts||data.subsections||[];
+  const paras = subs.reduce((a,s)=>a+(s.blocks||s.paragraph_units||[]).length,0);
+  const cands = subs.reduce((a,s)=>a+(s.enrichment_candidates||s.candidates||[]).length,0);
+  document.getElementById('fs-status').textContent  = data.status||data.chapter_health||'—';
+  document.getElementById('fs-para').textContent    = paras>0?paras+' paragraf':'—';
+  document.getElementById('fs-candidates').textContent = cands>0?cands+' total':'—';
+  document.getElementById('fs-buildmode').textContent  = subs.filter(s=>s.build_mode==='hold').length>0?
+    subs.filter(s=>s.build_mode==='hold').length+' hold':subs.length>0?'semua aktif':'—';
 }
 
 // ═══════════════════════════════════════════════
-// EDIT & CANDIDATE ACTIONS
+// EDIT & CANDIDATE
 // ═══════════════════════════════════════════════
-function recordEdit(paragraphId, text) {
-  state.edits[paragraphId] = text;
-}
+function recordEdit(pid, text) { state.edits[pid] = text; }
 
 function acceptCandidate(cid) {
   state.candidateDecisions[cid] = 'accepted';
-  const card = document.getElementById('enr-' + cid);
-  if (card) {
-    card.querySelector('.enr-actions').innerHTML =
-      `<span class="badge green">✓ Diterima</span>`;
-  }
-  // patch back into raw data
+  const card = document.getElementById('enr-'+cid);
+  if (card) card.querySelector('.enr-actions').innerHTML = '<span class="badge green">✓ Diterima</span>';
   patchCandidateState(cid, 'accepted');
 }
 
 function rejectCandidate(cid) {
   state.candidateDecisions[cid] = 'rejected';
-  const card = document.getElementById('enr-' + cid);
+  const card = document.getElementById('enr-'+cid);
   if (card) card.style.display = 'none';
   patchCandidateState(cid, 'rejected');
 }
 
 function patchCandidateState(cid, newState) {
-  // walk raw JSON and update candidate_state
-  const walk = (obj) => {
-    if (!obj || typeof obj !== 'object') return;
+  const walk = obj => {
+    if (!obj||typeof obj!=='object') return;
     if (Array.isArray(obj)) { obj.forEach(walk); return; }
-    if ((obj.candidate_id === cid || obj.id === cid) && obj.candidate_state !== undefined) {
-      obj.candidate_state = newState;
-    }
+    if ((obj.candidate_id===cid||obj.id===cid)&&obj.candidate_state!==undefined) obj.candidate_state=newState;
     Object.values(obj).forEach(walk);
   };
   walk(state.raw);
 }
 
 function saveCurrentEdits() {
-  // Apply text edits back to raw JSON
-  const walk = (obj) => {
-    if (!obj || typeof obj !== 'object') return;
+  const walk = obj => {
+    if (!obj||typeof obj!=='object') return;
     if (Array.isArray(obj)) { obj.forEach(walk); return; }
-    const pid = obj.paragraph_id || obj.id;
-    if (pid && state.edits[pid] !== undefined) {
-      obj.text = state.edits[pid];
-    }
+    const pid = obj.paragraph_id||obj.id;
+    if (pid&&state.edits[pid]!==undefined) obj.text = state.edits[pid];
     Object.values(obj).forEach(walk);
   };
   walk(state.raw);
-  // visual feedback
   const btn = document.getElementById('btn-save');
   const orig = btn.textContent;
-  btn.textContent = '✓ Tersimpan';
-  btn.classList.add('success');
-  setTimeout(() => { btn.textContent = orig; btn.classList.remove('success'); }, 1500);
+  btn.textContent = '✓ Tersimpan'; btn.classList.add('success');
+  setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('success'); }, 1500);
 }
 
 function downloadJSON() {
   saveCurrentEdits();
-  const blob = new Blob([JSON.stringify(state.raw, null, 2)], { type: 'application/json' });
+  // Kalau ada hasil A1 dan sedang di block_identity view, download A1 result
+  const data = state.a1Result && state.activity === 'block_identity' ? state.a1Result : state.raw;
+  if (!data) return;
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = (state.raw.document_id || 'output') + '_edited.json';
+  a.download = (data.document_id||'output') + '_' + (data.activity||'edited') + '.json';
   a.click();
 }
 
 // ═══════════════════════════════════════════════
-// NAVIGATION
+// GROUPED ERROR RENDERER
 // ═══════════════════════════════════════════════
-function navigateChapter(dir) {
-  const next = state.currentChapterIdx + dir;
-  if (next >= 0 && next < state.chapters.length) renderChapter(next);
-}
-
-function resetApp() {
-  state = { raw:null, activity:null, chapters:[], currentChapterIdx:0, edits:{}, candidateDecisions:{}, loaded:false };
-  document.getElementById('doc-title').textContent = '—';
-  document.getElementById('doc-sub').textContent   = 'Belum dimuat';
-  document.getElementById('panel-sub-label').textContent = 'Muat JSON untuk memulai';
-  document.getElementById('chapter-nav').innerHTML = `<div class="empty-state" style="padding:20px 0;"><div class="es-icon">📄</div><div class="es-sub">Muat file JSON untuk melihat daftar bab</div></div>`;
-  document.getElementById('main-content').innerHTML = `<div class="empty-state"><div class="es-icon">🗂</div><div class="es-title">Belum ada bab dimuat</div><div class="es-sub">Muat file JSON dari panel kiri untuk mulai.</div></div>`;
-  document.getElementById('toolbar-chapter-label').textContent = '—';
-  document.getElementById('hdr-label').textContent = 'Belum ada dokumen';
-  document.getElementById('hdr-dot').classList.remove('pulse');
-  document.getElementById('btn-download').disabled = true;
-  document.getElementById('btn-save').disabled = true;
-  document.getElementById('btn-prev').disabled = true;
-  document.getElementById('btn-next').disabled = true;
-  document.getElementById('file-input').value = '';
-  document.getElementById('url-input').value = '';
-  document.getElementById('footer-consistency').innerHTML = `<div class="vi dim"><span class="ic">·</span><span>Belum ada data</span></div>`;
-  ['fs-status','fs-para','fs-candidates','fs-buildmode'].forEach(id => document.getElementById(id).textContent = '—');
-  document.querySelectorAll('#sprint-progress .tl-item').forEach(el => { el.className = 'tl-item'; });
-}
-
-// ═══════════════════════════════════════════════
-// DRAG AND DROP
-// ═══════════════════════════════════════════════
-const zone = document.getElementById('upload-zone');
-zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
-zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
-zone.addEventListener('drop', e => {
-  e.preventDefault(); zone.classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try { loadJSON(JSON.parse(ev.target.result)); } catch(err) { alert('JSON tidak valid: ' + err.message); }
+function renderGroupedErrors(failures, warnings) {
+  if (!failures||failures.length===0) return '';
+  const groups = {};
+  failures.forEach(f=>{ const c=f.code||'UNKNOWN'; if(!groups[c]) groups[c]=[]; groups[c].push(f); });
+  const codeLabels = {
+    CONTROL_BLOCK_INVALID:'Konfigurasi pipeline tidak valid',
+    FINGERPRINT_COLLISION:'Fingerprint collision terdeteksi',
+    EMPTY_CHAPTERS:'Tidak ada chapter', CHAPTER_INVALID:'Chapter tidak valid', BLOCK_INVALID:'Block tidak valid',
   };
-  reader.readAsText(file);
-});
+  let html = `<div class="notice err" style="margin-bottom:16px;margin-top:0;">
+    <strong>Pipeline tidak dapat dijalankan</strong> — ${failures.length} kegagalan fatal.</div>`;
+  Object.entries(groups).forEach(([code, entries])=>{
+    const label = codeLabels[code]||code, count = entries.length;
+    html+=`<div class="card card-red" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+        <span class="issue-sev critical">FATAL</span>
+        <span style="font-size:13px;font-weight:600;">${esc(label)}</span>
+        <span class="badge red" style="margin-left:auto;">${count} pelanggaran</span>
+      </div>`;
+    if (count===1) { html+=`<div style="font-size:12px;color:var(--red);margin-top:6px;font-family:var(--mono);">${esc(entries[0].message||'')}</div>`; }
+    else {
+      html+=`<button class="adv-btn" style="border-top:none;padding:6px 0 0;font-size:11px;color:var(--red);"
+        onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.adv-arrow').classList.toggle('open')">
+        <span>Lihat ${count} detail</span><span class="adv-arrow">▾</span></button>
+        <div class="adv-body"><div class="tech-detail">`;
+      entries.forEach((e,i)=>{ html+=`<div class="td-row"><span class="td-key">Pelanggaran ${i+1}</span><span class="td-val">${esc(e.message||JSON.stringify(e))}</span></div>`; });
+      html+=`</div></div>`;
+    }
+    html+=`</div>`;
+  });
+  if (warnings&&warnings.length>0) {
+    html+=`<div class="card card-yellow"><div class="card-label">Warnings (${warnings.length})</div>
+      <button class="adv-btn" style="border-top:none;padding:4px 0 0;font-size:11px;"
+        onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.adv-arrow').classList.toggle('open')">
+        <span>Lihat detail</span><span class="adv-arrow">▾</span></button>
+      <div class="adv-body">`;
+    warnings.forEach(w=>{ html+=`<div class="vi warn"><span class="ic">!</span><span style="font-family:var(--mono);font-size:10px;">[${w.code||'?'}] ${esc(w.message||'')}</span></div>`; });
+    html+=`</div></div>`;
+  }
+  return html;
+}
 
 // ═══════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════
 function esc(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function statusBadgeHtml(status) {
-  const map = {
-    pass: 'green', pass_with_notes: 'yellow', fail: 'red'
-  };
-  const cls = map[status] || 'on-surface';
-  return `<span class="badge ${cls}">${status || '—'}</span>`;
+  const m={pass:'green',pass_with_notes:'yellow',fail:'red'};
+  return `<span class="badge ${m[status]||'on-surface'}">${status||'—'}</span>`;
 }
-
-function statusColor(status) {
-  return { pass: 'ok', pass_with_notes: 'warn', fail: 'err' }[status] || '';
-}
-
 function toggleAccordion(btn) {
   btn.nextElementSibling.classList.toggle('open');
   btn.querySelector('.adv-arrow').classList.toggle('open');
 }
+function navigateChapter(dir) {
+  const next = state.currentChapterIdx+dir;
+  if (next>=0&&next<state.chapters.length) renderChapter(next);
+}
+function resetApp() {
+  slots.bab7 = null; slots.rest = null;
+  ['bab7','rest'].forEach(k=>{
+    const d={bab7:'chapter_semantic_bab7.json',rest:'chapters_semantic_rest.json'};
+    const h={bab7:'Bab inti substansi (biasanya bab 7)',rest:'Bab-bab lainnya'};
+    document.getElementById(`slot-${k}`).className='upload-slot';
+    document.getElementById(`slot-${k}-name`).textContent=d[k];
+    document.getElementById(`slot-${k}-hint`).textContent=h[k];
+    document.getElementById(`slot-${k}-clear`).style.display='none';
+    document.getElementById(`input-${k}`).value='';
+  });
+  state={raw:null,activity:null,chapters:[],currentChapterIdx:0,edits:{},candidateDecisions:{},loaded:false,a1Result:null};
+  document.getElementById('btn-run-a1').disabled=true;
+  document.getElementById('btn-run-a2').disabled=true;
+  document.getElementById('btn-download').disabled=true;
+  document.getElementById('btn-save').disabled=true;
+  document.getElementById('btn-prev').disabled=true;
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('doc-title').textContent='—';
+  document.getElementById('doc-sub').textContent='Belum ada file dimuat';
+  document.getElementById('panel-sub-label').textContent='Muat chapter files untuk mulai';
+  document.getElementById('hdr-label').textContent='Belum ada dokumen';
+  document.getElementById('hdr-dot').classList.remove('pulse');
+  document.getElementById('toolbar-chapter-label').textContent='—';
+  document.getElementById('chapter-nav').innerHTML='<div class="vi dim" style="padding:8px 0;"><span>·</span><span>&nbsp;Jalankan A1 untuk melihat bab</span></div>';
+  document.getElementById('main-content').innerHTML='<div class="empty-state"><div class="es-icon">🗂</div><div class="es-title">Belum ada data</div><div class="es-sub">Upload chapter files di panel kiri, lalu jalankan A1 untuk mulai.</div></div>';
+  document.getElementById('a1-status').style.display='none';
+  document.getElementById('a2-status').style.display='none';
+  ['a1','a2','a3'].forEach(s=>setPipeStep(s,'','—'));
+  ['fs-status','fs-para','fs-candidates','fs-buildmode'].forEach(id=>document.getElementById(id).textContent='—');
+}
 
-// ═══════════════════════════════════════════════
-// MOBILE
-// ═══════════════════════════════════════════════
+// Drag and drop ke slot bab7
+const body = document.body;
+body.addEventListener('dragover', e=>e.preventDefault());
+body.addEventListener('drop', e=>{
+  e.preventDefault();
+  const files = [...e.dataTransfer.files].filter(f=>f.name.endsWith('.json'));
+  if (files.length===0) return;
+  files.forEach(file=>{
+    const key = file.name.includes('bab7')||file.name.includes('bab_7') ? 'bab7' : 'rest';
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      try {
+        slots[key]={data:JSON.parse(ev.target.result),name:file.name};
+        updateSlotUI(key,'loaded',file.name);
+        onSlotsChanged();
+      } catch(err) { updateSlotUI(key,'error','JSON tidak valid'); }
+    };
+    reader.readAsText(file);
+  });
+});
+
+// Mobile
 function showPanel(idx) {
-  const panels = document.querySelectorAll('.main .panel');
-  const tabs   = document.querySelectorAll('.mob-tab');
-  panels.forEach((p, i) => p.classList.toggle('mob-active', i === idx));
-  tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.main .panel').forEach((p,i)=>p.classList.toggle('mob-active',i===idx));
+  document.querySelectorAll('.mob-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
 }
 function initMobile() {
-  if (window.innerWidth <= 768) showPanel(0);
-  else document.querySelectorAll('.main .panel').forEach(p => p.classList.remove('mob-active'));
+  if (window.innerWidth<=768) showPanel(0);
+  else document.querySelectorAll('.main .panel').forEach(p=>p.classList.remove('mob-active'));
 }
-window.addEventListener('resize', initMobile);
+window.addEventListener('resize',initMobile);
 initMobile();
-
 </script>
 </body>
 </html>
