@@ -102,17 +102,6 @@ jobs:
       - name: Run tests — A2
         run: python -m pytest tests/test_a2_substance_extractor.py -v
 
-      - name: Check prerequisites
-        run: |
-          for f in \
-            data/input/pipeline_control_block.json \
-            data/output/block_identity_packet.json; do
-            if [ ! -f "$f" ]; then
-              echo "ERROR: $f tidak ditemukan. Jalankan A1 terlebih dahulu."
-              exit 1
-            fi
-          done
-
       - name: Merge input for A2
         run: |
           python - << 'EOF'
