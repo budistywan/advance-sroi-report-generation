@@ -838,13 +838,13 @@ async function triggerA2() {
   setPipeStep('a2', 'running', 'menyiapkan...');
 
   // ── Step 1: Push block_identity_packet.json ke repo ──
-  showA2Log('info', '1/3 · Mengirim block_identity_packet.json ke repo...');
+  showA2Log('info', '1/4 · Mengirim block_identity_packet.json ke repo...');
   try {
     const pushed = await pushFileToRepo(
       repo, pat,
       'data/output/block_identity_packet.json',
       JSON.stringify(state.a1Result, null, 2),
-      '[A1] block_identity_packet.json — dari browser'
+      '[browser] block_identity_packet.json — dari browser'
     );
     if (!pushed.ok) {
       showA2Log('error', `✗ Gagal push block_identity_packet.json: HTTP ${pushed.status}\n${pushed.body}`);
@@ -859,14 +859,14 @@ async function triggerA2() {
   }
 
   // ── Step 2: Push pipeline_control_block.json ─────────
-  showA2Log('info', '2/3 · Mengirim pipeline_control_block.json ke repo...');
+  showA2Log('info', '2/4 · Mengirim pipeline_control_block.json ke repo...');
   try {
     const pcb = buildPCB();
     const pushed = await pushFileToRepo(
       repo, pat,
       'data/input/pipeline_control_block.json',
       JSON.stringify(pcb, null, 2),
-      '[config] pipeline_control_block.json — dari browser'
+      '[browser] pipeline_control_block.json — dari browser'
     );
     if (!pushed.ok) {
       showA2Log('warn', `⚠ Gagal update pipeline_control_block.json (HTTP ${pushed.status}) — melanjutkan dengan versi repo`);
@@ -877,8 +877,39 @@ async function triggerA2() {
     showA2Log('warn', `⚠ Gagal update pipeline_control_block.json: ${e.message} — melanjutkan`);
   }
 
-  // ── Step 3: Trigger workflow dispatch ────────────────
-  showA2Log('info', '3/3 · Mentrigger GitHub Actions A2...');
+  // ── Step 3: Push chapter files ────────────────────────
+  showA2Log('info', '3/4 · Mengirim chapter files ke repo...');
+  let chaptersPushed = 0;
+  const chapterFileMap = {
+    bab7: 'data/input/chapter_semantic_bab7.json',
+    rest: 'data/input/chapters_semantic_rest.json',
+  };
+  for (const [key, path] of Object.entries(chapterFileMap)) {
+    if (!slots[key]) continue;
+    try {
+      const pushed = await pushFileToRepo(
+        repo, pat, path,
+        JSON.stringify(slots[key].data, null, 2),
+        `[browser] ${path.split('/').pop()} — dari browser`
+      );
+      if (pushed.ok) {
+        showA2Log('ok', `✓ ${path.split('/').pop()} dikirim`);
+        chaptersPushed++;
+      } else {
+        showA2Log('warn', `⚠ Gagal push ${path.split('/').pop()}: HTTP ${pushed.status}`);
+      }
+    } catch(e) {
+      showA2Log('warn', `⚠ Error push ${path.split('/').pop()}: ${e.message}`);
+    }
+  }
+  if (chaptersPushed === 0) {
+    showA2Log('error', '✗ Tidak ada chapter file yang berhasil dikirim. Periksa koneksi dan PAT.');
+    setPipeStep('a2', 'error', 'gagal');
+    return;
+  }
+
+  // ── Step 4: Trigger workflow dispatch ────────────────
+  showA2Log('info', '4/4 · Mentrigger GitHub Actions A2...');
   try {
     const res = await fetch(
       `https://api.github.com/repos/${repo}/actions/workflows/run_llm.yml/dispatches`,
