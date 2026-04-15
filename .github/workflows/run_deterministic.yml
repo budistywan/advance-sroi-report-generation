@@ -2,16 +2,17 @@ name: Pipeline — Deterministic
 
 # ─────────────────────────────────────────────
 # Trigger:
-#   - push ke data/input/ (auto)
+#   - push ke data/input/chapter_* (auto, hanya saat chapter files diupdate)
 #   - manual dispatch (pilih stage)
-# Tidak butuh API key.
-# Output di-commit ke data/output/.
+# Push dari browser (commit message mengandung "[browser]") di-skip
+# agar tidak trigger A1 saat hanya config/output yang diupdate.
 # ─────────────────────────────────────────────
 
 on:
   push:
     paths:
-      - "data/input/**"
+      - "data/input/chapter_semantic_*.json"
+      - "data/input/chapters_semantic_*.json"
   workflow_dispatch:
     inputs:
       stage:
