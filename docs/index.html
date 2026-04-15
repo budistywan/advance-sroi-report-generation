@@ -1,1489 +1,576 @@
+"""
+A1 — Block ID Injector
+Sprint 1 | SROI Document Refinement Pipeline v1
+Status: FROZEN spec
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SROI Pipeline — Manara Advisory</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:#f5f7fa; --surface:#fff; --surface2:#f0f2f5; --surface3:#e8eaf0;
-  --border:#e4e7ec; --border2:#d0d5dd;
-  --text:#101828; --text2:#475467; --text3:#98a2b3;
-  --blue:#1a3a6b; --blue-light:#eef1f8; --blue-mid:#bfcde8;
-  --green:#0d7b74; --green-light:#eaf6f5; --green-mid:#9fd8d4;
-  --yellow-text:#92400e; --yellow-bg:#fffbeb; --yellow-border:#f0c97a;
-  --red:#c0392b; --red-light:#fdf2f1; --red-mid:#f5a89e;
-  --sans:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
-  --radius:8px; --radius-sm:5px;
-  --shadow:0 1px 3px rgba(16,24,40,.07),0 1px 2px rgba(16,24,40,.04);
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px;line-height:1.5;}
+Menambahkan tiga field ke setiap block:
+  - block_ref        : {chapter_id}.B{zero_padded_index}  (chapter-local)
+  - block_fingerprint: {chapter_id}__{type}__{normalized_prefix}  (document-wide)
+  - original_index   : int, 0-based, posisi asli di array input
 
-/* HEADER */
-header{background:#1a3a6b;border-bottom:1px solid #122448;padding:0 20px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10;}
-.h-logo{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
-.h-left{display:flex;align-items:center;gap:10px;}
-.h-title{font-size:14px;font-weight:600;color:#fff;}
-.h-sub{font-size:11px;color:rgba(255,255,255,.45);margin-left:2px;}
-.h-right{display:flex;gap:8px;align-items:center;}
+Rules enforced:
+  R-A1-01  Identity append-only (downstream constraint — documented)
+  R-A1-02  Fingerprint uniqueness document-wide (collision = fatal)
+  R-A1-03  block_ref unik chapter-wide
+  R-A1-04  Fingerprint content-derived, bukan index
+  R-A1-05  Injection non-destructive
+  R-A1-06  Empty-content blocks → warning, fingerprint ...__empty
+  R-A1-07  Collision fatal, proses stop
+  R-A1-08  No auto-disambiguation (no _2, _3 suffix)
+  R-A1-09  Control block valid sebelum proses
+  R-A1-10  Program-agnostic
+  R-A1-11  Non-content blocks → structural fingerprint
+  R-A1-12  Non-content blocks excluded dari collision check content
+"""
 
-/* BADGE */
-.badge{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);}
-.badge.on-surface{border-color:var(--border);background:var(--surface2);color:var(--text2);}
-.badge.green{background:var(--green-light);border-color:var(--green-mid);color:var(--green);}
-.badge.blue{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);}
-.badge.red{background:var(--red-light);border-color:var(--red-mid);color:var(--red);}
-.badge.yellow{background:var(--yellow-bg);border-color:var(--yellow-border);color:var(--yellow-text);}
-.bdot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
-.bdot.pulse{animation:pulse 1.8s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+from __future__ import annotations
 
-/* LAYOUT */
-.main{display:grid;grid-template-columns:290px 1fr;flex:1;overflow:hidden;}
-.panel{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.panel:last-child{border-right:none;}
-.panel-hd{padding:13px 16px 9px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.panel-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;}
-.panel-sub{font-size:11px;color:var(--text3);margin-top:1px;}
-.panel-body{flex:1;overflow-y:auto;padding:14px 16px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
-#panel-main{display:flex;flex-direction:column;overflow:hidden;}
-.main-toolbar{padding:9px 16px;border-bottom:1px solid var(--border);display:flex;gap:6px;align-items:center;flex-shrink:0;background:var(--surface);}
-.main-content{flex:1;overflow-y:auto;padding:20px 24px;scrollbar-width:thin;}
-.main-footer{border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;flex-shrink:0;max-height:148px;background:var(--surface);}
-.footer-pane{padding:10px 16px;overflow-y:auto;}
-.footer-pane+.footer-pane{border-left:1px solid var(--border);}
-.footer-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;}
-
-/* SECTION LABEL */
-.sec-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
-
-/* CARD */
-.card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;}
-.card-blue{background:var(--blue-light);border-color:var(--blue-mid);}
-.card-yellow{background:var(--yellow-bg);border-color:var(--yellow-border);}
-.card-green{background:var(--green-light);border-color:var(--green-mid);}
-.card-red{background:var(--red-light);border-color:var(--red-mid);}
-.card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;color:var(--text3);}
-.card-blue .card-label{color:var(--blue);}
-.card-yellow .card-label{color:var(--yellow-text);}
-.card-green .card-label{color:var(--green);}
-.card-title{font-size:15px;font-weight:700;line-height:1.3;}
-.card-sub{font-size:11px;color:var(--text2);margin-top:2px;font-family:var(--mono);}
-
-/* FORM */
-.field{margin-bottom:10px;display:flex;flex-direction:column;}
-.field label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:3px;}
-.field input,.field select,.field textarea{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);padding:6px 9px;font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s,box-shadow .15s;}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,58,107,.12);}
-.field textarea{resize:vertical;min-height:80px;font-family:var(--sans);font-size:13px;line-height:1.7;}
-.token-wrap{position:relative;}
-.token-wrap input{padding-right:70px;}
-.token-show{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:var(--mono);padding:2px;}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);border-radius:var(--radius-sm);padding:6px 12px;font-size:12px;font-weight:500;font-family:var(--sans);cursor:pointer;transition:all .12s;white-space:nowrap;box-shadow:var(--shadow);}
-.btn:hover{background:var(--surface2);color:var(--text);}
-.btn:active{transform:scale(.98);}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
-.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
-.btn.primary:hover{background:#122448;}
-.btn.success{background:var(--green);border-color:var(--green);color:#fff;font-weight:600;}
-.btn.success:hover{background:#0a6860;}
-.btn.danger{color:var(--red);border-color:var(--red-mid);}
-.btn.ghost{border-color:transparent;background:transparent;box-shadow:none;color:var(--text2);}
-.btn.ghost:hover{background:var(--surface2);color:var(--text);}
-.btn.sm{padding:4px 9px;font-size:11px;}
-.btn.full{width:100%;}
-.btn-grp{display:flex;flex-direction:column;gap:7px;}
-
-/* ACCORDION */
-.adv-btn{width:100%;display:flex;align-items:center;justify-content:space-between;background:none;border:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text2);padding:9px 0;border-top:1px solid var(--border);transition:color .12s;}
-.adv-btn:hover{color:#1a3a6b;}
-.adv-arrow{font-size:10px;transition:transform .2s;}
-.adv-arrow.open{transform:rotate(180deg);}
-.adv-body{display:none;padding-top:14px;}
-.adv-body.open{display:block;}
-.adv-sec{margin-bottom:14px;}
-.adv-sec-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;}
-
-/* TECH DETAIL */
-.tech-detail{background:var(--surface2);border-radius:var(--radius-sm);padding:8px 10px;margin-top:6px;}
-.td-row{display:flex;flex-direction:column;margin-bottom:6px;}
-.td-row:last-child{margin-bottom:0;}
-.td-key{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
-.td-val{font-size:11px;color:var(--text2);font-family:var(--mono);margin-top:1px;word-break:break-all;}
-
-/* NOTICE */
-.notice{border-radius:var(--radius-sm);padding:8px 10px;font-size:11px;margin-top:6px;line-height:1.5;}
-.notice.err{background:var(--red-light);border:1px solid var(--red-mid);color:var(--red);}
-.notice.warn{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow-text);}
-.notice.info{background:var(--blue-light);border:1px solid var(--blue-mid);color:var(--blue);}
-.notice.ok{background:var(--green-light);border:1px solid var(--green-mid);color:var(--green);}
-
-/* VI + SR */
-.vi{display:flex;align-items:flex-start;gap:5px;font-size:11px;line-height:1.5;margin-bottom:3px;}
-.vi .ic{flex-shrink:0;}
-.vi.ok{color:var(--green);}
-.vi.warn{color:var(--yellow-text);}
-.vi.err{color:var(--red);}
-.vi.dim{color:var(--text3);}
-.sr{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
-.sr .sk{color:var(--text2);font-weight:500;}
-.sr .sv{color:var(--text);font-family:var(--mono);}
-
-/* TIMELINE */
-.tl{margin-bottom:14px;}
-.tl-item{display:flex;align-items:center;gap:9px;padding:4px 0;font-size:12px;color:var(--text3);}
-.tl-item.done{color:var(--text2);}
-.tl-item.done .tl-dot{background:var(--green);}
-.tl-item.active{color:var(--text);font-weight:500;}
-.tl-item.active .tl-dot{background:#1a3a6b;animation:pulse 1.5s infinite;}
-.tl-item.failed{color:var(--red);}
-.tl-item.failed .tl-dot{background:var(--red);}
-.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;}
-
-/* DIVIDER */
-.divider{height:1px;background:var(--border);margin:12px 0;}
-
-/* UPLOAD SLOT */
-.upload-slot{border:2px dashed var(--border2);border-radius:var(--radius);padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
-.upload-slot:hover{border-color:var(--blue);background:var(--blue-light);}
-.upload-slot.loaded{border-style:solid;border-color:var(--green-mid);background:var(--green-light);}
-.upload-slot.error{border-style:solid;border-color:var(--red-mid);background:var(--red-light);}
-.upload-slot .slot-icon{font-size:18px;flex-shrink:0;}
-.upload-slot .slot-body{flex:1;min-width:0;}
-.upload-slot .slot-name{font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.upload-slot.loaded .slot-name{color:var(--green);}
-.upload-slot.error .slot-name{color:var(--red);}
-.upload-slot .slot-hint{font-size:10px;color:var(--text3);margin-top:1px;}
-.upload-slot .slot-clear{flex-shrink:0;font-size:10px;color:var(--text3);cursor:pointer;padding:2px 5px;border-radius:3px;}
-.upload-slot .slot-clear:hover{background:var(--surface3);color:var(--red);}
-
-/* NAV ITEM */
-.nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;color:var(--text2);margin-bottom:2px;transition:background .12s,color .12s;border:1px solid transparent;}
-.nav-item:hover{background:var(--surface2);color:var(--text);}
-.nav-item.active{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);font-weight:600;}
-.nav-item .nav-code{font-family:var(--mono);font-size:10px;color:var(--text3);}
-.nav-item.active .nav-code{color:var(--blue);}
-.nav-health{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.nav-health.high{background:var(--green);}
-.nav-health.medium{background:var(--yellow-border);}
-.nav-health.low{background:var(--red);}
-.nav-health.none{background:var(--border2);}
-
-/* PARA BLOCK */
-.para-block{margin-bottom:14px;}
-.para-header{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
-.para-id{font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0;}
-.para-kind{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border-radius:3px;background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
-.para-kind.lead{background:var(--blue-light);color:var(--blue);border-color:var(--blue-mid);}
-.para-kind.closing{background:var(--green-light);color:var(--green);border-color:var(--green-mid);}
-.para-kind.note{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
-.para-sensitivity{font-size:10px;padding:1px 6px;border-radius:3px;border:1px solid;flex-shrink:0;}
-.para-sensitivity.low{background:var(--green-light);color:var(--green);border-color:var(--green-mid);}
-.para-sensitivity.medium{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
-.para-sensitivity.high{background:var(--red-light);color:var(--red);border-color:var(--red-mid);}
-
-/* ENRICHMENT */
-.enr-card{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius-sm);padding:9px 11px;margin-top:6px;margin-bottom:10px;}
-.enr-header{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
-.enr-id{font-family:var(--mono);font-size:10px;color:var(--yellow-text);}
-.enr-type{font-size:10px;font-weight:600;color:var(--yellow-text);text-transform:uppercase;letter-spacing:.06em;}
-.enr-text{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px;}
-.enr-actions{display:flex;gap:6px;}
-
-/* SUB HEADER */
-.sub-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.sub-id{font-family:var(--mono);font-size:10px;color:var(--text3);}
-.sub-title{font-size:13px;font-weight:700;color:var(--text);flex:1;}
-.sub-mode{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:3px;border:1px solid;}
-.sub-mode.build{background:var(--green-light);color:var(--green);border-color:var(--green-mid);}
-.sub-mode.guarded_build{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
-.sub-mode.hold{background:var(--red-light);color:var(--red);border-color:var(--red-mid);}
-
-/* ISSUE ROW */
-.issue-row{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;}
-.issue-row:last-child{border-bottom:none;}
-.issue-sev{flex-shrink:0;font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:3px;border:1px solid;}
-.issue-sev.low{background:var(--surface2);color:var(--text3);border-color:var(--border);}
-.issue-sev.medium{background:var(--yellow-bg);color:var(--yellow-text);border-color:var(--yellow-border);}
-.issue-sev.high{background:var(--red-light);color:var(--red);border-color:var(--red-mid);}
-.issue-sev.critical{background:var(--red);color:#fff;border-color:var(--red);}
-.issue-body{flex:1;}
-.issue-dim{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:2px;}
-.issue-desc{color:var(--text2);line-height:1.5;}
-.issue-action{flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--text3);padding:2px 6px;background:var(--surface2);border-radius:3px;border:1px solid var(--border);}
-
-/* EMPTY STATE */
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;color:var(--text3);gap:8px;}
-.empty-state .es-icon{font-size:28px;opacity:.5;}
-.empty-state .es-title{font-size:13px;font-weight:600;color:var(--text2);}
-.empty-state .es-sub{font-size:11px;max-width:260px;line-height:1.5;}
-
-/* PIPELINE STATUS */
-.pipe-step{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);}
-.pipe-step:last-child{border-bottom:none;}
-.pipe-step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;}
-.pipe-step.done .pipe-step-dot{background:var(--green);}
-.pipe-step.running .pipe-step-dot{background:var(--blue);animation:pulse 1.2s infinite;}
-.pipe-step.error .pipe-step-dot{background:var(--red);}
-.pipe-step-label{font-size:12px;color:var(--text2);flex:1;}
-.pipe-step.done .pipe-step-label{color:var(--text);}
-.pipe-step.running .pipe-step-label{color:var(--blue);font-weight:600;}
-.pipe-step.error .pipe-step-label{color:var(--red);}
-.pipe-step-status{font-size:10px;font-family:var(--mono);color:var(--text3);}
-
-/* MOBILE */
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);height:52px;z-index:100;}
-.mob-nav-tabs{display:flex;height:100%;}
-.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;font-size:10px;font-weight:500;color:var(--text3);border:none;background:none;font-family:var(--sans);transition:color .15s;}
-.mob-tab.active{color:#1a3a6b;}
-.mob-tab .tab-icon{font-size:16px;line-height:1;}
-
-@media(max-width:768px){
-  body{overflow:auto;height:auto;min-height:100vh;}
-  .main{display:block;padding-bottom:60px;}
-  .panel{display:none;border-right:none;min-height:calc(100vh - 110px);}
-  #panel-main{min-height:calc(100vh - 110px);}
-  .main-footer{max-height:none;grid-template-columns:1fr;}
-  .footer-pane+.footer-pane{border-left:none;border-top:1px solid var(--border);}
-  .panel.mob-active{display:flex;}
-  .mob-nav{display:block;}
-}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
-</style>
-</head>
-<body>
-
-<header>
-  <div class="h-left">
-    <div class="h-logo">M</div>
-    <span class="h-title">SROI Pipeline</span>
-    <span class="h-sub">Manara Advisory</span>
-  </div>
-  <div class="h-right">
-    <span class="badge" id="hdr-status">
-      <span class="bdot" id="hdr-dot"></span>
-      <span id="hdr-label">Belum ada dokumen</span>
-    </span>
-  </div>
-</header>
-
-<div class="main">
-
-  <!-- ── PANEL KIRI ── -->
-  <div class="panel mob-active" id="panel-left">
-    <div class="panel-hd">
-      <div class="panel-title">Pipeline</div>
-      <div class="panel-sub" id="panel-sub-label">Muat chapter files untuk mulai</div>
-    </div>
-    <div class="panel-body">
-
-      <!-- Dokumen aktif -->
-      <div class="card card-blue" style="margin-bottom:14px;">
-        <div class="card-label">Dokumen Aktif</div>
-        <div class="card-title" id="doc-title">—</div>
-        <div class="card-sub" id="doc-sub">Belum ada file dimuat</div>
-      </div>
-
-      <!-- Upload Section -->
-      <div class="sec-label">Upload Chapter Files</div>
-
-      <!-- Slot 1: bab7 -->
-      <div class="upload-slot" id="slot-bab7" onclick="document.getElementById('input-bab7').click()">
-        <div class="slot-icon">📄</div>
-        <div class="slot-body">
-          <div class="slot-name" id="slot-bab7-name">chapter_semantic_bab7.json</div>
-          <div class="slot-hint" id="slot-bab7-hint">Bab inti substansi (biasanya bab 7)</div>
-        </div>
-        <span class="slot-clear" id="slot-bab7-clear" style="display:none" onclick="clearSlot('bab7',event)">✕</span>
-      </div>
-      <input type="file" id="input-bab7" accept=".json" style="display:none" onchange="handleSlotUpload('bab7',event)">
-
-      <!-- Slot 2: rest -->
-      <div class="upload-slot" id="slot-rest" onclick="document.getElementById('input-rest').click()">
-        <div class="slot-icon">📄</div>
-        <div class="slot-body">
-          <div class="slot-name" id="slot-rest-name">chapters_semantic_rest.json</div>
-          <div class="slot-hint" id="slot-rest-hint">Bab-bab lainnya</div>
-        </div>
-        <span class="slot-clear" id="slot-rest-clear" style="display:none" onclick="clearSlot('rest',event)">✕</span>
-      </div>
-      <input type="file" id="input-rest" accept=".json" style="display:none" onchange="handleSlotUpload('rest',event)">
-
-      <div style="margin-top:10px;">
-        <button class="btn primary full" id="btn-run-a1" disabled onclick="runA1()">
-          ▶ Proses Dokumen  <span style="opacity:.6;font-size:10px;font-weight:400;">(A1)</span>
-        </button>
-      </div>
-
-      <div id="a1-status" style="margin-top:8px; display:none;"></div>
-
-      <div class="divider"></div>
-
-      <!-- Trigger A2 -->
-      <div class="sec-label">Pipeline Actions</div>
-
-      <div class="pipe-step" id="pipe-a1">
-        <div class="pipe-step-dot"></div>
-        <div class="pipe-step-label">A1 · Block ID Injector</div>
-        <div class="pipe-step-status" id="pipe-a1-status">—</div>
-      </div>
-      <div class="pipe-step" id="pipe-a2">
-        <div class="pipe-step-dot"></div>
-        <div class="pipe-step-label">A2 · Substance Extractor</div>
-        <div class="pipe-step-status" id="pipe-a2-status">—</div>
-      </div>
-      <div class="pipe-step" id="pipe-a3">
-        <div class="pipe-step-dot"></div>
-        <div class="pipe-step-label">A3 · Repair Backlog</div>
-        <div class="pipe-step-status" id="pipe-a3-status">—</div>
-      </div>
-
-      <div style="margin-top:10px;">
-        <button class="btn full" id="btn-run-a2" disabled onclick="triggerA2()">
-          ▶ Ekstrak Substansi  <span style="opacity:.6;font-size:10px;font-weight:400;">(A2)</span>
-        </button>
-      </div>
-      <div id="a2-status" style="margin-top:8px; display:none;"></div>
-
-      <div class="divider"></div>
-
-      <!-- Navigasi Bab -->
-      <div class="sec-label">Navigasi Bab</div>
-      <div id="chapter-nav">
-        <div class="vi dim" style="padding:8px 0;"><span class="ic">·</span><span>Jalankan A1 untuk melihat bab</span></div>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- Actions -->
-      <div class="btn-grp">
-        <button class="btn success full" id="btn-download" disabled onclick="downloadJSON()">↓ Unduh JSON (hasil edit)</button>
-        <button class="btn ghost full" onclick="resetApp()">⟳ Reset</button>
-      </div>
-
-      <div style="height:8px;"></div>
-
-      <!-- Pengaturan Lanjutan -->
-      <button class="adv-btn" onclick="toggleAccordion(this)">
-        <span>Pengaturan Lanjutan</span>
-        <span class="adv-arrow">▾</span>
-      </button>
-      <div class="adv-body">
-
-        <!-- Pipeline Config -->
-        <div class="adv-sec">
-          <div class="adv-sec-label">Konfigurasi Pipeline</div>
-          <div class="field">
-            <label>Document ID</label>
-            <input type="text" id="cfg-doc-id" value="esd_report_v1">
-          </div>
-          <div class="field">
-            <label>Program Code</label>
-            <input type="text" id="cfg-program" value="ESD">
-          </div>
-          <div class="field">
-            <label>Bab Substansi</label>
-            <select id="cfg-substance-chapter">
-              <option value="bab_7">bab_7 (default)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Substance Mode</label>
-            <select id="cfg-substance-mode">
-              <option value="confirmed">confirmed</option>
-              <option value="discovery">discovery</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Substance Basis</label>
-            <select id="cfg-substance-basis">
-              <option value="manual_audit">manual_audit</option>
-              <option value="backlog_derived">backlog_derived</option>
-              <option value="config_declared">config_declared</option>
-              <option value="unknown">unknown</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Non-content Block Types</label>
-            <input type="text" id="cfg-nct" value="divider, divider_thick, spacer">
-          </div>
-        </div>
-
-        <!-- GitHub Connection -->
-        <div class="adv-sec">
-          <div class="adv-sec-label">GitHub Connection</div>
-          <div class="field">
-            <label>Repository (owner/repo)</label>
-            <input type="text" id="cfg-repo" placeholder="budistywan/advance-sroi-report-generation">
-          </div>
-          <div class="field">
-            <label>Personal Access Token</label>
-            <div class="token-wrap">
-              <input type="password" id="cfg-pat" placeholder="ghp_...">
-              <button class="token-show" onclick="togglePAT()">tampilkan</button>
-            </div>
-          </div>
-          <button class="btn sm full" onclick="testGitHubConnection()" style="margin-top:4px;">
-            Tes Koneksi GitHub
-          </button>
-          <div id="gh-connection-status" style="margin-top:6px;"></div>
-        </div>
-
-        <!-- Info pipeline -->
-        <div class="adv-sec">
-          <div class="adv-sec-label">Info Pipeline</div>
-          <div class="tech-detail">
-            <div class="td-row"><span class="td-key">Versi</span><span class="td-val">pipeline-v1.0</span></div>
-            <div class="td-row"><span class="td-key">Aktivitas</span><span class="td-val" id="adv-activity">—</span></div>
-            <div class="td-row"><span class="td-key">Generated</span><span class="td-val" id="adv-generated">—</span></div>
-          </div>
-        </div>
-
-      </div><!-- /adv-body -->
-
-    </div><!-- /panel-body -->
-  </div><!-- /panel-left -->
+import json
+import re
+import sys
+import copy
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
 
 
-  <!-- ── PANEL KANAN ── -->
-  <div class="panel" id="panel-main">
+# ─────────────────────────────────────────────
+# CONSTANTS
+# ─────────────────────────────────────────────
 
-    <div class="main-toolbar">
-      <button class="btn sm" id="btn-prev" onclick="navigateChapter(-1)" disabled>← Sebelumnya</button>
-      <button class="btn sm" id="btn-next" onclick="navigateChapter(1)"  disabled>Berikutnya →</button>
-      <div style="flex:1;"></div>
-      <span class="badge on-surface" id="toolbar-chapter-label">—</span>
-      <button class="btn sm primary" id="btn-save" onclick="saveCurrentEdits()" disabled>Simpan Editan</button>
-    </div>
+ACTIVITY = "block_id_injector"
+PIPELINE_VERSION = "v1"
 
-    <div class="main-content" id="main-content">
-      <div class="empty-state">
-        <div class="es-icon">🗂</div>
-        <div class="es-title">Belum ada data</div>
-        <div class="es-sub">Upload chapter files di panel kiri, lalu jalankan A1 untuk mulai.</div>
-      </div>
-    </div>
+DEFAULT_NON_CONTENT_BLOCK_TYPES = ["divider", "divider_thick", "spacer"]
 
-    <div class="main-footer">
-      <div class="footer-pane">
-        <div class="footer-label">Catatan Konsistensi</div>
-        <div id="footer-consistency">
-          <div class="vi dim"><span class="ic">·</span><span>Belum ada data</span></div>
-        </div>
-      </div>
-      <div class="footer-pane">
-        <div class="footer-label">Ringkasan Bab</div>
-        <div id="footer-summary">
-          <div class="sr"><span class="sk">Status</span><span class="sv" id="fs-status">—</span></div>
-          <div class="sr"><span class="sk">Paragraf</span><span class="sv" id="fs-para">—</span></div>
-          <div class="sr"><span class="sk">Kandidat</span><span class="sv" id="fs-candidates">—</span></div>
-          <div class="sr"><span class="sk">Build mode</span><span class="sv" id="fs-buildmode">—</span></div>
-        </div>
-      </div>
-    </div>
+VALID_SUBSTANCE_MODES   = {"confirmed", "discovery"}
+VALID_SUBSTANCE_BASES   = {"manual_audit", "backlog_derived", "config_declared", "unknown"}
 
-  </div>
-</div>
+CONTENT_SOURCE_PRIORITY = [
+    "text",
+    ("items", 0, "text"),
+    ("items", 0, "label"),   # fix: metric_card dan block dengan items.label
+    "title",                  # fix: pindah sebelum headers[0] agar judul block diutamakan
+    ("headers", 0),
+    "caption",
+    ("rows", 0, 0),
+    "label",
+    "value",
+]
 
-<nav class="mob-nav">
-  <div class="mob-nav-tabs">
-    <button class="mob-tab active" onclick="showPanel(0)" id="tab-0"><span class="tab-icon">☰</span><span>Pipeline</span></button>
-    <button class="mob-tab" onclick="showPanel(1)" id="tab-1"><span class="tab-icon">📄</span><span>Dokumen</span></button>
-  </div>
-</nav>
+# Regex patterns (from Deliverable 4 Validation Spec)
+RE_BLOCK_REF_CONTENT    = re.compile(r"^[A-Za-z0-9_-]+\.B[0-9]{3,}$")
+RE_BLOCK_FP_CONTENT     = re.compile(r"^[A-Za-z0-9_-]+__[A-Za-z0-9_-]+__[a-z0-9_]+$")
+RE_BLOCK_FP_STRUCTURAL  = re.compile(r"^[A-Za-z0-9_-]+__[A-Za-z0-9_-]+__structural_[0-9]+$")
 
-<script>
-// ═══════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════
-const slots = { bab7: null, rest: null };  // { data: parsed JSON, name: filename }
+# Punctuation to strip during normalization (step 5)
+RE_PUNCTUATION = re.compile(r"[.,!?:;\"'()\[\]{}/\\=\-_]")
 
-let state = {
-  raw: null, activity: null, chapters: [], currentChapterIdx: 0,
-  edits: {}, candidateDecisions: {}, loaded: false,
-  a1Result: null,
-};
 
-// ═══════════════════════════════════════════════
-// A1 ENGINE — ported dari a1_block_id_injector.py
-// ═══════════════════════════════════════════════
+# ─────────────────────────────────────────────
+# NORMALIZATION
+# ─────────────────────────────────────────────
 
-const CONTENT_SOURCE_PRIORITY = [
-  ['text'],
-  ['items', 0, 'text'],
-  ['items', 0, 'label'],   // fix: metric_card dan block dengan items.label
-  ['title'],               // fix: pindah sebelum headers[0]
-  ['headers', 0],
-  ['caption'],
-  ['rows', 0, 0],
-  ['label'],
-  ['value'],
-];
+def extract_content_source(block: dict) -> tuple[str | None, bool, str | None]:
+    """
+    Cari primary content source dari block sesuai priority order.
+    Returns (raw_text, found, source_key).
+    source_key adalah label human-readable dari source yang dipakai.
+    """
+    for source in CONTENT_SOURCE_PRIORITY:
+        try:
+            if isinstance(source, str):
+                val = block.get(source)
+                if val is not None and str(val).strip():
+                    return str(val), True, source
+            elif isinstance(source, tuple):
+                # nested access: e.g. ("items", 0, "text")
+                val = block
+                for key in source:
+                    if isinstance(key, int):
+                        if not isinstance(val, list) or len(val) <= key:
+                            val = None
+                            break
+                        val = val[key]
+                    else:
+                        if not isinstance(val, dict):
+                            val = None
+                            break
+                        val = val.get(key)
+                if val is not None and str(val).strip():
+                    # Bentuk label: "items[0].text", "headers[0]", "rows[0][0]"
+                    label = _source_tuple_label(source)
+                    return str(val), True, label
+        except (KeyError, IndexError, TypeError):
+            continue
+    return None, False, None
 
-const RE_PUNCTUATION = /[.,!?:;"'()\[\]{}\\/=\-]/g;
 
-function normalizePrefix(raw) {
-  let s = raw.toLowerCase().trim();
-  s = s.replace(/[\n\t\r]/g, ' ');
-  s = s.replace(/_/g, ' ');           // underscore → spasi dulu
-  s = s.replace(/ +/g, ' ');
-  s = s.replace(RE_PUNCTUATION, '');
-  s = s.replace(/ +/g, ' ');         // collapse ulang
-  s = s.replace(/ /g, '_');
-  s = s.replace(/[^a-z0-9_]/g, '');
-  s = s.slice(0, 40);
-  return s || 'empty';
-}
+def _source_tuple_label(source: tuple) -> str:
+    """Bentuk label readable dari tuple source path."""
+    parts = []
+    for i, key in enumerate(source):
+        if isinstance(key, int):
+            parts.append(f"[{key}]")
+        else:
+            # tambahkan titik jika sebelumnya ada index atau field lain
+            if parts:
+                parts.append(f".{key}")
+            else:
+                parts.append(key)
+    return "".join(parts)
 
-function extractContentSource(block) {
-  for (const path of CONTENT_SOURCE_PRIORITY) {
-    try {
-      let val = block;
-      let label = '';
-      for (let i = 0; i < path.length; i++) {
-        const key = path[i];
-        if (typeof key === 'number') {
-          if (!Array.isArray(val) || val.length <= key) { val = null; break; }
-          label += `[${key}]`;
-          val = val[key];
-        } else {
-          if (val === null || typeof val !== 'object') { val = null; break; }
-          label = label ? label + '.' + key : key;
-          val = val[key];
+
+def normalize_prefix(raw: str) -> str:
+    """
+    Normalization algorithm (Deliverable 1, 9 steps):
+    1. lowercase
+    2. trim whitespace
+    3. newline/tab → spasi
+    4. collapse multiple spaces → satu spasi
+    5. hapus tanda baca  (underscore dikonversi ke spasi dulu agar
+       survive menjadi underscore kembali di step 6 — edge case fix)
+    6. spasi → underscore
+    7. hapus karakter non-alphanumeric selain underscore
+    8. ambil 40 karakter pertama
+    9. jika kosong → 'empty'
+    """
+    s = raw.lower()
+    s = s.strip()
+    s = re.sub(r"[\n\t\r]", " ", s)
+    # Step 5 pre-pass: underscore → spasi, agar tidak ikut terhapus
+    # oleh RE_PUNCTUATION, lalu dibangun ulang sebagai underscore di step 6
+    s = s.replace("_", " ")
+    s = re.sub(r" +", " ", s)
+    s = RE_PUNCTUATION.sub("", s)
+    s = re.sub(r" +", " ", s)   # collapse ulang setelah strip punctuation
+    s = s.replace(" ", "_")
+    s = re.sub(r"[^a-z0-9_]", "", s)
+    s = s[:40]
+    return s if s else "empty"
+
+
+def build_block_ref(chapter_id: str, one_based_index: int) -> str:
+    """Format: {chapter_id}.B{zero_padded, min 3 digit}"""
+    return f"{chapter_id}.B{one_based_index:03d}"
+
+
+def build_content_fingerprint(chapter_id: str, block_type: str, normalized_prefix: str) -> str:
+    return f"{chapter_id}__{block_type}__{normalized_prefix}"
+
+
+def build_structural_fingerprint(chapter_id: str, block_type: str, original_index: int) -> str:
+    return f"{chapter_id}__{block_type}__structural_{original_index}"
+
+
+# ─────────────────────────────────────────────
+# VALIDATION
+# ─────────────────────────────────────────────
+
+def validate_control_block(pcb: dict) -> list[str]:
+    """
+    Validate pipeline_control_block.
+    Returns list of error messages. Empty = valid.
+    """
+    errors = []
+    if not isinstance(pcb, dict):
+        return ["pipeline_control_block harus berupa object"]
+
+    for field in ["document_id", "program_code", "substance_mode", "substance_basis"]:
+        val = pcb.get(field)
+        if not val or not str(val).strip():
+            errors.append(f"pipeline_control_block.{field} wajib diisi dan tidak boleh kosong")
+
+    mode = pcb.get("substance_mode")
+    if mode and mode not in VALID_SUBSTANCE_MODES:
+        errors.append(
+            f"substance_mode '{mode}' tidak valid. Harus: {', '.join(sorted(VALID_SUBSTANCE_MODES))}"
+        )
+
+    basis = pcb.get("substance_basis")
+    if basis and basis not in VALID_SUBSTANCE_BASES:
+        errors.append(
+            f"substance_basis '{basis}' tidak valid. Harus: {', '.join(sorted(VALID_SUBSTANCE_BASES))}"
+        )
+
+    # cross-field: confirmed mode constraints
+    if mode == "confirmed":
+        if not pcb.get("substance_chapter_id"):
+            errors.append(
+                "substance_mode=confirmed membutuhkan substance_chapter_id yang terisi"
+            )
+        if basis == "unknown":
+            errors.append(
+                "substance_mode=confirmed tidak boleh pakai substance_basis=unknown"
+            )
+
+    return errors
+
+
+def validate_chapter(chapter: dict, chapter_idx: int) -> list[str]:
+    errors = []
+    chapter_id = chapter.get("chapter_id")
+    if not chapter_id or not str(chapter_id).strip():
+        errors.append(f"chapters[{chapter_idx}]: chapter_id wajib ada dan tidak kosong")
+    blocks = chapter.get("blocks")
+    if not isinstance(blocks, list):
+        errors.append(
+            f"chapters[{chapter_idx}] ({chapter_id or '?'}): 'blocks' harus berupa array"
+        )
+    return errors
+
+
+def validate_block(block: Any, chapter_id: str, block_idx: int) -> list[str]:
+    errors = []
+    if not isinstance(block, dict):
+        errors.append(
+            f"{chapter_id}[{block_idx}]: block harus berupa object, dapat: {type(block).__name__}"
+        )
+        return errors
+    if not block.get("type"):
+        errors.append(f"{chapter_id}[{block_idx}]: block wajib punya field 'type'")
+    return errors
+
+
+# ─────────────────────────────────────────────
+# CORE INJECTION
+# ─────────────────────────────────────────────
+
+def inject_chapter(
+    chapter: dict,
+    non_content_types: set[str],
+    doc_fingerprints: dict[str, str],   # fingerprint → block_ref, untuk collision check
+) -> tuple[dict, list[dict], list[dict]]:
+    """
+    Proses satu chapter: inject block_ref, block_fingerprint, original_index.
+
+    Returns:
+        (enriched_chapter, warnings, failures)
+
+    Jika ada fatal failure (collision), failures akan berisi entry dan
+    enriched_chapter dikembalikan dalam kondisi parsial (tidak boleh dipakai).
+    """
+    chapter_id = chapter["chapter_id"]
+    blocks_in = chapter["blocks"]
+    warnings: list[dict] = []
+    failures: list[dict] = []
+
+    enriched_blocks = []
+
+    for original_index, block in enumerate(blocks_in):
+        block_type = block.get("type", "unknown")
+        one_based  = original_index + 1
+        block_ref  = build_block_ref(chapter_id, one_based)
+
+        # ── Non-content block ─────────────────────────
+        if block_type in non_content_types:
+            fingerprint = build_structural_fingerprint(chapter_id, block_type, original_index)
+            enriched = {
+                "block_ref": block_ref,
+                "block_fingerprint": fingerprint,
+                "original_index": original_index,
+                **block,
+            }
+            enriched_blocks.append(enriched)
+            continue
+
+        # ── Content block ─────────────────────────────
+        raw_content, found, source_key = extract_content_source(block)
+
+        if not found:
+            # R-A1-06: empty content → warning, fingerprint __empty
+            normalized = "empty"
+            warnings.append({
+                "level": "warning",
+                "code": "EMPTY_CONTENT_BLOCK",
+                "block_ref": block_ref,
+                "chapter_id": chapter_id,
+                "original_index": original_index,
+                "message": (
+                    f"{block_ref}: tidak ada content source ditemukan "
+                    f"(type={block_type}). Fingerprint akan memakai '__empty'."
+                ),
+            })
+        else:
+            normalized = normalize_prefix(raw_content)
+            primary_is_text = source_key == "text"
+            if not primary_is_text:
+                # 'text' tidak tersedia atau kosong — prefix dari source lain
+                warnings.append({
+                    "level": "warning",
+                    "code": "PRIMARY_SOURCE_ABSENT",
+                    "block_ref": block_ref,
+                    "chapter_id": chapter_id,
+                    "original_index": original_index,
+                    "source_used": source_key,
+                    "message": (
+                        f"{block_ref}: field 'text' tidak tersedia, "
+                        f"prefix diambil dari '{source_key}'."
+                    ),
+                })
+
+        fingerprint = build_content_fingerprint(chapter_id, block_type, normalized)
+
+        # ── R-A1-07 & R-A1-08: Collision check ───────
+        if fingerprint in doc_fingerprints:
+            existing_ref = doc_fingerprints[fingerprint]
+            failures.append({
+                "level": "fatal",
+                "code": "FINGERPRINT_COLLISION",
+                "block_ref": block_ref,
+                "collides_with": existing_ref,
+                "fingerprint": fingerprint,
+                "chapter_id": chapter_id,
+                "original_index": original_index,
+                "message": (
+                    f"COLLISION FATAL: {block_ref} menghasilkan fingerprint "
+                    f"'{fingerprint}' yang sama dengan {existing_ref}. "
+                    f"Tidak ada auto-disambiguation. Proses dihentikan."
+                ),
+            })
+            # Langsung return — stop processing
+            enriched_chapter = {**chapter, "blocks": enriched_blocks}
+            return enriched_chapter, warnings, failures
+
+        doc_fingerprints[fingerprint] = block_ref
+
+        enriched = {
+            "block_ref": block_ref,
+            "block_fingerprint": fingerprint,
+            "original_index": original_index,
+            **block,
         }
-      }
-      if (val !== null && val !== undefined && String(val).trim()) {
-        return { value: String(val), found: true, sourceKey: label };
-      }
-    } catch(e) { continue; }
-  }
-  return { value: null, found: false, sourceKey: null };
-}
+        enriched_blocks.append(enriched)
 
-function runA1Engine(semanticChapters, pcb) {
-  const nonContentTypes = new Set(pcb.non_content_block_types || ['divider','divider_thick','spacer']);
-  const warnings = [], failures = [];
-  const docFingerprints = {};
-  const enrichedChapters = [];
-  let totalBlocks = 0;
-
-  for (const chapter of semanticChapters) {
-    const chapterId = chapter.chapter_id;
-    if (!chapterId) { failures.push({ code:'CHAPTER_INVALID', message:'chapter_id hilang' }); return null; }
-    const blocks = chapter.blocks || [];
-    const enrichedBlocks = [];
-
-    for (let origIdx = 0; origIdx < blocks.length; origIdx++) {
-      const block = blocks[origIdx];
-      const blockType = block.type || 'unknown';
-      const oneBase = origIdx + 1;
-      const blockRef = `${chapterId}.B${String(oneBase).padStart(3,'0')}`;
-
-      if (nonContentTypes.has(blockType)) {
-        const fp = `${chapterId}__${blockType}__structural_${origIdx}`;
-        enrichedBlocks.push({ block_ref: blockRef, block_fingerprint: fp, original_index: origIdx, ...block });
-        continue;
-      }
-
-      const { value, found, sourceKey } = extractContentSource(block);
-      let normalized;
-      if (!found) {
-        normalized = 'empty';
-        warnings.push({ code:'EMPTY_CONTENT_BLOCK', block_ref: blockRef,
-          message: `${blockRef}: tidak ada content source (type=${blockType})` });
-      } else {
-        normalized = normalizePrefix(value);
-        if (sourceKey !== 'text') {
-          warnings.push({ code:'PRIMARY_SOURCE_ABSENT', block_ref: blockRef, source_used: sourceKey,
-            message: `${blockRef}: field 'text' tidak tersedia, prefix dari '${sourceKey}'` });
-        }
-      }
-
-      const fp = `${chapterId}__${blockType}__${normalized}`;
-      if (fp in docFingerprints) {
-        failures.push({ code:'FINGERPRINT_COLLISION', block_ref: blockRef, collides_with: docFingerprints[fp], fingerprint: fp,
-          message: `COLLISION: ${blockRef} → '${fp}' sama dengan ${docFingerprints[fp]}` });
-        return { activity:'block_id_injector', status:'failed', chapters: enrichedChapters, warnings, failures,
-          summary:{ total_chapters: enrichedChapters.length, total_blocks: 0, fingerprint_collisions: 1, warnings_count: warnings.length, failure_count: failures.length } };
-      }
-      docFingerprints[fp] = blockRef;
-      enrichedBlocks.push({ block_ref: blockRef, block_fingerprint: fp, original_index: origIdx, ...block });
+    enriched_chapter = {
+        "chapter_id": chapter.get("chapter_id"),
+        "chapter_type": chapter.get("chapter_type", None),
+        "blocks": enriched_blocks,
     }
+    return enriched_chapter, warnings, failures
 
-    enrichedChapters.push({ chapter_id: chapterId, chapter_type: chapter.chapter_type || null, blocks: enrichedBlocks });
-    totalBlocks += enrichedBlocks.length;
-  }
 
-  return {
-    activity: 'block_id_injector',
-    document_id: pcb.document_id,
-    program_code: pcb.program_code,
-    generated_at: new Date().toISOString(),
-    pipeline_version: 'v1',
-    chapters: enrichedChapters,
-    summary: {
-      total_chapters: enrichedChapters.length,
-      total_blocks: totalBlocks,
-      fingerprint_collisions: 0,
-      empty_content_blocks: warnings.filter(w=>w.code==='EMPTY_CONTENT_BLOCK').length,
-      warnings_count: warnings.length,
-      failure_count: 0,
-    },
-    warnings, failures: [],
-  };
-}
+# ─────────────────────────────────────────────
+# MAIN RUNNER
+# ─────────────────────────────────────────────
 
-// ═══════════════════════════════════════════════
-// SLOT UPLOAD
-// ═══════════════════════════════════════════════
-function handleSlotUpload(slotKey, event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      slots[slotKey] = { data, name: file.name };
-      updateSlotUI(slotKey, 'loaded', file.name);
-      onSlotsChanged();
-    } catch(err) {
-      updateSlotUI(slotKey, 'error', 'JSON tidak valid');
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
-}
+def run(input_data: dict) -> dict:
+    """
+    Jalankan A1 Block ID Injector.
 
-function clearSlot(slotKey, event) {
-  event.stopPropagation();
-  slots[slotKey] = null;
-  const defaults = { bab7: 'chapter_semantic_bab7.json', rest: 'chapters_semantic_rest.json' };
-  const hints    = { bab7: 'Bab inti substansi (biasanya bab 7)', rest: 'Bab-bab lainnya' };
-  updateSlotUI(slotKey, 'empty', defaults[slotKey]);
-  document.getElementById(`slot-${slotKey}-hint`).textContent = hints[slotKey];
-  document.getElementById(`slot-${slotKey}-clear`).style.display = 'none';
-  onSlotsChanged();
-}
+    Input dict harus mengandung:
+      - pipeline_control_block
+      - semantic_chapters
 
-function updateSlotUI(slotKey, state, name) {
-  const slot = document.getElementById(`slot-${slotKey}`);
-  const nameEl = document.getElementById(`slot-${slotKey}-name`);
-  const hintEl = document.getElementById(`slot-${slotKey}-hint`);
-  const clearEl = document.getElementById(`slot-${slotKey}-clear`);
-  slot.className = 'upload-slot' + (state === 'loaded' ? ' loaded' : state === 'error' ? ' error' : '');
-  nameEl.textContent = name;
-  if (state === 'loaded') {
-    hintEl.textContent = '✓ Dimuat';
-    clearEl.style.display = 'block';
-  } else if (state === 'error') {
-    hintEl.textContent = name;
-    clearEl.style.display = 'none';
-  }
-}
+    Returns block_identity_packet dict.
+    """
+    all_warnings: list[dict] = []
+    all_failures: list[dict] = []
 
-function onSlotsChanged() {
-  const hasAny = slots.bab7 || slots.rest;
-  document.getElementById('btn-run-a1').disabled = !hasAny;
+    # ── Step 1: Validate control block ────────
+    pcb = input_data.get("pipeline_control_block", {})
+    pcb_errors = validate_control_block(pcb)
+    if pcb_errors:
+        for err in pcb_errors:
+            all_failures.append({
+                "level": "fatal",
+                "code": "CONTROL_BLOCK_INVALID",
+                "message": err,
+            })
+        return _emit_failure_packet(input_data, all_warnings, all_failures)
 
-  // Infer chapter_id list untuk dropdown substance chapter
-  const allChapters = mergeChapters();
-  const sel = document.getElementById('cfg-substance-chapter');
-  const current = sel.value;
-  sel.innerHTML = '';
-  allChapters.forEach(ch => {
-    const opt = document.createElement('option');
-    opt.value = ch.chapter_id;
-    opt.textContent = ch.chapter_id + (ch.chapter_id === 'bab_7' ? ' (default)' : '');
-    sel.appendChild(opt);
-  });
-  // Restore atau default ke bab_7
-  if ([...sel.options].find(o => o.value === current)) sel.value = current;
-  else if ([...sel.options].find(o => o.value === 'bab_7')) sel.value = 'bab_7';
+    non_content_types = set(
+        pcb.get("non_content_block_types", DEFAULT_NON_CONTENT_BLOCK_TYPES)
+    )
 
-  // Infer doc_id dan program dari data
-  const first = slots.bab7?.data || slots.rest?.data;
-  if (first) {
-    if (first.document_id) document.getElementById('cfg-doc-id').value = first.document_id;
-    if (first.program_code) document.getElementById('cfg-program').value = first.program_code;
-  }
-}
+    # ── Step 2: Validate semantic_chapters ────
+    semantic_chapters = input_data.get("semantic_chapters", [])
+    if not isinstance(semantic_chapters, list) or len(semantic_chapters) == 0:
+        all_failures.append({
+            "level": "fatal",
+            "code": "EMPTY_CHAPTERS",
+            "message": "semantic_chapters tidak ditemukan atau kosong.",
+        })
+        return _emit_failure_packet(input_data, all_warnings, all_failures)
 
-function mergeChapters() {
-  let chapters = [];
-  // rest dulu (bab 1-6, 8-9), lalu bab7
-  for (const key of ['rest', 'bab7']) {
-    const slot = slots[key];
-    if (!slot) continue;
-    const d = slot.data;
-    if (Array.isArray(d)) chapters = chapters.concat(d);
-    else if (d.chapters) chapters = chapters.concat(d.chapters);
-    else if (d.chapter_id) chapters.push(d);
-    else if (d.semantic_chapters) chapters = chapters.concat(d.semantic_chapters);
-  }
-  return chapters;
-}
+    for ci, chapter in enumerate(semantic_chapters):
+        ch_errors = validate_chapter(chapter, ci)
+        if ch_errors:
+            for err in ch_errors:
+                all_failures.append({
+                    "level": "fatal",
+                    "code": "CHAPTER_INVALID",
+                    "message": err,
+                })
+            return _emit_failure_packet(input_data, all_warnings, all_failures)
 
-function buildPCB() {
-  return {
-    document_id: document.getElementById('cfg-doc-id').value.trim() || 'sroi_doc',
-    program_code: document.getElementById('cfg-program').value.trim() || 'PROG',
-    substance_mode: document.getElementById('cfg-substance-mode').value,
-    substance_chapter_id: document.getElementById('cfg-substance-chapter').value,
-    substance_basis: document.getElementById('cfg-substance-basis').value,
-    non_content_block_types: document.getElementById('cfg-nct').value
-      .split(',').map(s => s.trim()).filter(Boolean),
-  };
-}
+        blocks = chapter.get("blocks", [])
+        for bi, block in enumerate(blocks):
+            b_errors = validate_block(block, chapter.get("chapter_id", f"ch_{ci}"), bi)
+            if b_errors:
+                for err in b_errors:
+                    all_failures.append({
+                        "level": "fatal",
+                        "code": "BLOCK_INVALID",
+                        "message": err,
+                    })
+                return _emit_failure_packet(input_data, all_warnings, all_failures)
 
-// ═══════════════════════════════════════════════
-// RUN A1
-// ═══════════════════════════════════════════════
-function runA1() {
-  const chapters = mergeChapters();
-  if (chapters.length === 0) { showA1Status('error', 'Tidak ada chapter ditemukan di file yang diupload.'); return; }
+        if chapter.get("chapter_type") is None:
+            all_warnings.append({
+                "level": "warning",
+                "code": "CHAPTER_TYPE_NULL",
+                "chapter_id": chapter.get("chapter_id"),
+                "message": (
+                    f"chapter '{chapter.get('chapter_id')}': chapter_type adalah null."
+                ),
+            })
 
-  const pcb = buildPCB();
-  showA1Status('running', 'Memproses...');
-  document.getElementById('btn-run-a1').disabled = true;
+    # ── Step 3–5: Inject per chapter ──────────
+    doc_fingerprints: dict[str, str] = {}   # accumulates across chapters
+    enriched_chapters = []
+    total_blocks = 0
+    empty_content_blocks = 0
 
-  // Jalankan async agar UI tidak freeze
-  setTimeout(() => {
-    try {
-      const result = runA1Engine(chapters, pcb);
-      if (!result || result.failures?.length > 0) {
-        showA1Status('error', `Gagal: ${result?.failures?.[0]?.message || 'error tidak diketahui'}`);
-        document.getElementById('btn-run-a1').disabled = false;
-        return;
-      }
-      state.a1Result = result;
-      setPipeStep('a1', 'done', `${result.summary.total_blocks} blocks`);
-      showA1Status('ok', `✓ ${result.summary.total_blocks} blocks, ${result.summary.total_chapters} bab`);
-      document.getElementById('btn-run-a1').disabled = false;
-      document.getElementById('btn-run-a2').disabled = !isGitHubConfigured();
-      document.getElementById('btn-download').disabled = false;
+    for chapter in semantic_chapters:
+        # deep copy agar tidak mutasi input
+        chapter_copy = copy.deepcopy(chapter)
+        enriched_ch, ch_warnings, ch_failures = inject_chapter(
+            chapter_copy, non_content_types, doc_fingerprints
+        )
+        all_warnings.extend(ch_warnings)
+        all_failures.extend(ch_failures)
 
-      // Load result ke viewer
-      loadJSON(result);
-    } catch(err) {
-      showA1Status('error', 'Error: ' + err.message);
-      document.getElementById('btn-run-a1').disabled = false;
-    }
-  }, 50);
-}
+        empty_content_blocks += sum(
+            1 for w in ch_warnings if w.get("code") == "EMPTY_CONTENT_BLOCK"
+        )
 
-function showA1Status(type, msg) {
-  const el = document.getElementById('a1-status');
-  el.style.display = 'block';
-  const cls = { ok:'ok', error:'err', running:'info' }[type] || 'info';
-  el.innerHTML = `<div class="notice ${cls}" style="margin-top:0;">${esc(msg)}</div>`;
-}
+        if ch_failures:
+            # Fatal in this chapter — stop everything
+            return _emit_failure_packet(
+                input_data, all_warnings, all_failures,
+                partial_chapters=enriched_chapters + [enriched_ch],
+            )
 
-// ═══════════════════════════════════════════════
-// GITHUB CONNECTION
-// ═══════════════════════════════════════════════
-function isGitHubConfigured() {
-  return !!document.getElementById('cfg-repo').value.trim() &&
-         !!document.getElementById('cfg-pat').value.trim();
-}
+        enriched_chapters.append(enriched_ch)
+        total_blocks += len(enriched_ch.get("blocks", []))
 
-async function testGitHubConnection() {
-  const repo = document.getElementById('cfg-repo').value.trim();
-  const pat  = document.getElementById('cfg-pat').value.trim();
-  const el   = document.getElementById('gh-connection-status');
-  if (!repo || !pat) {
-    el.innerHTML = '<div class="notice warn" style="margin-top:0;">Isi repo dan PAT terlebih dahulu.</div>';
-    return;
-  }
-  el.innerHTML = '<div class="notice info" style="margin-top:0;">Menguji koneksi...</div>';
-  try {
-    const res = await fetch(`https://api.github.com/repos/${repo}`, {
-      headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      el.innerHTML = `<div class="notice ok" style="margin-top:0;">✓ Terhubung ke <strong>${data.full_name}</strong></div>`;
-      if (state.a1Result) document.getElementById('btn-run-a2').disabled = false;
-    } else {
-      el.innerHTML = `<div class="notice err" style="margin-top:0;">Gagal: HTTP ${res.status}. Periksa repo dan PAT.</div>`;
-    }
-  } catch(e) {
-    el.innerHTML = `<div class="notice err" style="margin-top:0;">Error koneksi: ${esc(e.message)}</div>`;
-  }
-}
+    # ── Step 6: Emit final packet ──────────────
+    collision_count = sum(
+        1 for f in all_failures if f.get("code") == "FINGERPRINT_COLLISION"
+    )
 
-async function triggerA2() {
-  const repo = document.getElementById('cfg-repo').value.trim();
-  const pat  = document.getElementById('cfg-pat').value.trim();
-  const el   = document.getElementById('a2-status');
-
-  if (!repo || !pat) {
-    el.style.display = 'block';
-    el.innerHTML = '<div class="notice warn" style="margin-top:0;">Konfigurasi GitHub Connection di Pengaturan Lanjutan.</div>';
-    return;
-  }
-
-  // Push block_identity_packet.json ke repo dulu (perlu contents API)
-  el.style.display = 'block';
-  setPipeStep('a2', 'running', 'memulai...');
-
-  // 1. Trigger workflow dispatch
-  try {
-    const res = await fetch(
-      `https://api.github.com/repos/${repo}/actions/workflows/run_llm.yml/dispatches`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `token ${pat}`,
-          Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
+    packet = {
+        "activity": ACTIVITY,
+        "document_id": pcb["document_id"],
+        "program_code": pcb["program_code"],
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "pipeline_version": PIPELINE_VERSION,
+        "chapters": enriched_chapters,
+        "summary": {
+            "total_chapters": len(enriched_chapters),
+            "total_blocks": total_blocks,
+            "fingerprint_collisions": collision_count,
+            "empty_content_blocks": empty_content_blocks,
+            "warnings_count": len(all_warnings),
+            "failure_count": len(all_failures),
         },
-        body: JSON.stringify({ ref: 'main', inputs: { stage: 'A2', dry_run: 'false' } }),
-      }
-    );
-
-    if (res.status === 204) {
-      el.innerHTML = '<div class="notice ok" style="margin-top:0;">✓ A2 berhasil di-trigger. Cek tab Actions di GitHub.</div>';
-      setPipeStep('a2', 'running', 'triggered');
-      pollWorkflowStatus(repo, pat);
-    } else {
-      const body = await res.text();
-      el.innerHTML = `<div class="notice err" style="margin-top:0;">Gagal trigger: HTTP ${res.status}. ${esc(body.slice(0,200))}</div>`;
-      setPipeStep('a2', 'error', 'gagal');
+        "warnings": all_warnings,
+        "failures": all_failures,
     }
-  } catch(e) {
-    el.innerHTML = `<div class="notice err" style="margin-top:0;">Error: ${esc(e.message)}</div>`;
-    setPipeStep('a2', 'error', 'error');
-  }
-}
 
-async function pollWorkflowStatus(repo, pat) {
-  const el = document.getElementById('a2-status');
-  let attempts = 0;
-  const maxAttempts = 30; // 5 menit polling
+    return packet
 
-  const poll = async () => {
-    attempts++;
-    if (attempts > maxAttempts) {
-      el.innerHTML += '<div class="notice warn" style="margin-top:6px;">Polling timeout. Cek status di GitHub Actions.</div>';
-      return;
+
+def _emit_failure_packet(
+    input_data: dict,
+    warnings: list[dict],
+    failures: list[dict],
+    partial_chapters: list | None = None,
+) -> dict:
+    """Emit packet saat fatal failure terjadi."""
+    pcb = input_data.get("pipeline_control_block", {})
+    return {
+        "activity": ACTIVITY,
+        "document_id": pcb.get("document_id", "unknown"),
+        "program_code": pcb.get("program_code", "unknown"),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "pipeline_version": PIPELINE_VERSION,
+        "status": "failed",
+        "chapters": partial_chapters or [],
+        "summary": {
+            "total_chapters": len(partial_chapters) if partial_chapters else 0,
+            "total_blocks": 0,
+            "fingerprint_collisions": sum(
+                1 for f in failures if f.get("code") == "FINGERPRINT_COLLISION"
+            ),
+            "empty_content_blocks": 0,
+            "warnings_count": len(warnings),
+            "failure_count": len(failures),
+        },
+        "warnings": warnings,
+        "failures": failures,
     }
-    try {
-      const res = await fetch(
-        `https://api.github.com/repos/${repo}/actions/runs?workflow_id=run_llm.yml&per_page=1`,
-        { headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github.v3+json' } }
-      );
-      const data = await res.json();
-      const run = data.workflow_runs?.[0];
-      if (!run) { setTimeout(poll, 10000); return; }
 
-      const status     = run.status;      // queued, in_progress, completed
-      const conclusion = run.conclusion;  // success, failure, null
 
-      setPipeStep('a2', status === 'completed' ? (conclusion === 'success' ? 'done' : 'error') : 'running',
-        status === 'completed' ? conclusion : status);
+# ─────────────────────────────────────────────
+# CLI ENTRYPOINT
+# ─────────────────────────────────────────────
 
-      if (status !== 'completed') {
-        el.innerHTML = `<div class="notice info" style="margin-top:0;">A2 sedang berjalan (${status})... <a href="${run.html_url}" target="_blank" style="color:var(--blue);">Lihat di GitHub ↗</a></div>`;
-        setTimeout(poll, 10000);
-      } else if (conclusion === 'success') {
-        el.innerHTML = `<div class="notice ok" style="margin-top:0;">✓ A2 selesai. <a href="${run.html_url}" target="_blank" style="color:var(--green);">Lihat hasil ↗</a></div>`;
-        // Auto-load output dari repo
-        autoLoadA2Output(repo, pat);
-      } else {
-        el.innerHTML = `<div class="notice err" style="margin-top:0;">A2 gagal (${conclusion}). <a href="${run.html_url}" target="_blank" style="color:var(--red);">Lihat log ↗</a></div>`;
-      }
-    } catch(e) { setTimeout(poll, 10000); }
-  };
+def main():
+    """
+    Usage:
+      python a1_block_id_injector.py <input_file> [output_file]
 
-  setTimeout(poll, 10000); // mulai poll setelah 10 detik
-}
+    input_file  : JSON dengan keys pipeline_control_block + semantic_chapters
+    output_file : path output (default: data/output/block_identity_packet.json)
+    """
+    if len(sys.argv) < 2:
+        print(
+            "Usage: python a1_block_id_injector.py <input_file> [output_file]",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
-async function autoLoadA2Output(repo, pat) {
-  try {
-    const rawUrl = `https://raw.githubusercontent.com/${repo}/main/data/output/substance_registry.json`;
-    const res = await fetch(rawUrl, {
-      headers: { Authorization: `token ${pat}` }
-    });
-    if (res.ok) {
-      const json = await res.json();
-      loadJSON(json);
-      document.getElementById('a2-status').innerHTML +=
-        '<div class="notice ok" style="margin-top:6px;">✓ substance_registry.json dimuat otomatis.</div>';
-    }
-  } catch(e) { /* silent */ }
-}
+    input_path  = Path(sys.argv[1])
+    output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else \
+                  Path("data/output/block_identity_packet.json")
 
-function setPipeStep(step, status, label) {
-  const el  = document.getElementById(`pipe-${step}`);
-  const lbl = document.getElementById(`pipe-${step}-status`);
-  el.className = `pipe-step ${status}`;
-  if (lbl) lbl.textContent = label || '';
-}
+    if not input_path.exists():
+        print(f"ERROR: Input file tidak ditemukan: {input_path}", file=sys.stderr)
+        sys.exit(1)
 
-function togglePAT() {
-  const inp = document.getElementById('cfg-pat');
-  const btn = inp.nextElementSibling;
-  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'sembunyikan'; }
-  else { inp.type = 'password'; btn.textContent = 'tampilkan'; }
-}
+    with open(input_path, encoding="utf-8") as f:
+        input_data = json.load(f)
 
-// ═══════════════════════════════════════════════
-// LOAD JSON (output pipeline)
-// ═══════════════════════════════════════════════
-function loadJSON(json) {
-  state.raw = json;
-  state.activity = detectActivity(json);
-  state.chapters = normalizeChapters(json, state.activity);
-  state.currentChapterIdx = 0;
-  state.edits = {};
-  state.candidateDecisions = {};
-  state.loaded = true;
+    packet = run(input_data)
 
-  updateHeader();
-  updateDocCard();
-  buildChapterNav();
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(packet, f, ensure_ascii=False, indent=2)
 
-  if (json.failures && json.failures.length > 0) {
-    document.getElementById('main-content').innerHTML = renderGroupedErrors(json.failures, json.warnings || []);
-    document.getElementById('toolbar-chapter-label').textContent = 'Error';
-  } else {
-    renderChapter(0);
-  }
+    # Summary ke stdout
+    summary = packet.get("summary", {})
+    status  = "FAILED" if packet.get("failures") else "OK"
+    print(f"[A1] Status        : {status}")
+    print(f"[A1] Chapters      : {summary.get('total_chapters', 0)}")
+    print(f"[A1] Blocks        : {summary.get('total_blocks', 0)}")
+    print(f"[A1] Collisions    : {summary.get('fingerprint_collisions', 0)}")
+    print(f"[A1] Warnings      : {summary.get('warnings_count', 0)}")
+    print(f"[A1] Failures      : {summary.get('failure_count', 0)}")
+    print(f"[A1] Output        : {output_path}")
 
-  document.getElementById('btn-download').disabled = false;
-  document.getElementById('btn-save').disabled = false;
-  document.getElementById('btn-prev').disabled = false;
-  document.getElementById('btn-next').disabled = false;
+    if packet.get("failures"):
+        print("\nFATAL FAILURES:", file=sys.stderr)
+        for f in packet["failures"]:
+            print(f"  [{f.get('code')}] {f.get('message')}", file=sys.stderr)
+        sys.exit(1)
 
-  document.getElementById('adv-activity').textContent  = json.activity || state.activity;
-  document.getElementById('adv-generated').textContent = json.generated_at
-    ? new Date(json.generated_at).toLocaleString('id-ID') : '—';
-}
+    if packet.get("warnings"):
+        print("\nWarnings:")
+        for w in packet["warnings"]:
+            print(f"  [{w.get('code')}] {w.get('message')}")
 
-// ═══════════════════════════════════════════════
-// ACTIVITY DETECTION
-// ═══════════════════════════════════════════════
-function detectActivity(json) {
-  const a = json.activity || '';
-  if (a === 'block_id_injector')              return 'block_identity';
-  if (a === 'narrative_builder')              return 'narrative_draft';
-  if (a === 'narrative_refinement')           return 'narrative_refined';
-  if (a === 'intra_chapter_consistency_lock') return 'consistency_lock';
-  if (a === 'cross_chapter_consistency_lock') return 'cross_chapter';
-  if (a === 'point_builder')                  return 'point_packet';
-  if (a === 'substance_extractor')            return 'substance_registry';
-  if (a === 'repair_backlog_builder')         return 'repair_backlog';
-  if (json.chapters && json.chapters[0]?.subsection_drafts) return 'editorial_packet';
-  if (json.subsection_drafts) return 'editorial_packet_single';
-  return 'unknown';
-}
 
-function normalizeChapters(json, activity) {
-  switch(activity) {
-    case 'narrative_draft': case 'narrative_refined': case 'editorial_packet_single':
-      return [{ chapter_id: json.chapter_id, data: json }];
-    case 'editorial_packet':
-      return (json.chapters||[]).map(c=>({ chapter_id:c.chapter_id, data:c }));
-    case 'consistency_lock':
-      return [{ chapter_id: json.chapter_id, data: json }];
-    case 'cross_chapter':
-      return [{ chapter_id: 'dokumen', data: json }];
-    case 'point_packet':
-      return [{ chapter_id: json.chapter_id, data: json }];
-    case 'block_identity':
-      return (json.chapters||[]).map(c=>({ chapter_id:c.chapter_id, data:c }));
-    case 'substance_registry':
-      return [{ chapter_id: json.substance_chapter_id||'substansi', data:json }];
-    case 'repair_backlog':
-      return (json.chapter_backlogs||[]).map(c=>({ chapter_id:c.chapter_id, data:c }));
-    default: return [];
-  }
-}
-
-// ═══════════════════════════════════════════════
-// HEADER & DOC CARD
-// ═══════════════════════════════════════════════
-function updateHeader() {
-  const json = state.raw;
-  const dot  = document.getElementById('hdr-dot');
-  const lbl  = document.getElementById('hdr-label');
-  const actLabels = {
-    block_identity:'Block Identity', narrative_draft:'Narrative Draft',
-    narrative_refined:'Refined Narrative', editorial_packet:'Editorial Packet',
-    editorial_packet_single:'Editorial Packet', consistency_lock:'Consistency Lock',
-    cross_chapter:'Cross-chapter Lock', point_packet:'Point Packet',
-    substance_registry:'Substance Registry', repair_backlog:'Repair Backlog', unknown:'JSON Dimuat'
-  };
-  dot.classList.remove('pulse');
-  lbl.textContent = (actLabels[state.activity]||'JSON Dimuat') + ' · ' + state.chapters.length + ' bab';
-  dot.classList.add('pulse');
-}
-
-function updateDocCard() {
-  const json = state.raw;
-  document.getElementById('doc-title').textContent = 'Laporan SROI' + (json.program_code ? ' — '+json.program_code : '');
-  document.getElementById('doc-sub').textContent   = (json.program_code||'') + ' · ' + state.chapters.length + ' bab';
-  document.getElementById('panel-sub-label').textContent = json.document_id||'—';
-}
-
-// ═══════════════════════════════════════════════
-// CHAPTER NAV
-// ═══════════════════════════════════════════════
-function buildChapterNav() {
-  const nav = document.getElementById('chapter-nav');
-  nav.innerHTML = '';
-  if (state.chapters.length === 0) {
-    nav.innerHTML = '<div class="vi dim" style="padding:8px 0;"><span>·</span><span>&nbsp;Tidak ada bab</span></div>';
-    return;
-  }
-  const chMap = {'bab_1':'I — Pendahuluan','bab_2':'II — Profil','bab_3':'III — Metodologi',
-    'bab_4':'IV — Kondisi Awal','bab_5':'V — Ideal','bab_6':'VI — Strategi',
-    'bab_7':'VII — Implementasi','bab_8':'VIII — Pembelajaran','bab_9':'IX — Penutup'};
-  state.chapters.forEach((ch, idx) => {
-    const el = document.createElement('div');
-    el.className = 'nav-item' + (idx===0?' active':'');
-    el.onclick = () => renderChapter(idx);
-    const health = ch.data?.chapter_health||ch.data?.status||'';
-    const hc = {high:'high',pass:'high',medium:'medium',pass_with_notes:'medium',low:'low',fail:'low'}[health]||'none';
-    el.innerHTML = `<span>${chMap[ch.chapter_id]||ch.chapter_id}</span>
-      <div style="display:flex;align-items:center;gap:5px;">
-        <span class="nav-code">${ch.chapter_id}</span>
-        <div class="nav-health ${hc}"></div>
-      </div>`;
-    nav.appendChild(el);
-  });
-}
-
-function setActiveNav(idx) {
-  document.querySelectorAll('#chapter-nav .nav-item').forEach((el,i)=>el.classList.toggle('active',i===idx));
-}
-
-// ═══════════════════════════════════════════════
-// RENDER ROUTER
-// ═══════════════════════════════════════════════
-function renderChapter(idx) {
-  if (!state.loaded||idx<0||idx>=state.chapters.length) return;
-  state.currentChapterIdx = idx;
-  setActiveNav(idx);
-  const ch = state.chapters[idx];
-  const content = document.getElementById('main-content');
-  document.getElementById('toolbar-chapter-label').textContent =
-    ({bab_1:'I',bab_2:'II',bab_3:'III',bab_4:'IV',bab_5:'V',bab_6:'VI',bab_7:'VII',bab_8:'VIII',bab_9:'IX'}[ch.chapter_id]||ch.chapter_id);
-
-  const renderers = {
-    block_identity: renderBlockIdentity, substance_registry: renderSubstanceRegistry,
-    repair_backlog: renderRepairBacklog, consistency_lock: renderConsistencyLock,
-    cross_chapter: renderCrossChapter, point_packet: renderPointPacket,
-    narrative_draft: renderNarrativeChapter, narrative_refined: renderNarrativeChapter,
-    editorial_packet: renderNarrativeChapter, editorial_packet_single: renderNarrativeChapter,
-  };
-  const fn = renderers[state.activity];
-  if (fn) fn(ch, content);
-  else content.innerHTML = `<div class="notice info" style="margin-top:0;">Tipe aktivitas <code>${state.activity}</code> belum punya renderer.</div>`;
-  updateFooter(ch);
-}
-
-// ═══════════════════════════════════════════════
-// RENDERERS
-// ═══════════════════════════════════════════════
-function renderBlockIdentity(ch, container) {
-  const blocks = ch.data.blocks||[];
-  let html = `<div class="card card-blue" style="margin-bottom:14px;">
-    <div class="card-label">Block Identity · ${ch.chapter_id}</div>
-    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${blocks.length} blocks</div>
-  </div><div class="card" style="padding:8px 12px;">`;
-  blocks.forEach(b=>{
-    html+=`<div class="issue-row">
-      <div class="issue-body">
-        <div class="issue-dim">${b.block_ref} · <span style="color:var(--text2);">${b.type}</span></div>
-        <div style="font-size:10px;font-family:var(--mono);color:var(--text3);">${b.block_fingerprint}</div>
-        ${b.text?`<div class="issue-desc" style="margin-top:2px;">${esc(b.text.slice(0,120))}${b.text.length>120?'…':''}</div>`:''}
-      </div></div>`;
-  });
-  html+='</div>';
-  container.innerHTML = html;
-}
-
-function renderSubstanceRegistry(ch, container) {
-  const elements = ch.data.elements||[];
-  let html = `<div class="card card-blue" style="margin-bottom:14px;">
-    <div class="card-label">Substance Registry</div>
-    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${elements.length} elemen · chapter: ${ch.data.substance_chapter_id||'—'}</div>
-  </div>`;
-  elements.forEach(el=>{
-    const pb = el.priority==='high'?'green':el.priority==='medium'?'yellow':'on-surface';
-    html+=`<div class="card" style="margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-        <span style="font-family:var(--mono);font-size:10px;color:var(--text3);">${el.element_id}</span>
-        <span style="font-size:12px;font-weight:600;">${esc(el.label)}</span>
-        <span class="badge ${pb}">${el.priority}</span>
-        <span class="badge on-surface">${el.element_type}</span>
-      </div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:6px;">${esc(el.summary)}</div>
-      ${(el.guardrail_notes||[]).length?`<div class="notice warn" style="margin-top:4px;font-size:10px;">${el.guardrail_notes.map(esc).join(' · ')}</div>`:''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function renderRepairBacklog(ch, container) {
-  const data = ch.data, issues = data.issues||[];
-  const health = data.chapter_health||'—';
-  const hc = {high:'green',medium:'yellow',low:'red'}[health]||'on-surface';
-  let html = `<div class="card card-blue" style="margin-bottom:14px;">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div><div class="card-label">Repair Backlog · ${data.chapter_id}</div>
-      <div style="font-size:12px;color:var(--text2);margin-top:2px;">${issues.length} issue · burden: ${(data.normalized_burden||0).toFixed(2)}</div></div>
-      <span class="badge ${hc}" style="margin-left:auto;">health: ${health}</span>
-    </div></div>`;
-  issues.forEach(iss=>{
-    html+=`<div class="card" style="margin-bottom:8px;">
-      <div class="issue-row" style="border:none;padding:0;">
-        <span class="issue-sev ${iss.severity}">${iss.severity}</span>
-        <div class="issue-body">
-          <div class="issue-dim">${iss.issue_id} · ${iss.issue_type} · burden: ${iss.issue_burden}</div>
-          <div class="issue-desc">${esc(iss.description)}</div>
-          ${iss.notes?`<div style="font-size:10px;color:var(--text3);margin-top:2px;">${esc(iss.notes)}</div>`:''}
-          <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="issue-action">${iss.repair_action}</span>
-            <span class="issue-action">dep: ${iss.dependency_to_substance}</span>
-            <span class="issue-action">${iss.ready_for_point_builder?'ready':'not ready'}</span>
-          </div>
-        </div>
-      </div></div>`;
-  });
-  container.innerHTML = html;
-}
-
-function renderConsistencyLock(ch, container) {
-  const data = ch.data;
-  let html = `<div class="card card-blue" style="margin-bottom:16px;">
-    <div class="card-label">Consistency Lock · ${data.chapter_id}</div>
-    <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">${statusBadgeHtml(data.status)}
-      <span style="font-size:12px;color:var(--text2);">${data.summary?.total_issues||0} issue</span>
-    </div></div>`;
-  (data.dimension_results||[]).forEach(d=>{
-    html+=`<div class="card" style="margin-bottom:8px;"><div class="issue-row" style="border:none;padding:0;">
-      <span class="issue-sev ${d.severity||'low'}">${d.status}</span>
-      <div class="issue-body"><div class="issue-dim">${d.dimension}</div>
-        <div class="issue-desc">${d.issue_count} issue${d.notes?.length?' · '+d.notes.slice(0,2).map(esc).join('; '):''}</div>
-      </div></div></div>`;
-  });
-  (data.issues||[]).forEach(iss=>{
-    html+=`<div class="card" style="margin-bottom:8px;"><div class="issue-row" style="border:none;padding:0;">
-      <span class="issue-sev ${iss.severity}">${iss.severity}</span>
-      <div class="issue-body"><div class="issue-dim">${iss.consistency_issue_id} · ${iss.dimension}</div>
-        <div class="issue-desc">${esc(iss.description)}</div>
-        ${iss.paragraph_ids?.length?`<div style="margin-top:3px;font-size:10px;font-family:var(--mono);color:var(--text3);">${iss.paragraph_ids.join(', ')}</div>`:''}
-      </div>
-      <span class="issue-action">${iss.recommended_action}</span>
-    </div></div>`;
-  });
-  container.innerHTML = html;
-}
-
-function renderCrossChapter(ch, container) {
-  const data = ch.data;
-  let html = `<div class="card card-blue" style="margin-bottom:16px;">
-    <div class="card-label">Cross-chapter Consistency</div>
-    <div style="margin-top:4px;">${statusBadgeHtml(data.global_status)}</div></div>`;
-  (data.dimension_reports||[]).forEach(d=>{
-    html+=`<div class="card" style="margin-bottom:8px;"><div class="issue-row" style="border:none;padding:0;">
-      <span class="issue-sev ${d.status==='pass'?'low':d.status==='fail'?'high':'medium'}">${d.status}</span>
-      <div class="issue-body"><div class="issue-dim">${d.dimension}</div>
-        <div class="issue-desc">${d.issue_count} issue · ${(d.affected_chapters||[]).join(', ')||'—'}</div>
-      </div></div></div>`;
-  });
-  container.innerHTML = html;
-}
-
-function renderPointPacket(ch, container) {
-  const data = ch.data;
-  let html = `<div class="card card-blue" style="margin-bottom:16px;">
-    <div class="card-label">Point Packet · ${data.chapter_id}</div>
-    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${data.chapter_role_against_substance||''}</div></div>`;
-  (data.subsections||[]).forEach(sub=>{
-    const mc = sub.build_mode||'build';
-    html+=`<div class="card" style="margin-bottom:12px;">
-      <div class="sub-header"><span class="sub-id">${sub.subsection_id}</span>
-        <span class="sub-title">${esc(sub.title)}</span>
-        <span class="sub-mode ${mc}">${mc.replace('_',' ')}</span></div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">${esc(sub.function||'')}</div>
-      ${sub.main_claim?`<div class="notice info" style="margin-top:0;margin-bottom:6px;"><strong>Klaim utama:</strong> ${esc(sub.main_claim)}</div>`:''}
-      ${(sub.claim_guardrails||[]).length?`<div class="notice warn" style="margin-top:4px;font-size:10px;">${sub.claim_guardrails.map(esc).join(' · ')}</div>`:''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function renderNarrativeChapter(ch, container) {
-  const data = ch.data;
-  const subsections = data.subsection_drafts||[];
-  let html = '';
-  if (subsections.length===0) { html='<div class="empty-state"><div class="es-icon">📭</div><div class="es-title">Tidak ada subbab</div></div>'; }
-  subsections.forEach(sub=>{
-    if (sub.status==='skipped_hold') {
-      html+=`<div class="card card-red" style="margin-bottom:14px;"><div class="card-label">Hold</div>
-        <div class="sub-header"><span class="sub-id">${sub.subsection_id}</span><span class="sub-title">${esc(sub.title||'')}</span>
-          <span class="sub-mode hold">hold</span></div>
-        <div class="notice warn" style="margin-top:0;">Subbab ini di-hold.</div></div>`;
-      return;
-    }
-    const mc = sub.build_mode||'build';
-    html+=`<div class="card" style="margin-bottom:14px;">
-      <div class="sub-header"><span class="sub-id">${sub.subsection_id}</span>
-        <span class="sub-title">${esc(sub.title||'')}</span>
-        <span class="sub-mode ${mc}">${mc.replace('_',' ')}</span></div>`;
-    (sub.blocks||sub.paragraph_units||[]).forEach(block=>{
-      const pid=block.paragraph_id||block.id||'', kind=block.paragraph_kind||'body', sens=block.evidence_sensitivity||'low';
-      const saved=state.edits[pid]; const text=saved!==undefined?saved:(block.text||'');
-      html+=`<div class="para-block">
-        <div class="para-header"><span class="para-id">${pid}</span>
-          <span class="para-kind ${kind}">${kind}</span>
-          <span class="para-sensitivity ${sens}">${sens}</span>
-          ${block.synthetic?'<span style="font-size:10px;color:var(--text3);font-style:italic;margin-left:auto;">✦ sintetis</span>':''}
-        </div>
-        <div class="field" style="margin-bottom:0;">
-          <textarea data-para-id="${pid}" onchange="recordEdit('${pid}',this.value)" rows="${Math.max(3,Math.ceil(text.length/80))}">${esc(text)}</textarea>
-        </div>
-        ${(block.claim_guardrails||[]).length?`<div class="notice warn" style="margin-top:6px;font-size:10px;">${block.claim_guardrails.map(esc).join(' · ')}</div>`:''}
-      </div>`;
-    });
-    (sub.enrichment_candidates||sub.candidates||[]).forEach(cand=>{
-      const cid=cand.candidate_id||cand.id||'', decision=state.candidateDecisions[cid];
-      if (decision==='rejected') return;
-      html+=`<div class="enr-card" id="enr-${cid}">
-        <div class="enr-header"><span class="enr-id">${cid}</span>
-          <span class="enr-type">${cand.candidate_type||'candidate'}</span>
-          ${decision==='accepted'?'<span class="badge green">✓ Diterima</span>':''}
-        </div>
-        <div class="enr-text">${esc(cand.text||cand.suggested_text||'')}</div>
-        ${!decision?`<div class="enr-actions">
-          <button class="btn sm primary" onclick="acceptCandidate('${cid}')">Terima</button>
-          <button class="btn sm ghost" onclick="rejectCandidate('${cid}')">Abaikan</button>
-        </div>`:''}
-      </div>`;
-    });
-    html+='</div>';
-  });
-  container.innerHTML = html;
-}
-
-// ═══════════════════════════════════════════════
-// FOOTER
-// ═══════════════════════════════════════════════
-function updateFooter(ch) {
-  const data = ch.data, issues = data.issues||[];
-  const cons = document.getElementById('footer-consistency');
-  if (issues.length===0) { cons.innerHTML='<div class="vi ok"><span class="ic">✓</span><span>Tidak ada issue</span></div>'; }
-  else {
-    const bySev = s => issues.filter(i=>i.severity===s).length;
-    cons.innerHTML = '';
-    if (bySev('critical')) cons.innerHTML+=`<div class="vi err"><span>✗</span><span>${bySev('critical')} critical</span></div>`;
-    if (bySev('high'))     cons.innerHTML+=`<div class="vi err"><span>✗</span><span>${bySev('high')} high</span></div>`;
-    if (bySev('medium'))   cons.innerHTML+=`<div class="vi warn"><span>!</span><span>${bySev('medium')} medium</span></div>`;
-    if (bySev('low'))      cons.innerHTML+=`<div class="vi dim"><span>·</span><span>${bySev('low')} low</span></div>`;
-  }
-  const subs = data.subsection_drafts||data.subsections||[];
-  const paras = subs.reduce((a,s)=>a+(s.blocks||s.paragraph_units||[]).length,0);
-  const cands = subs.reduce((a,s)=>a+(s.enrichment_candidates||s.candidates||[]).length,0);
-  document.getElementById('fs-status').textContent  = data.status||data.chapter_health||'—';
-  document.getElementById('fs-para').textContent    = paras>0?paras+' paragraf':'—';
-  document.getElementById('fs-candidates').textContent = cands>0?cands+' total':'—';
-  document.getElementById('fs-buildmode').textContent  = subs.filter(s=>s.build_mode==='hold').length>0?
-    subs.filter(s=>s.build_mode==='hold').length+' hold':subs.length>0?'semua aktif':'—';
-}
-
-// ═══════════════════════════════════════════════
-// EDIT & CANDIDATE
-// ═══════════════════════════════════════════════
-function recordEdit(pid, text) { state.edits[pid] = text; }
-
-function acceptCandidate(cid) {
-  state.candidateDecisions[cid] = 'accepted';
-  const card = document.getElementById('enr-'+cid);
-  if (card) card.querySelector('.enr-actions').innerHTML = '<span class="badge green">✓ Diterima</span>';
-  patchCandidateState(cid, 'accepted');
-}
-
-function rejectCandidate(cid) {
-  state.candidateDecisions[cid] = 'rejected';
-  const card = document.getElementById('enr-'+cid);
-  if (card) card.style.display = 'none';
-  patchCandidateState(cid, 'rejected');
-}
-
-function patchCandidateState(cid, newState) {
-  const walk = obj => {
-    if (!obj||typeof obj!=='object') return;
-    if (Array.isArray(obj)) { obj.forEach(walk); return; }
-    if ((obj.candidate_id===cid||obj.id===cid)&&obj.candidate_state!==undefined) obj.candidate_state=newState;
-    Object.values(obj).forEach(walk);
-  };
-  walk(state.raw);
-}
-
-function saveCurrentEdits() {
-  const walk = obj => {
-    if (!obj||typeof obj!=='object') return;
-    if (Array.isArray(obj)) { obj.forEach(walk); return; }
-    const pid = obj.paragraph_id||obj.id;
-    if (pid&&state.edits[pid]!==undefined) obj.text = state.edits[pid];
-    Object.values(obj).forEach(walk);
-  };
-  walk(state.raw);
-  const btn = document.getElementById('btn-save');
-  const orig = btn.textContent;
-  btn.textContent = '✓ Tersimpan'; btn.classList.add('success');
-  setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('success'); }, 1500);
-}
-
-function downloadJSON() {
-  saveCurrentEdits();
-  // Kalau ada hasil A1 dan sedang di block_identity view, download A1 result
-  const data = state.a1Result && state.activity === 'block_identity' ? state.a1Result : state.raw;
-  if (!data) return;
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = (data.document_id||'output') + '_' + (data.activity||'edited') + '.json';
-  a.click();
-}
-
-// ═══════════════════════════════════════════════
-// GROUPED ERROR RENDERER
-// ═══════════════════════════════════════════════
-function renderGroupedErrors(failures, warnings) {
-  if (!failures||failures.length===0) return '';
-  const groups = {};
-  failures.forEach(f=>{ const c=f.code||'UNKNOWN'; if(!groups[c]) groups[c]=[]; groups[c].push(f); });
-  const codeLabels = {
-    CONTROL_BLOCK_INVALID:'Konfigurasi pipeline tidak valid',
-    FINGERPRINT_COLLISION:'Fingerprint collision terdeteksi',
-    EMPTY_CHAPTERS:'Tidak ada chapter', CHAPTER_INVALID:'Chapter tidak valid', BLOCK_INVALID:'Block tidak valid',
-  };
-  let html = `<div class="notice err" style="margin-bottom:16px;margin-top:0;">
-    <strong>Pipeline tidak dapat dijalankan</strong> — ${failures.length} kegagalan fatal.</div>`;
-  Object.entries(groups).forEach(([code, entries])=>{
-    const label = codeLabels[code]||code, count = entries.length;
-    html+=`<div class="card card-red" style="margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
-        <span class="issue-sev critical">FATAL</span>
-        <span style="font-size:13px;font-weight:600;">${esc(label)}</span>
-        <span class="badge red" style="margin-left:auto;">${count} pelanggaran</span>
-      </div>`;
-    if (count===1) { html+=`<div style="font-size:12px;color:var(--red);margin-top:6px;font-family:var(--mono);">${esc(entries[0].message||'')}</div>`; }
-    else {
-      html+=`<button class="adv-btn" style="border-top:none;padding:6px 0 0;font-size:11px;color:var(--red);"
-        onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.adv-arrow').classList.toggle('open')">
-        <span>Lihat ${count} detail</span><span class="adv-arrow">▾</span></button>
-        <div class="adv-body"><div class="tech-detail">`;
-      entries.forEach((e,i)=>{ html+=`<div class="td-row"><span class="td-key">Pelanggaran ${i+1}</span><span class="td-val">${esc(e.message||JSON.stringify(e))}</span></div>`; });
-      html+=`</div></div>`;
-    }
-    html+=`</div>`;
-  });
-  if (warnings&&warnings.length>0) {
-    html+=`<div class="card card-yellow"><div class="card-label">Warnings (${warnings.length})</div>
-      <button class="adv-btn" style="border-top:none;padding:4px 0 0;font-size:11px;"
-        onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.adv-arrow').classList.toggle('open')">
-        <span>Lihat detail</span><span class="adv-arrow">▾</span></button>
-      <div class="adv-body">`;
-    warnings.forEach(w=>{ html+=`<div class="vi warn"><span class="ic">!</span><span style="font-family:var(--mono);font-size:10px;">[${w.code||'?'}] ${esc(w.message||'')}</span></div>`; });
-    html+=`</div></div>`;
-  }
-  return html;
-}
-
-// ═══════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════
-function esc(str) {
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function statusBadgeHtml(status) {
-  const m={pass:'green',pass_with_notes:'yellow',fail:'red'};
-  return `<span class="badge ${m[status]||'on-surface'}">${status||'—'}</span>`;
-}
-function toggleAccordion(btn) {
-  btn.nextElementSibling.classList.toggle('open');
-  btn.querySelector('.adv-arrow').classList.toggle('open');
-}
-function navigateChapter(dir) {
-  const next = state.currentChapterIdx+dir;
-  if (next>=0&&next<state.chapters.length) renderChapter(next);
-}
-function resetApp() {
-  slots.bab7 = null; slots.rest = null;
-  ['bab7','rest'].forEach(k=>{
-    const d={bab7:'chapter_semantic_bab7.json',rest:'chapters_semantic_rest.json'};
-    const h={bab7:'Bab inti substansi (biasanya bab 7)',rest:'Bab-bab lainnya'};
-    document.getElementById(`slot-${k}`).className='upload-slot';
-    document.getElementById(`slot-${k}-name`).textContent=d[k];
-    document.getElementById(`slot-${k}-hint`).textContent=h[k];
-    document.getElementById(`slot-${k}-clear`).style.display='none';
-    document.getElementById(`input-${k}`).value='';
-  });
-  state={raw:null,activity:null,chapters:[],currentChapterIdx:0,edits:{},candidateDecisions:{},loaded:false,a1Result:null};
-  document.getElementById('btn-run-a1').disabled=true;
-  document.getElementById('btn-run-a2').disabled=true;
-  document.getElementById('btn-download').disabled=true;
-  document.getElementById('btn-save').disabled=true;
-  document.getElementById('btn-prev').disabled=true;
-  document.getElementById('btn-next').disabled=true;
-  document.getElementById('doc-title').textContent='—';
-  document.getElementById('doc-sub').textContent='Belum ada file dimuat';
-  document.getElementById('panel-sub-label').textContent='Muat chapter files untuk mulai';
-  document.getElementById('hdr-label').textContent='Belum ada dokumen';
-  document.getElementById('hdr-dot').classList.remove('pulse');
-  document.getElementById('toolbar-chapter-label').textContent='—';
-  document.getElementById('chapter-nav').innerHTML='<div class="vi dim" style="padding:8px 0;"><span>·</span><span>&nbsp;Jalankan A1 untuk melihat bab</span></div>';
-  document.getElementById('main-content').innerHTML='<div class="empty-state"><div class="es-icon">🗂</div><div class="es-title">Belum ada data</div><div class="es-sub">Upload chapter files di panel kiri, lalu jalankan A1 untuk mulai.</div></div>';
-  document.getElementById('a1-status').style.display='none';
-  document.getElementById('a2-status').style.display='none';
-  ['a1','a2','a3'].forEach(s=>setPipeStep(s,'','—'));
-  ['fs-status','fs-para','fs-candidates','fs-buildmode'].forEach(id=>document.getElementById(id).textContent='—');
-}
-
-// Drag and drop ke slot bab7
-const body = document.body;
-body.addEventListener('dragover', e=>e.preventDefault());
-body.addEventListener('drop', e=>{
-  e.preventDefault();
-  const files = [...e.dataTransfer.files].filter(f=>f.name.endsWith('.json'));
-  if (files.length===0) return;
-  files.forEach(file=>{
-    const key = file.name.includes('bab7')||file.name.includes('bab_7') ? 'bab7' : 'rest';
-    const reader = new FileReader();
-    reader.onload = ev=>{
-      try {
-        slots[key]={data:JSON.parse(ev.target.result),name:file.name};
-        updateSlotUI(key,'loaded',file.name);
-        onSlotsChanged();
-      } catch(err) { updateSlotUI(key,'error','JSON tidak valid'); }
-    };
-    reader.readAsText(file);
-  });
-});
-
-// Mobile
-function showPanel(idx) {
-  document.querySelectorAll('.main .panel').forEach((p,i)=>p.classList.toggle('mob-active',i===idx));
-  document.querySelectorAll('.mob-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-}
-function initMobile() {
-  if (window.innerWidth<=768) showPanel(0);
-  else document.querySelectorAll('.main .panel').forEach(p=>p.classList.remove('mob-active'));
-}
-window.addEventListener('resize',initMobile);
-initMobile();
-</script>
-</body>
-</html>
+if __name__ == "__main__":
+    main()
