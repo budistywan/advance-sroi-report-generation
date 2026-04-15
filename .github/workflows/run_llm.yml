@@ -1,0 +1,485 @@
+name: Pipeline — LLM
+
+# ─────────────────────────────────────────────
+# Trigger: manual dispatch saja.
+# Butuh OPENAI_API_KEY di GitHub Secrets.
+# Output di-commit ke data/output/ via PR.
+# ─────────────────────────────────────────────
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Stage yang dijalankan"
+        required: true
+        type: choice
+        options:
+          - A2
+          - B1
+          - B2
+          - B3
+          - B4
+          - D2
+          - D3
+          - C1
+      chapter_id:
+        description: "Chapter ID (wajib untuk stage B1-B4, D2, D3, C1)"
+        required: false
+        default: ""
+        type: string
+      dry_run:
+        description: "Dry run — skip LLM calls, hanya validasi input"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ───────────────────────────────────────────
+  # SETUP — shared across all stages
+  # ───────────────────────────────────────────
+  setup:
+    name: "Setup & Validate Input"
+    runs-on: ubuntu-latest
+    outputs:
+      stage:      ${{ github.event.inputs.stage }}
+      chapter_id: ${{ github.event.inputs.chapter_id }}
+      dry_run:    ${{ github.event.inputs.dry_run }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate inputs
+        run: |
+          STAGE="${{ github.event.inputs.stage }}"
+          CHAPTER="${{ github.event.inputs.chapter_id }}"
+
+          # Stage yang butuh chapter_id
+          CHAPTER_STAGES="B1 B2 B3 B4 D2 D3"
+
+          if echo "$CHAPTER_STAGES" | grep -qw "$STAGE"; then
+            if [ -z "$CHAPTER" ]; then
+              echo "ERROR: Stage $STAGE membutuhkan chapter_id"
+              exit 1
+            fi
+          fi
+
+          echo "Stage    : $STAGE"
+          echo "Chapter  : ${CHAPTER:-N/A}"
+          echo "Dry run  : ${{ github.event.inputs.dry_run }}"
+
+  # ───────────────────────────────────────────
+  # A2 — Substance Extractor
+  # ───────────────────────────────────────────
+  a2_substance_extractor:
+    name: "A2 · Substance Extractor"
+    runs-on: ubuntu-latest
+    needs: setup
+    if: github.event.inputs.stage == 'A2'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install openai pytest
+
+      - name: Run tests — A2
+        run: python -m pytest tests/test_a2_substance_extractor.py -v
+
+      - name: Check prerequisites
+        run: |
+          for f in \
+            data/input/pipeline_control_block.json \
+            data/output/block_identity_packet.json; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: $f tidak ditemukan. Jalankan A1 terlebih dahulu."
+              exit 1
+            fi
+          done
+
+      - name: Merge input for A2
+        run: |
+          python - << 'EOF'
+          import json
+          from pathlib import Path
+
+          pcb = json.loads(Path("data/input/pipeline_control_block.json").read_text())
+          bip = json.loads(Path("data/output/block_identity_packet.json").read_text())
+
+          merged = {
+              "pipeline_control_block": pcb,
+              "block_identity_packet":  bip,
+          }
+          Path("data/input/_merged_for_a2.json").write_text(
+              json.dumps(merged, ensure_ascii=False, indent=2)
+          )
+          print(f"OK: merged input ready")
+          EOF
+
+      - name: Run A2
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          A2_DRY_RUN:     ${{ github.event.inputs.dry_run == 'true' && '1' || '0' }}
+        run: |
+          python pipeline/a2_substance_extractor.py \
+            data/input/_merged_for_a2.json \
+            data/output/substance_registry.json \
+            data/output/substance_guardrails.json
+
+      - name: Validate output
+        run: |
+          python - << 'EOF'
+          import json, sys, os
+          from pathlib import Path
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+          def write_summary(lines):
+              if summary_path:
+                  with open(summary_path, "a") as f:
+                      f.write("\n".join(lines) + "\n")
+
+          errors_found = False
+          for fname in ["substance_registry.json", "substance_guardrails.json"]:
+              p = Path("data/output") / fname
+              if not p.exists():
+                  msg = f"ERROR: {fname} tidak ditemukan"
+                  print(msg, file=sys.stderr)
+                  write_summary([f"## ❌ A2 — {fname} tidak ditemukan", msg])
+                  errors_found = True
+                  continue
+              data = json.loads(p.read_text())
+              if data.get("failures"):
+                  lines = [f"## ❌ A2 — Failures di {fname}", ""]
+                  for f in data["failures"]:
+                      msg = f.get("message", "")
+                      print(f"  {msg}", file=sys.stderr)
+                      lines.append(f"- {msg}")
+                  write_summary(lines)
+                  errors_found = True
+
+          if errors_found:
+              sys.exit(1)
+
+          registry = json.loads(Path("data/output/substance_registry.json").read_text())
+          s = registry.get("summary", {})
+          n = s.get("total_elements", 0)
+          print(f"OK: {n} elemen, priority={s.get('by_priority',{})}")
+          write_summary([
+              "## ✅ A2 — Output Valid",
+              f"- Elements   : **{n}**",
+              f"- Priority   : {s.get('by_priority', {})}",
+              f"- Warnings   : {s.get('warning_count', 0)}",
+          ])
+          EOF
+
+      - name: Cleanup temp file
+        if: always()
+        run: rm -f data/input/_merged_for_a2.json
+
+      - name: Upload output artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a2-substance-output
+          path: |
+            data/output/substance_registry.json
+            data/output/substance_guardrails.json
+          if-no-files-found: warn
+
+      - name: Create PR with output
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "[A2] substance_registry + substance_guardrails — auto-generated"
+          branch: "pipeline/a2-output"
+          title: "[A2] Substance Extractor output — review required"
+          body: |
+            ## A2 Substance Extractor
+
+            Output JSON baru untuk review manual:
+            - `data/output/substance_registry.json`
+            - `data/output/substance_guardrails.json`
+
+            ### Checklist review
+            - [ ] Chapter sumber substansi tepat
+            - [ ] Elemen yang diekstrak cukup material
+            - [ ] Tidak ada elemen penting yang terlewat
+            - [ ] Summary cukup abstraktif
+            - [ ] Evidence status realistis
+            - [ ] Affordances masuk akal
+            - [ ] Guardrails cukup spesifik
+            - [ ] Scores dan priority konsisten
+
+            Setelah approved, merge PR ini untuk lanjut ke Sprint 3 (A3).
+          labels: "pipeline,review-required,sprint-2"
+
+  # ───────────────────────────────────────────
+  # POST-A2 SCHEMA GATE
+  # Berjalan dalam workflow yang sama setelah job A2 selesai.
+  # Memvalidasi output sebelum PR dibuat — bukan setelah PR di-merge.
+  # ───────────────────────────────────────────
+  post_a2_schema_gate:
+    name: "A2 · Post-run Schema Gate"
+    runs-on: ubuntu-latest
+    needs: a2_substance_extractor
+    if: success()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Schema validation — substance_registry
+        run: |
+          python - << 'EOF'
+          import json, sys, re, os
+          from pathlib import Path
+
+          REG_PATH = Path("data/output/substance_registry.json")
+          PCB_PATH = Path("data/input/pipeline_control_block.json")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+          def write_summary(lines):
+              if summary_path:
+                  with open(summary_path, "a") as f:
+                      f.write("\n".join(lines) + "\n")
+
+          if not REG_PATH.exists():
+              write_summary(["## ⚠️ A2 Registry Gate — SKIP", "Output belum ada."])
+              sys.exit(0)
+
+          registry = json.loads(REG_PATH.read_text())
+
+          nct = {"divider", "divider_thick", "spacer"}
+          if PCB_PATH.exists():
+              pcb = json.loads(PCB_PATH.read_text())
+              nct = set(pcb.get("non_content_block_types", list(nct)))
+
+          errors = []
+
+          VALID_TYPES = {
+              "evaluative_mandate","program_positioning","scope_definition",
+              "stakeholder_structure","investment_structure","output_structure",
+              "outcome_structure","adjustment_logic","monetization_logic",
+              "evaluative_metric","interpretive_finding","learning_signal",
+              "problem_signal","ideal_state_signal","strategy_signal",
+              "program_structure","other",
+          }
+          VALID_EVIDENCE = {"final","proxy","pending","inferred","mixed"}
+          CORE_AFF = {
+              "opening_mandate","program_positioning","scope_definition",
+              "methodological_reference","problem_justification","baseline_context",
+              "ideal_state_anchor","strategy_alignment","implementation_reference",
+              "outcome_reference","adjustment_reference","monetization_reference",
+              "learning_anchor","closing_summary","recommendation_basis","visual_candidate",
+          }
+          RE_EXT = re.compile(r"^x_[a-z0-9_]+$")
+          RE_EID = re.compile(r"^SUB-\d+$")
+
+          element_ids = set()
+          for i, el in enumerate(registry.get("elements", [])):
+              eid = el.get("element_id", "")
+
+              if not RE_EID.match(eid):
+                  errors.append(f"elemen[{i}]: element_id format invalid: {eid}")
+              if eid in element_ids:
+                  errors.append(f"elemen[{i}]: element_id duplikat: {eid}")
+              element_ids.add(eid)
+
+              etype = el.get("element_type")
+              if etype not in VALID_TYPES:
+                  errors.append(f"{eid}: element_type tidak valid: {etype}")
+              if etype == "other" and not el.get("element_type_note"):
+                  errors.append(f"{eid}: element_type=other wajib punya element_type_note")
+              if etype != "other" and el.get("element_type_note") is not None:
+                  errors.append(f"{eid}: element_type_note harus null jika bukan 'other'")
+
+              if el.get("evidence_status") not in VALID_EVIDENCE:
+                  errors.append(f"{eid}: evidence_status tidak valid")
+
+              affordances = el.get("use_affordances", [])
+              if not affordances:
+                  errors.append(f"{eid}: use_affordances tidak boleh kosong")
+              for aff in affordances:
+                  if aff not in CORE_AFF and not RE_EXT.match(aff):
+                      errors.append(f"{eid}: affordance tidak valid: {aff}")
+
+              if not el.get("guardrail_notes"):
+                  errors.append(f"{eid}: guardrail_notes tidak boleh kosong")
+
+              refs  = el.get("source_block_refs", [])
+              fps   = el.get("source_block_fingerprints", [])
+              types = el.get("source_block_types", [])
+              if not (len(refs) == len(fps) == len(types)):
+                  errors.append(f"{eid}: provenance arrays length mismatch "
+                                f"(refs={len(refs)}, fps={len(fps)}, types={len(types)})")
+              if len(refs) == 0:
+                  errors.append(f"{eid}: provenance arrays tidak boleh kosong")
+
+              non_content_hits = [t for t in types if t in nct]
+              if non_content_hits and len(non_content_hits) == len(types):
+                  errors.append(f"{eid}: seluruh source_block_types adalah non-content blocks "
+                                f"({', '.join(non_content_hits)}) — R-A2-07 violation")
+
+              mat = el.get("materiality_score", 0)
+              reu = el.get("reusability_score", 0)
+              total = mat + reu
+              expected = "high" if total >= 8 else "medium" if total >= 5 else "low"
+              if el.get("priority") != expected:
+                  errors.append(f"{eid}: priority tidak konsisten dengan skor "
+                                f"({mat}+{reu}={total}, expected='{expected}')")
+
+          if errors:
+              lines = ["## ❌ A2 Registry Gate — Errors", ""]
+              for e in errors:
+                  print(f"  {e}", file=sys.stderr)
+                  lines.append(f"- {e}")
+              write_summary(lines)
+              sys.exit(1)
+
+          print(f"Registry validation OK: {len(element_ids)} elemen")
+          write_summary([
+              "## ✅ A2 Registry Gate — Passed",
+              f"- {len(element_ids)} elemen valid",
+          ])
+          EOF
+
+      - name: Schema validation — substance_guardrails
+        run: |
+          python - << 'EOF'
+          import json, sys, re, os
+          from pathlib import Path
+
+          GRD_PATH = Path("data/output/substance_guardrails.json")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+          def write_summary(lines):
+              if summary_path:
+                  with open(summary_path, "a") as f:
+                      f.write("\n".join(lines) + "\n")
+
+          if not GRD_PATH.exists():
+              write_summary(["## ⚠️ A2 Guardrails Gate — SKIP", "Output belum ada."])
+              sys.exit(0)
+
+          guardrails = json.loads(GRD_PATH.read_text())
+          errors = []
+
+          VALID_SEVERITY = {"low", "medium", "high", "critical"}
+          RE_GID  = re.compile(r"^SG-\d+$")
+          RE_EGID = re.compile(r"^SG-E-\d+$")
+          RE_EID  = re.compile(r"^SUB-\d+$")
+
+          global_g = guardrails.get("global_guardrails", [])
+          if not isinstance(global_g, list):
+              errors.append("global_guardrails harus berupa array")
+          for i, g in enumerate(global_g):
+              gid = g.get("guardrail_id", "")
+              if not RE_GID.match(gid):
+                  errors.append(f"global_guardrail[{i}]: guardrail_id format invalid: {gid}")
+              if g.get("scope") != "document":
+                  errors.append(f"{gid}: global_guardrail scope harus 'document'")
+              if g.get("severity") not in VALID_SEVERITY:
+                  errors.append(f"{gid}: severity tidak valid: {g.get('severity')}")
+              if not g.get("rule", "").strip():
+                  errors.append(f"{gid}: rule tidak boleh kosong")
+
+          element_g = guardrails.get("element_guardrails", [])
+          if not isinstance(element_g, list):
+              errors.append("element_guardrails harus berupa array")
+          for i, eg in enumerate(element_g):
+              gid = eg.get("guardrail_id", "")
+              if not RE_EGID.match(gid):
+                  errors.append(f"element_guardrail[{i}]: guardrail_id format invalid: {gid}")
+              if eg.get("scope") != "element":
+                  errors.append(f"{gid}: element_guardrail scope harus 'element'")
+              applies_to = eg.get("applies_to", "")
+              if not RE_EID.match(applies_to):
+                  errors.append(f"{gid}: applies_to '{applies_to}' harus SUB-xxx "
+                                f"(element_guardrail tidak boleh pakai 'all')")
+              if eg.get("severity") not in VALID_SEVERITY:
+                  errors.append(f"{gid}: severity tidak valid: {eg.get('severity')}")
+              if not eg.get("rule", "").strip():
+                  errors.append(f"{gid}: rule tidak boleh kosong")
+
+          if errors:
+              lines = ["## ❌ A2 Guardrails Gate — Errors", ""]
+              for e in errors:
+                  print(f"  {e}", file=sys.stderr)
+                  lines.append(f"- {e}")
+              write_summary(lines)
+              sys.exit(1)
+
+          print(f"Guardrails validation OK: "
+                f"{len(global_g)} global, {len(element_g)} element guardrails")
+          write_summary([
+              "## ✅ A2 Guardrails Gate — Passed",
+              f"- {len(global_g)} global guardrails",
+              f"- {len(element_g)} element guardrails",
+          ])
+          EOF
+
+      - name: Post summary
+        if: always()
+        run: |
+          python - << 'EOF'
+          import json, os
+          from pathlib import Path
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+          reg_path = Path("data/output/substance_registry.json")
+          grd_path = Path("data/output/substance_guardrails.json")
+
+          if not reg_path.exists() or not summary_path:
+              exit(0)
+
+          reg = json.loads(reg_path.read_text())
+          s   = reg.get("summary", {})
+
+          lines = [
+              "## A2 Substance Extractor — Summary",
+              "| Field | Value |",
+              "|---|---|",
+              f"| Total elements | {s.get('total_elements', 0)} |",
+              f"| By priority    | {s.get('by_priority', {})} |",
+              f"| By evidence    | {s.get('by_evidence_status', {})} |",
+              f"| Warnings       | {s.get('warning_count', 0)} |",
+              f"| Failures       | {s.get('failure_count', 0)} |",
+          ]
+          if grd_path.exists():
+              grd = json.loads(grd_path.read_text())
+              lines += [
+                  f"| Global guardrails  | {len(grd.get('global_guardrails', []))} |",
+                  f"| Element guardrails | {len(grd.get('element_guardrails', []))} |",
+              ]
+
+          with open(summary_path, "a") as f:
+              f.write("\n".join(lines) + "\n")
+
+          # stdout untuk raw log
+          print("## A2 Substance Extractor — Summary")
+          print(f"- Total elements : {s.get('total_elements', 0)}")
+          print(f"- By type        : {s.get('by_type', {})}")
+          print(f"- By evidence    : {s.get('by_evidence_status', {})}")
+          print(f"- By priority    : {s.get('by_priority', {})}")
+          EOF
+

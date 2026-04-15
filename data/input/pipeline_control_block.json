@@ -1,0 +1,8 @@
+{
+  "document_id": "esd_report_v1",
+  "program_code": "ESD",
+  "substance_mode": "confirmed",
+  "substance_chapter_id": "bab_7",
+  "substance_basis": "manual_audit",
+  "non_content_block_types": ["divider", "divider_thick", "spacer"]
+}

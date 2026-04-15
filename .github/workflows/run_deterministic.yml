@@ -1,0 +1,314 @@
+name: Pipeline — Deterministic
+
+# ─────────────────────────────────────────────
+# Trigger:
+#   - push ke data/input/ (auto)
+#   - manual dispatch (pilih stage)
+# Tidak butuh API key.
+# Output di-commit ke data/output/.
+# ─────────────────────────────────────────────
+
+on:
+  push:
+    paths:
+      - "data/input/**"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Stage yang dijalankan"
+        required: true
+        default: "A1"
+        type: choice
+        options:
+          - A1
+          - A3
+          - C2
+          - ALL
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ───────────────────────────────────────────
+  # A1 — Block ID Injector
+  # ───────────────────────────────────────────
+  a1_block_id_injector:
+    name: "A1 · Block ID Injector"
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      github.event.inputs.stage == 'A1' ||
+      github.event.inputs.stage == 'ALL'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Run tests — A1
+        run: python -m pytest tests/test_a1_block_id_injector.py -v
+
+      - name: Check input files exist
+        run: |
+          if [ ! -f data/input/pipeline_control_block.json ]; then
+            echo "ERROR: data/input/pipeline_control_block.json tidak ditemukan"
+            exit 1
+          fi
+          # Cek setidaknya satu file chapters tersedia
+          if [ ! -f data/input/chapter_semantic_bab7.json ] && \
+             [ ! -f data/input/chapters_semantic_rest.json ]; then
+            echo "ERROR: Tidak ada file chapters ditemukan di data/input/"
+            exit 1
+          fi
+
+      - name: Merge input files
+        run: |
+          python - << 'EOF'
+          import json
+          from pathlib import Path
+
+          pcb_path = Path("data/input/pipeline_control_block.json")
+          with open(pcb_path, encoding="utf-8") as f:
+              pcb = json.load(f)
+
+          # Kumpulkan semua chapters dari file yang tersedia
+          chapters = []
+          for fname in ["chapters_semantic_rest.json", "chapter_semantic_bab7.json"]:
+              p = Path("data/input") / fname
+              if p.exists():
+                  with open(p, encoding="utf-8") as f:
+                      data = json.load(f)
+                  # File bisa berupa array of chapters atau object dengan key "chapters"
+                  if isinstance(data, list):
+                      chapters.extend(data)
+                  elif isinstance(data, dict) and "chapters" in data:
+                      chapters.extend(data["chapters"])
+                  elif isinstance(data, dict) and "chapter_id" in data:
+                      # Single chapter object
+                      chapters.append(data)
+
+          merged = {
+              "pipeline_control_block": pcb,
+              "semantic_chapters": chapters
+          }
+
+          Path("data/input/_merged_for_a1.json").write_text(
+              json.dumps(merged, ensure_ascii=False, indent=2),
+              encoding="utf-8"
+          )
+          print(f"Merged: {len(chapters)} chapters")
+          EOF
+
+      - name: Run A1
+        run: |
+          python pipeline/a1_block_id_injector.py \
+            data/input/_merged_for_a1.json \
+            data/output/block_identity_packet.json
+
+      - name: Validate output exists and is valid JSON
+        run: |
+          python - << 'EOF'
+          import json, sys, os
+          from pathlib import Path
+
+          p = Path("data/output/block_identity_packet.json")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+          def write_summary(lines):
+              if summary_path:
+                  with open(summary_path, "a") as f:
+                      f.write("\n".join(lines) + "\n")
+
+          if not p.exists():
+              msg = "ERROR: Output file tidak ditemukan"
+              print(msg, file=sys.stderr)
+              write_summary(["## ❌ A1 — Output tidak ditemukan", msg])
+              sys.exit(1)
+
+          with open(p, encoding="utf-8") as f:
+              data = json.load(f)
+
+          if data.get("failures"):
+              lines = ["## ❌ A1 — Fatal Failures", ""]
+              for failure in data["failures"]:
+                  code = failure.get("code", "?")
+                  msg  = failure.get("message", "")
+                  print(f"  [{code}] {msg}", file=sys.stderr)
+                  lines.append(f"- **[{code}]** {msg}")
+              write_summary(lines)
+              sys.exit(1)
+
+          summary = data.get("summary", {})
+          if summary.get("fingerprint_collisions", 0) > 0:
+              msg = "FATAL: Ada fingerprint collisions"
+              print(msg, file=sys.stderr)
+              write_summary(["## ❌ A1 — Collision", msg])
+              sys.exit(1)
+
+          blocks   = summary.get("total_blocks", 0)
+          warnings = summary.get("warnings_count", 0)
+          print(f"OK: {blocks} blocks, {warnings} warnings")
+          write_summary([
+              "## ✅ A1 — Block ID Injector",
+              f"- Total blocks : **{blocks}**",
+              f"- Warnings     : {warnings}",
+              f"- Collisions   : 0",
+          ])
+          EOF
+
+      - name: Upload output artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-block-identity-packet
+          path: data/output/block_identity_packet.json
+          if-no-files-found: warn
+
+      - name: Cleanup temp merge file
+        if: always()
+        run: rm -f data/input/_merged_for_a1.json
+
+      - name: Commit output
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[A1] block_identity_packet.json — auto-generated"
+          file_pattern: "data/output/block_identity_packet.json"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+  # ───────────────────────────────────────────
+  # SCHEMA VALIDATOR (review gate)
+  # Dijalankan setelah A1 selesai
+  # ───────────────────────────────────────────
+  validate_a1_output:
+    name: "Validate A1 Output (review gate)"
+    runs-on: ubuntu-latest
+    needs: a1_block_id_injector
+    if: success()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}  # pastikan dapat commit terbaru
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Schema validation
+        run: |
+          python - << 'EOF'
+          import json, sys, re, os
+          from pathlib import Path
+
+          p = Path("data/output/block_identity_packet.json")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+          def write_summary(lines):
+              if summary_path:
+                  with open(summary_path, "a") as f:
+                      f.write("\n".join(lines) + "\n")
+
+          if not p.exists():
+              write_summary(["## ⚠️ A1 Schema Gate — SKIP", "Output belum ada."])
+              sys.exit(0)
+
+          with open(p, encoding="utf-8") as f:
+              data = json.load(f)
+
+          RE_REF = re.compile(r"^[A-Za-z0-9_-]+\.B[0-9]{3,}$")
+          RE_FP_C = re.compile(r"^[A-Za-z0-9_-]+__[A-Za-z0-9_-]+__[a-z0-9_]+$")
+          RE_FP_S = re.compile(r"^[A-Za-z0-9_-]+__[A-Za-z0-9_-]+__structural_[0-9]+$")
+
+          errors = []
+          all_fps = []
+
+          for ch in data.get("chapters", []):
+              chapter_id = ch.get("chapter_id", "?")
+              refs_in_chapter = []
+              for block in ch.get("blocks", []):
+                  ref = block.get("block_ref", "")
+                  fp  = block.get("block_fingerprint", "")
+                  idx = block.get("original_index")
+
+                  if not RE_REF.match(ref):
+                      errors.append(f"{ref}: block_ref format invalid")
+                  if not (RE_FP_C.match(fp) or RE_FP_S.match(fp)):
+                      errors.append(f"{ref}: fingerprint format invalid: {fp}")
+                  if idx is None:
+                      errors.append(f"{ref}: original_index missing")
+                  if ref in refs_in_chapter:
+                      errors.append(f"{ref}: duplicate block_ref dalam chapter {chapter_id}")
+                  refs_in_chapter.append(ref)
+                  all_fps.append(fp)
+
+          seen_fps = {}
+          for fp in all_fps:
+              if fp in seen_fps:
+                  errors.append(f"COLLISION: {fp}")
+              seen_fps[fp] = True
+
+          if errors:
+              lines = ["## ❌ A1 Schema Gate — Errors", ""]
+              for e in errors:
+                  print(f"  {e}", file=sys.stderr)
+                  lines.append(f"- {e}")
+              write_summary(lines)
+              sys.exit(1)
+
+          print(f"Schema validation OK: {len(all_fps)} blocks validated")
+          write_summary([
+              "## ✅ A1 Schema Gate — Passed",
+              f"- {len(all_fps)} blocks validated",
+              "- Semua fingerprint unik",
+              "- Semua format valid",
+          ])
+          EOF
+
+      - name: Post summary
+        if: always()
+        run: |
+          python - << 'EOF'
+          import json, os
+          from pathlib import Path
+
+          p = Path("data/output/block_identity_packet.json")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+          if not p.exists() or not summary_path:
+              exit(0)
+
+          with open(p, encoding="utf-8") as f:
+              data = json.load(f)
+
+          s = data.get("summary", {})
+          lines = [
+              "## A1 Block ID Injector — Summary",
+              f"| Field | Value |",
+              f"|---|---|",
+              f"| Total chapters | {s.get('total_chapters', 0)} |",
+              f"| Total blocks   | {s.get('total_blocks', 0)} |",
+              f"| Collisions     | {s.get('fingerprint_collisions', 0)} |",
+              f"| Empty blocks   | {s.get('empty_content_blocks', 0)} |",
+              f"| Warnings       | {s.get('warnings_count', 0)} |",
+              f"| Failures       | {s.get('failure_count', 0)} |",
+          ]
+          with open(summary_path, "a") as f:
+              f.write("\n".join(lines) + "\n")
+
+          # juga print ke stdout untuk raw log
+          print("## A1 Block ID Injector — Summary")
+          print(f"- Total chapters : {s.get('total_chapters', 0)}")
+          print(f"- Total blocks   : {s.get('total_blocks', 0)}")
+          print(f"- Collisions     : {s.get('fingerprint_collisions', 0)}")
+          print(f"- Empty blocks   : {s.get('empty_content_blocks', 0)}")
+          print(f"- Warnings       : {s.get('warnings_count', 0)}")
+          print(f"- Failures       : {s.get('failure_count', 0)}")
+          EOF
