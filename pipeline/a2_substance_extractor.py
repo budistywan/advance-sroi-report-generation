@@ -96,9 +96,28 @@ PENTING:
 - Provenance harus akurat — gunakan block_ref, block_fingerprint, dan type persis dari input.
 - Non-content blocks (divider, spacer, divider_thick) TIDAK boleh menjadi elemen mandiri.
 - Evidence status mengikuti interpretasi teraman (weakest safe interpretation).
-- use_affordances dari vocab berikut (boleh kombinasi): opening_mandate, program_positioning, scope_definition, methodological_reference, problem_justification, baseline_context, ideal_state_anchor, strategy_alignment, implementation_reference, outcome_reference, adjustment_reference, monetization_reference, learning_anchor, closing_summary, recommendation_basis, visual_candidate. Extension boleh dengan prefix x_.
-- element_type harus salah satu dari: evaluative_mandate, program_positioning, scope_definition, stakeholder_structure, investment_structure, output_structure, outcome_structure, adjustment_logic, monetization_logic, evaluative_metric, interpretive_finding, learning_signal, problem_signal, ideal_state_signal, strategy_signal, program_structure, other.
-- Jika element_type = other, wajib isi element_type_note.
+
+PERHATIAN PENTING — dua field berbeda, JANGAN dicampur:
+
+1. element_type — KATEGORI elemen. Harus salah satu dari daftar ini PERSIS:
+   evaluative_mandate, program_positioning, scope_definition, stakeholder_structure,
+   investment_structure, output_structure, outcome_structure, adjustment_logic,
+   monetization_logic, evaluative_metric, interpretive_finding, learning_signal,
+   problem_signal, ideal_state_signal, strategy_signal, program_structure, other
+
+2. use_affordances — FUNGSI elemen untuk bab lain. Harus dari daftar ini PERSIS:
+   opening_mandate, program_positioning, scope_definition, methodological_reference,
+   problem_justification, baseline_context, ideal_state_anchor, strategy_alignment,
+   implementation_reference, outcome_reference, adjustment_reference,
+   monetization_reference, learning_anchor, closing_summary, recommendation_basis,
+   visual_candidate
+   Extension boleh dengan prefix x_ (contoh: x_transition_pathway)
+
+JANGAN gunakan nilai dari element_type sebagai use_affordances, dan sebaliknya.
+Contoh SALAH: use_affordances = ["stakeholder_structure"] → ini element_type, bukan affordance
+Contoh BENAR: use_affordances = ["implementation_reference", "visual_candidate"]
+
+Jika element_type = other, wajib isi element_type_note.
 
 Output HANYA JSON array of elements. Tidak ada teks lain. Format tiap elemen:
 {
