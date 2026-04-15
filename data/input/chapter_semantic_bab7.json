@@ -1,0 +1,765 @@
+[
+  {
+    "chapter_id": "bab_7",
+    "chapter_type": "implementation_sroi",
+    "source_outline_ref": "bab_7",
+    "builder_mode": "sroi",
+    "builder_version": "2.0.0",
+    "program_code": "ESD",
+    "generated_at": "2026-04-14T02:41:47.508825",
+    "blocks": [
+      {
+        "type": "heading_1",
+        "text": "BAB VII IMPLEMENTASI / PDIS DENGAN SROI"
+      },
+      {
+        "type": "paragraph_lead",
+        "text": "Bab ini menyajikan seluruh rangkaian implementasi Program Enduro Sahabat Difabel (ESD) secara terukur — dari kegiatan, stakeholder, dan investasi hingga outcome, fiksasi dampak, monetisasi nilai sosial, dan hasil evaluasi SROI periode 2023–2025. Semua angka pada bab ini bersumber dari Financial Calculation Engine dan dapat ditelusuri melalui calc_audit_log."
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "heading_2",
+        "text": "7.1 Proses dan Kegiatan yang Dilakukan"
+      },
+      {
+        "type": "paragraph",
+        "text": "Program ESD melaksanakan 6 aktivitas terstruktur sepanjang periode 2023–2025. Menyajikan seluruh rangkaian implementasi program ESD secara terukur — dari aktivitas, stakeholder, investasi, dan output hingga outcome, fiksasi dampak, monetisasi, dan hasil SROI evaluatif."
+      },
+      {
+        "type": "paragraph",
+        "text": "Tahun 2023: Pelatihan otomotif dasar bagi kelompok inti · Pengenalan product knowledge Enduro · Penguatan kesiapan kerja operator difabel melalui pembelajaran teknis yang accessible · Penyediaan bantuan modal awal dan alat bengkel inklusif....",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tahun 2024: Pendampingan operasional unit aktif · Penguatan ritme transaksi pada unit yang sudah berjalan · Pembentukan trust pelanggan melalui layanan yang lebih konsisten · Menjaga keberlanjutan empat kelompok inti....",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tahun 2025: Penambahan satu kelompok inti baru · Penguatan pembelajaran dari unit aktif ke unit baru/inkubasi · Perluasan makna program dari sekadar usaha menjadi ruang kerja inklusif yang lebih diakui · Menjaga lima unit transaksi riil tetap aktif....",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "heading_2",
+        "text": "7.2 Node Program"
+      },
+      {
+        "type": "paragraph",
+        "text": "Program beroperasi di 7 node/lokasi: Isyarat Hati, FPDB & Compac, Rusli Cuci Motor, Difabel PerDIK, Kelompok Baru 2025, SLB N4 Jakarta, Inul & Mbah Motor. Struktur node ESD perlu dibaca bertingkat: kelompok inti adalah titik intervensi utama, unit legacy menunjukkan kesinambungan ekosistem, sedangkan unit baru 2025 memperlihatkan ekspansi program. Storytelling paling kuat ketika dibedakan antara unit terhubung, unit transaksi riil, dan unit yang masih inkubasi."
+      },
+      {
+        "type": "callout_info",
+        "text": "Program ESD menjalankan aktivitas melalui 7 node yang tersebar secara nasional. Setiap node memiliki karakteristik dan tingkat aktivitas yang berbeda sesuai dengan kapasitas dan tahap pengembangan masing-masing.",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "heading_2",
+        "text": "7.3 Identifikasi Stakeholder yang Terlibat"
+      },
+      {
+        "type": "paragraph",
+        "text": "Program melibatkan 5 pemangku kepentingan utama dengan peran berbeda dalam ekosistem program."
+      },
+      {
+        "type": "table_borderless",
+        "headers": [
+          "Stakeholder",
+          "Peran",
+          "Tipe Keterlibatan"
+        ],
+        "rows": [
+          [
+            "PT Pertamina Lubricants",
+            "Pemrakarsa dan penyelenggara program TJSL ESD.",
+            "initiator"
+          ],
+          [
+            "Kelompok / Bengkel Difabel",
+            "Penerima manfaat langsung dan unit usaha inti yang menjadi simpul utama aktivasi bengkel inklusif.",
+            "direct beneficiary"
+          ],
+          [
+            "Operator Difabel",
+            "Pelaksana layanan bengkel ringan dan penerima manfaat utama dari peningkatan kemandirian ekonomi.",
+            "direct beneficiary"
+          ],
+          [
+            "Pendamping / Keluarga",
+            "Pendukung mobilitas, operasional, dan keberlanjutan unit usaha inklusif.",
+            "indirect beneficiary"
+          ],
+          [
+            "Pelanggan / Komunitas Lokal",
+            "Pengguna jasa servis ringan, oli, dan pelumas yang ikut menopang keberlanjutan unit usaha.",
+            "ecosystem user"
+          ]
+        ],
+        "column_widths": [
+          3200,
+          1600,
+          4838
+        ],
+        "display_status": "present_as_final",
+        "source_refs": [
+          "stakeholders"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "7.4 Input / Investasi"
+      },
+      {
+        "type": "callout_warning",
+        "text": "Catatan status data: sebagian investasi program berstatus under_confirmation atau planned — angka telah tersedia namun perlu diverifikasi dari laporan keuangan resmi.",
+        "display_status": "present_as_pending",
+        "source_refs": [
+          "investment"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Total investasi program selama 2023–2025 mencapai Rp 594,781,486, dengan distribusi yang meningkat setiap tahun seiring penguatan aktivitas."
+      },
+      {
+        "type": "table",
+        "table_id": "table_investment_per_node",
+        "title": "Investasi Program per Node per Tahun",
+        "headers": [
+          "Node Program",
+          "Tahun",
+          "Investasi (Rp)",
+          "Status"
+        ],
+        "rows": [
+          [
+            "—",
+            "2023",
+            "Rp 145,742,286",
+            "under_confirmation"
+          ],
+          [
+            "—",
+            "2024",
+            "Rp 204,039,200",
+            "under_confirmation"
+          ],
+          [
+            "—",
+            "2025",
+            "Rp 245,000,000",
+            "under_confirmation"
+          ],
+          [
+            "TOTAL",
+            "—",
+            "Rp 594,781,486",
+            "final"
+          ]
+        ],
+        "column_widths": [
+          3200,
+          1200,
+          3000,
+          2238
+        ],
+        "note": "2023–2024 under_confirmation — ditampilkan dengan badge pending",
+        "display_status": "present_as_pending",
+        "source_refs": [
+          "investment"
+        ]
+      },
+      {
+        "type": "metric_card_3col",
+        "items": [
+          {
+            "label": "Investasi 2023",
+            "value": "Rp 145,742,286",
+            "sublabel": "under confirmation"
+          },
+          {
+            "label": "Investasi 2024",
+            "value": "Rp 204,039,200",
+            "sublabel": "under confirmation"
+          },
+          {
+            "label": "Investasi 2025",
+            "value": "Rp 245,000,000",
+            "sublabel": "under confirmation"
+          }
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "7.5 Proses dan Output yang Dihasilkan"
+      },
+      {
+        "type": "paragraph",
+        "text": "Program menghasilkan 6 output terukur sepanjang periode evaluasi."
+      },
+      {
+        "type": "table_borderless",
+        "headers": [
+          "Output",
+          "Tahun",
+          "Jumlah",
+          "Satuan",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Empat kelompok inti dibentuk sebagai basis capability building dan enterprise activation pada bengkel inklusif.",
+            "2023",
+            "4",
+            "kelompok inti",
+            "under_confirmation"
+          ],
+          [
+            "Enam unit terhubung ke ekosistem program dan lima unit mulai menunjukkan transaksi riil, menandai market entry awal.",
+            "2023",
+            "5",
+            "unit transaksi riil",
+            "under_confirmation"
+          ],
+          [
+            "Empat kelompok inti berlanjut dengan penguatan operasional dan trust building; enam unit tetap terhubung dalam ekosistem program.",
+            "2024",
+            "6",
+            "unit terhubung program",
+            "under_confirmation"
+          ],
+          [
+            "Lima unit mempertahankan transaksi riil sehingga program memiliki basis observed value yang lebih stabil.",
+            "2024",
+            "5",
+            "unit transaksi riil",
+            "under_confirmation"
+          ],
+          [
+            "Satu kelompok inti baru ditambahkan sehingga ekosistem berkembang menjadi tujuh unit terhubung program.",
+            "2025",
+            "7",
+            "unit terhubung program",
+            "under_confirmation"
+          ],
+          [
+            "Lima unit transaksi riil tetap aktif, sementara dua unit berada pada tahap inkubasi atau belum menunjukkan transaksi stabil.",
+            "2025",
+            "2",
+            "unit inkubasi",
+            "under_confirmation"
+          ]
+        ],
+        "column_widths": [
+          3000,
+          1000,
+          1200,
+          1200,
+          3238
+        ],
+        "display_status": "present_as_final",
+        "source_refs": [
+          "outputs"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "7.6 Outcome Program"
+      },
+      {
+        "type": "paragraph",
+        "text": "Program menghasilkan 6 outcome yang dimonetisasi melalui 2 aspek observed dan 2 aspek proxy."
+      },
+      {
+        "type": "paragraph",
+        "text": "✓ Observed — Transaksi jasa dan sparepart bengkel difabel meningkat: Unit bengkel inklusif yang aktif mulai menangkap permintaan servis ringan dan transaksi sparepart secara lebih konsisten, sehingga keterampilan teknis berubah menjadi layanan yang benar-benar dibeli pelanggan.",
+        "display_status": "present_as_final",
+        "source_refs": [
+          "tjsl_scripts_master"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "✓ Observed — Penjualan pelumas meningkat pada unit program: Kelompok bengkel difabel aktif memonetisasi product knowledge Enduro sebagai bagian dari layanan usaha, menandai bertambahnya market capture dan legitimasi teknis unit.",
+        "display_status": "present_as_final",
+        "source_refs": [
+          "tjsl_scripts_master"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "~ Proxy — Kapasitas usaha bengkel inklusif teraktivasi: Integrasi antara skill, alat, stok awal, dan pendampingan membuat unit bengkel difabel lebih siap beroperasi sebagai usaha yang viable, bukan sekadar ruang latihan.",
+        "display_status": "present_as_proxy",
+        "source_refs": [
+          "evidence_registry"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "~ Proxy — Operator difabel lebih aktif dan mandiri secara ekonomi: Keterlibatan operator difabel dalam usaha bengkel meningkat sehingga mereka memperoleh peran kerja yang lebih nyata, kesempatan menghasilkan pendapatan, dan sinyal kemandirian ekonomi.",
+        "display_status": "present_as_proxy",
+        "source_refs": [
+          "evidence_registry"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "~ Proxy — Kepercayaan diri dan self-efficacy operator difabel menguat: Pengalaman menjalankan layanan, menerima pelanggan, dan mempertahankan operasi bengkel memperkuat rasa mampu dan identitas diri operator difabel sebagai pelaku kerja produktif.",
+        "display_status": "present_as_proxy",
+        "source_refs": [
+          "evidence_registry"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "~ Proxy — Pengakuan sosial terhadap difabel sebagai aktor ekonomi meningkat: Ketika bengkel difabel aktif, bertransaksi, dan dipercaya pelanggan, komunitas lokal mulai melihat difabel bukan hanya sebagai penerima bantuan melainkan sebagai penyedia layanan yang produktif.",
+        "display_status": "present_as_proxy",
+        "source_refs": [
+          "evidence_registry"
+        ]
+      },
+      {
+        "type": "heading_2",
+        "text": "7.7 Fiksasi Dampak (DDAT Adjustment)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Fiksasi dampak diterapkan untuk memastikan bahwa nilai sosial yang diklaim benar-benar mencerminkan kontribusi program secara nyata. Empat parameter: Deadweight (DW), Displacement (DS), Attribution (AT), Drop-off (DO)."
+      },
+      {
+        "type": "table",
+        "table_id": "table_ddat_per_aspek",
+        "title": "DDAT Adjustment per Aspek",
+        "headers": [
+          "Aspek",
+          "DW",
+          "DS",
+          "AT",
+          "DO",
+          "Net ×",
+          "Haircut"
+        ],
+        "rows": [
+          [
+            "JSP",
+            "15%",
+            "5%",
+            "25%",
+            "0%",
+            "×0.6068",
+            "39%"
+          ],
+          [
+            "LUB",
+            "20%",
+            "5%",
+            "25%",
+            "0%",
+            "×0.5415",
+            "46%"
+          ],
+          [
+            "ENT",
+            "20%",
+            "0%",
+            "30%",
+            "0%",
+            "×0.5",
+            "50%"
+          ],
+          [
+            "JOB",
+            "10%",
+            "0%",
+            "37%",
+            "0%",
+            "×0.63",
+            "37%"
+          ]
+        ],
+        "column_widths": [
+          1200,
+          1100,
+          1100,
+          1100,
+          1100,
+          1100,
+          2938
+        ],
+        "note": "DW=Deadweight DS=Displacement AT=Attribution DO=Drop-off",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "paragraph_small",
+        "text": "Rata-rata fiksasi dampak keseluruhan: −43.2%. Haircut tertinggi pada aspek ENT (50%): Aktivasi kapasitas usaha cukup dipengaruhi program, tetapi tetap dipengaruhi kesiapan awal kelompok, pendampingan non-program, dan variasi kemampuan kewirausahaan masing-masing unit.."
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "heading_2",
+        "text": "7.8 Monetisasi Dampak"
+      },
+      {
+        "type": "paragraph_lead",
+        "text": "Monetisasi nilai sosial dilakukan melalui 4 aspek. Aspek JSP dan LUB dimonetisasi berdasarkan data transaksi aktual (observed). Aspek ENT dan JOB dimonetisasi menggunakan proxy konservatif: ENT: proxy aktivasi kapasitas usaha bengkel inklusif per tahun · JOB: proxy operator difabel aktif dan kemandirian ekonomi per tahun."
+      },
+      {
+        "type": "callout_info",
+        "text": "Aspek JSP dan LUB dimonetisasi berdasarkan data transaksi aktual (observed). Aspek ENT dan JOB dimonetisasi menggunakan proxy konservatif: ENT: proxy aktivasi kapasitas usaha bengkel inklusif per tahun · JOB: proxy operator difabel aktif dan kemandirian ekonomi per tahun.",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "table",
+        "table_id": "table_monetization_per_aspek",
+        "title": "Monetisasi Nilai Sosial per Aspek per Tahun",
+        "headers": [
+          "Aspek",
+          "Tahun",
+          "Gross (Rp)",
+          "Adj DDAT",
+          "Net (Rp)",
+          "Status"
+        ],
+        "rows": [
+          [
+            "ENT",
+            "2023",
+            "Rp 120,000,000",
+            "×0.5",
+            "Rp 60,000,000",
+            "final"
+          ],
+          [
+            "ENT",
+            "2024",
+            "Rp 140,000,000",
+            "×0.5",
+            "Rp 70,000,000",
+            "final"
+          ],
+          [
+            "ENT",
+            "2025",
+            "Rp 160,000,000",
+            "×0.5",
+            "Rp 80,000,000",
+            "final"
+          ],
+          [
+            "JOB",
+            "2023",
+            "Rp 60,000,000",
+            "×0.63",
+            "Rp 37,800,000",
+            "final"
+          ],
+          [
+            "JOB",
+            "2024",
+            "Rp 84,000,000",
+            "×0.63",
+            "Rp 52,920,000",
+            "final"
+          ],
+          [
+            "JOB",
+            "2025",
+            "Rp 96,000,000",
+            "×0.63",
+            "Rp 60,480,000",
+            "final"
+          ],
+          [
+            "JSP",
+            "2023",
+            "Rp 90,210,000",
+            "×0.6068",
+            "Rp 54,739,428",
+            "final"
+          ],
+          [
+            "JSP",
+            "2024",
+            "Rp 126,300,000",
+            "×0.6068",
+            "Rp 76,638,840",
+            "final"
+          ],
+          [
+            "JSP",
+            "2025",
+            "Rp 176,820,000",
+            "×0.6068",
+            "Rp 107,294,376",
+            "final"
+          ],
+          [
+            "LUB",
+            "2023",
+            "Rp 12,880,000",
+            "×0.5415",
+            "Rp 6,974,520",
+            "final"
+          ],
+          [
+            "LUB",
+            "2024",
+            "Rp 18,030,000",
+            "×0.5415",
+            "Rp 9,763,245",
+            "final"
+          ],
+          [
+            "LUB",
+            "2025",
+            "Rp 25,250,000",
+            "×0.5415",
+            "Rp 13,672,875",
+            "final"
+          ],
+          [
+            "TOTAL",
+            "—",
+            "Rp 1,109,490,000",
+            "—",
+            "Rp 630,283,284",
+            "—"
+          ]
+        ],
+        "column_widths": [
+          900,
+          800,
+          2100,
+          900,
+          2100,
+          2838
+        ],
+        "note": "LUB & SVC = observed. REINT & CONF = proxy S10.",
+        "display_status": "present_as_final",
+        "source_refs": [
+          "monetization",
+          "ddat_params"
+        ]
+      },
+      {
+        "type": "callout_warning",
+        "text": "Aspek ENT, JOB adalah proxy monetisasi — estimasi nilai sosial berdasarkan referensi kebijakan dan data sekunder, bukan pengukuran langsung. Nilai ini perlu dikonfirmasi melalui survei peserta pada periode evaluasi berikutnya.",
+        "display_status": "present_as_proxy",
+        "source_refs": [
+          "evidence_registry"
+        ]
+      },
+      {
+        "type": "bar_chart_text",
+        "data_points": [
+          {
+            "label": "JSP   ",
+            "value": 238.7
+          },
+          {
+            "label": "ENT   ",
+            "value": 210
+          },
+          {
+            "label": "JOB   ",
+            "value": 151.2
+          },
+          {
+            "label": "LUB   ",
+            "value": 30.4
+          }
+        ],
+        "max_value": 263,
+        "title": "Distribusi nilai bersih per aspek (Rp juta, kumulatif 2023–2025)"
+      },
+      {
+        "type": "divider_thick"
+      },
+      {
+        "type": "heading_2",
+        "text": "7.9 Nilai SROI dan Penjelasan"
+      },
+      {
+        "type": "paragraph_lead",
+        "text": "Berdasarkan kalkulasi evaluatif dengan compound ORI-adjusted dan DDAT net multiplier per aspek, program ESD menghasilkan SROI blended 1 : 1.12 — artinya setiap Rp 1 yang diinvestasikan menghasilkan Rp 1.12 nilai sosial-ekonomi terukur."
+      },
+      {
+        "type": "metric_card_3col",
+        "items": [
+          {
+            "label": "Total Investasi",
+            "value": "Rp 594,781,486",
+            "sublabel": "2023–2025"
+          },
+          {
+            "label": "Net Benefit (compounded)",
+            "value": "Rp 663,337,061",
+            "sublabel": "terminal year"
+          },
+          {
+            "label": "SROI Blended",
+            "value": "1 : 1.12",
+            "sublabel": "positive return"
+          }
+        ],
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "table",
+        "table_id": "table_sroi_per_tahun",
+        "title": "Kalkulasi SROI per Tahun Program",
+        "headers": [
+          "Tahun",
+          "Investasi",
+          "Gross",
+          "Net",
+          "Compound",
+          "Net Compounded",
+          "SROI"
+        ],
+        "rows": [
+          [
+            "2023",
+            "Rp 145,742,286",
+            "Rp 283,090,000",
+            "Rp 159,513,948",
+            "×1.1252 (ORI023T3)",
+            "Rp 179,485,094",
+            "1 : 1.23"
+          ],
+          [
+            "2024",
+            "Rp 204,039,200",
+            "Rp 368,330,000",
+            "Rp 209,322,085",
+            "×1.0625 (ORI025T3)",
+            "Rp 222,404,715",
+            "1 : 1.09"
+          ],
+          [
+            "2025",
+            "Rp 245,000,000",
+            "Rp 458,070,000",
+            "Rp 261,447,251",
+            "×1.0000 (ORI027T3)",
+            "Rp 261,447,251",
+            "1 : 1.07"
+          ],
+          [
+            "TOTAL",
+            "Rp 594,781,486",
+            "Rp 1,109,490,000",
+            "Rp 630,283,284",
+            "—",
+            "Rp 663,337,061",
+            "1 : 1.12"
+          ]
+        ],
+        "column_widths": [
+          800,
+          1500,
+          1400,
+          1400,
+          1700,
+          1638,
+          1200
+        ],
+        "note": "Net compounded = nilai bersih yang di-compound ke terminal year 2025",
+        "display_status": "present_as_final",
+        "source_refs": [
+          "sroi_metrics.calculated"
+        ]
+      },
+      {
+        "type": "table",
+        "table_id": "table_sroi_blended",
+        "title": "Ringkasan SROI Evaluatif 2023–2025",
+        "headers": [
+          "Metrik",
+          "Nilai"
+        ],
+        "rows": [
+          [
+            "Total Investasi",
+            "Rp 594,781,486"
+          ],
+          [
+            "Total Gross Kumulatif",
+            "Rp 1,109,490,000"
+          ],
+          [
+            "Total Net Kumulatif",
+            "Rp 630,283,284"
+          ],
+          [
+            "Total Net Compounded",
+            "Rp 663,337,061"
+          ],
+          [
+            "Avg Fiksasi",
+            "−43.2%"
+          ],
+          [
+            "SROI Blended",
+            "1 : 1.12"
+          ]
+        ],
+        "column_widths": [
+          4819,
+          4819
+        ],
+        "note": "Evaluatif · Compound ORI-adjusted · DDAT net multiplier per aspek · Terminal year 2025",
+        "display_status": "present_as_final",
+        "source_refs": [
+          "sroi_metrics.calculated"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Tahun 2023 (ORI023T3, 5.90%): investasi Rp 145,742,286, gross Rp 283,090,000, nilai bersih setelah DDAT Rp 159,513,948, di-compound ×1.1252 menjadi Rp 179,485,094, SROI 1 : 1.23.",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tahun 2024 (ORI025T3, 6.25%): investasi Rp 204,039,200, gross Rp 368,330,000, nilai bersih setelah DDAT Rp 209,322,085, di-compound ×1.0625 menjadi Rp 222,404,715, SROI 1 : 1.09.",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "paragraph",
+        "text": "Tahun 2025 (ORI027T3, 6.50%): investasi Rp 245,000,000, gross Rp 458,070,000, nilai bersih setelah DDAT Rp 261,447,251, di-compound ×1.0000 menjadi Rp 261,447,251, SROI 1 : 1.07.",
+        "display_status": "present_as_final"
+      },
+      {
+        "type": "heading_2",
+        "text": "7.10 Interpretasi dan Temuan Program"
+      },
+      {
+        "type": "paragraph",
+        "text": "Evaluasi SROI menunjukkan bahwa program ESD menghasilkan nilai sosial yang melampaui investasi. Struktur monetisasi perlu dibaca dengan memahami komposisi aspek observed dan proxy, serta distribusi nilai antar tahun."
+      },
+      {
+        "type": "paragraph",
+        "text": "Pelatihan otomotif dasar perlu segera dikaitkan dengan ruang layanan nyata; tanpa itu skill difabel mudah berhenti sebagai pelatihan, bukan penghidupan.",
+        "display_status": "present_as_inferred",
+        "source_refs": [
+          "learning_signals"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "Bantuan modal dan pendampingan operasional menjadi jembatan penting antara kompetensi dan transaksi riil pada unit bengkel difabel.",
+        "display_status": "present_as_inferred",
+        "source_refs": [
+          "learning_signals"
+        ]
+      },
+      {
+        "type": "paragraph_small",
+        "text": "Catatan metodologis: seluruh angka pada bab ini dihasilkan oleh Financial Calculation Engine (deterministik, non-LLM) dan dapat ditelusuri melalui calc_audit_log. Evaluasi ini bersifat evaluatif — mengukur nilai yang dihasilkan selama 2023–2025 berdasarkan data yang tersedia."
+      }
+    ]
+  }
+]
