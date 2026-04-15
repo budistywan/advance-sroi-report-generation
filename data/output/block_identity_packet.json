@@ -1,0 +1,2417 @@
+{
+  "activity": "block_id_injector",
+  "document_id": "esd_report_v1",
+  "program_code": "ESD",
+  "generated_at": "2026-04-15T05:58:48.590Z",
+  "pipeline_version": "v1",
+  "chapters": [
+    {
+      "chapter_id": "bab_1",
+      "chapter_type": "pendahuluan",
+      "blocks": [
+        {
+          "block_ref": "bab_1.B001",
+          "block_fingerprint": "bab_1__heading_1__bab_i_pendahuluan",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB I PENDAHULUAN"
+        },
+        {
+          "block_ref": "bab_1.B002",
+          "block_fingerprint": "bab_1__paragraph_lead__bab_ini_menyajikan_latar_belakang_tujuan",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini menyajikan latar belakang, tujuan, ruang lingkup, dan konsiderasi hukum penyusunan Laporan Evaluasi Social Return on Investment (SROI) Program Enduro Sahabat Difabel (ESD) periode 2023–2025."
+        },
+        {
+          "block_ref": "bab_1.B003",
+          "block_fingerprint": "bab_1__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_1.B004",
+          "block_fingerprint": "bab_1__heading_2__11_latar_belakang_penulisan_laporan_sroi",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "1.1 Latar Belakang Penulisan Laporan SROI"
+        },
+        {
+          "block_ref": "bab_1.B005",
+          "block_fingerprint": "bab_1__paragraph__tanggung_jawab_sosial_dan_lingkungan_tjs",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "Tanggung Jawab Sosial dan Lingkungan (TJSL) merupakan kewajiban strategis yang tidak hanya bersifat normatif, tetapi juga menjadi instrumen pengukuran dampak sosial yang terukur. PT Pertamina Lubricants sebagai bagian dari ekosistem BUMN, melaksanakan TJSL dalam kerangka Beyond Compliance — Inovasi Sosial — melampaui kepatuhan minimum dan mengarah pada penciptaan nilai sosial yang berkelanjutan."
+        },
+        {
+          "block_ref": "bab_1.B006",
+          "block_fingerprint": "bab_1__paragraph__social_return_on_investment_sroi_adalah_",
+          "original_index": 5,
+          "type": "paragraph",
+          "text": "Social Return on Investment (SROI) adalah kerangka analisis yang mengukur nilai sosial, ekonomi, dan lingkungan dari suatu program intervensi secara holistik. Berbeda dengan evaluasi konvensional yang hanya mengukur output, SROI menelusuri perubahan yang dirasakan oleh pemangku kepentingan — dari individu penerima manfaat hingga komunitas yang lebih luas."
+        },
+        {
+          "block_ref": "bab_1.B007",
+          "block_fingerprint": "bab_1__callout_info__program_enduro_sahabat_difabel_masuk_dal",
+          "original_index": 6,
+          "type": "callout_info",
+          "text": "Program Enduro Sahabat Difabel masuk dalam kategori Beyond Compliance — Inovasi Sosial sesuai regulasi PROPER yang mewajibkan perusahaan peserta untuk mengusulkan program inovasi sosial unggulan dengan pengukuran dampak berbasis SROI.",
+          "source_refs": [
+            "program_positioning"
+          ]
+        },
+        {
+          "block_ref": "bab_1.B008",
+          "block_fingerprint": "bab_1__heading_2__12_tujuan_dan_luaran",
+          "original_index": 7,
+          "type": "heading_2",
+          "text": "1.2 Tujuan dan Luaran"
+        },
+        {
+          "block_ref": "bab_1.B009",
+          "block_fingerprint": "bab_1__paragraph__penyusunan_laporan_ini_bertujuan_untuk",
+          "original_index": 8,
+          "type": "paragraph",
+          "text": "Penyusunan laporan ini bertujuan untuk:"
+        },
+        {
+          "block_ref": "bab_1.B010",
+          "block_fingerprint": "bab_1__numbered_list__mengidentifikasi_dan_mendokumentasikan_s",
+          "original_index": 9,
+          "type": "numbered_list",
+          "items": [
+            {
+              "text": "Mengidentifikasi dan mendokumentasikan seluruh aktivitas program secara terstruktur"
+            },
+            {
+              "text": "Menghitung rasio nilai sosial yang dihasilkan terhadap investasi yang dikeluarkan"
+            },
+            {
+              "text": "Menyajikan temuan secara transparan — termasuk keterbatasan data dan area yang perlu diperkuat"
+            },
+            {
+              "text": "Memberikan rekomendasi berbasis bukti untuk pengembangan program pada periode berikutnya"
+            },
+            {
+              "text": "Memenuhi kewajiban pelaporan PROPER beyond compliance kepada KLHK"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_1.B011",
+          "block_fingerprint": "bab_1__heading_2__13_ruang_lingkup_kajian",
+          "original_index": 10,
+          "type": "heading_2",
+          "text": "1.3 Ruang Lingkup Kajian"
+        },
+        {
+          "block_ref": "bab_1.B012",
+          "block_fingerprint": "bab_1__paragraph__kajian_ini_mencakup_seluruh_aktivitas_pr",
+          "original_index": 11,
+          "type": "paragraph",
+          "text": "Kajian ini mencakup seluruh aktivitas Program Enduro Sahabat Difabel selama periode 2023–2025, meliputi 7 node program yang tersebar di wilayah operasional."
+        },
+        {
+          "block_ref": "bab_1.B013",
+          "block_fingerprint": "bab_1__table_borderless__dimensi",
+          "original_index": 12,
+          "type": "table_borderless",
+          "headers": [
+            "Dimensi",
+            "Cakupan"
+          ],
+          "rows": [
+            [
+              "Program",
+              "Enduro Sahabat Difabel"
+            ],
+            [
+              "Kode Program",
+              "ESD"
+            ],
+            [
+              "Periode",
+              "2023–2025"
+            ],
+            [
+              "Perusahaan",
+              "PT Pertamina Lubricants"
+            ],
+            [
+              "Pilar TJSL",
+              "Pemberdayaan Masyarakat"
+            ],
+            [
+              "Kategori PROPER",
+              "Beyond Compliance — Inovasi Sosial"
+            ],
+            [
+              "Node Program",
+              "7 node"
+            ],
+            [
+              "Kelompok Sasaran",
+              "Kelompok bengkel difabel, operator difabel, dan ekosistem pendamping usaha inklusif pada unit program dan legacy yang terhubung dengan ESD"
+            ]
+          ],
+          "column_widths": [
+            3200,
+            6438
+          ],
+          "source_refs": [
+            "program_identity",
+            "program_positioning"
+          ]
+        },
+        {
+          "block_ref": "bab_1.B014",
+          "block_fingerprint": "bab_1__heading_2__14_konsiderasi_hukum",
+          "original_index": 13,
+          "type": "heading_2",
+          "text": "1.4 Konsiderasi Hukum"
+        },
+        {
+          "block_ref": "bab_1.B015",
+          "block_fingerprint": "bab_1__paragraph__penyusunan_laporan_ini_berlandaskan_pada",
+          "original_index": 14,
+          "type": "paragraph",
+          "text": "Penyusunan laporan ini berlandaskan pada regulasi berikut:"
+        },
+        {
+          "block_ref": "bab_1.B016",
+          "block_fingerprint": "bab_1__bullet_list__uu_no_40_tahun_2007_tentang_perseroan_te",
+          "original_index": 15,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "UU No. 40 Tahun 2007 tentang Perseroan Terbatas Pasal 74"
+            },
+            {
+              "text": "Peraturan Menteri LHK No. 1 Tahun 2021"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_1.B017",
+          "block_fingerprint": "bab_1__paragraph_small__regulasi_di_atas_membentuk_kerangka_kewa",
+          "original_index": 16,
+          "type": "paragraph_small",
+          "text": "Regulasi di atas membentuk kerangka kewajiban dan metodologi yang menjadi dasar pelaksanaan kajian SROI ini."
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_2",
+      "chapter_type": "profil",
+      "blocks": [
+        {
+          "block_ref": "bab_2.B001",
+          "block_fingerprint": "bab_2__heading_1__bab_ii_profil_perusahaan",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB II PROFIL PERUSAHAAN"
+        },
+        {
+          "block_ref": "bab_2.B002",
+          "block_fingerprint": "bab_2__paragraph_lead__bab_ini_menyajikan_profil_pt_pertamina_l",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini menyajikan profil PT Pertamina Lubricants sebagai pemrakarsa program, mencakup lingkup usaha, arah kebijakan TJSL, dan posisi program Enduro Sahabat Difabel dalam portofolio pemberdayaan perusahaan."
+        },
+        {
+          "block_ref": "bab_2.B003",
+          "block_fingerprint": "bab_2__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_2.B004",
+          "block_fingerprint": "bab_2__heading_2__21_lingkup_usaha",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "2.1 Lingkup Usaha"
+        },
+        {
+          "block_ref": "bab_2.B005",
+          "block_fingerprint": "bab_2__paragraph__pt_pertamina_lubricants_merupakan_anak_p",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "PT Pertamina Lubricants merupakan anak perusahaan PT Pertamina (Persero) yang bergerak di bidang produksi dan distribusi pelumas untuk kendaraan bermotor dan industri. Produk unggulan perusahaan mencakup merek Enduro yang ditujukan untuk segmen kendaraan bermotor, menjadikan perusahaan ini memiliki kedekatan langsung dengan ekosistem perbengkelan otomotif di seluruh Indonesia."
+        },
+        {
+          "block_ref": "bab_2.B006",
+          "block_fingerprint": "bab_2__callout_gap__data_lengkap_profil_perusahaan_kapasitas",
+          "original_index": 5,
+          "type": "callout_gap",
+          "text": "Data lengkap profil perusahaan (kapasitas produksi, jumlah karyawan, sebaran distribusi) tidak tersedia dalam canonical JSON kajian ini. Untuk laporan final, bagian ini perlu dilengkapi dari dokumen profil korporat resmi.",
+          "gap_type": "data_unavailable",
+          "display_status": "present_as_inferred"
+        },
+        {
+          "block_ref": "bab_2.B007",
+          "block_fingerprint": "bab_2__heading_2__22_arah_kebijakan_visi_misi_dan_tujuan_p",
+          "original_index": 6,
+          "type": "heading_2",
+          "text": "2.2 Arah Kebijakan, Visi Misi, dan Tujuan Perusahaan"
+        },
+        {
+          "block_ref": "bab_2.B008",
+          "block_fingerprint": "bab_2__paragraph__komitmen_pt_pertamina_lubricants_terhada",
+          "original_index": 7,
+          "type": "paragraph",
+          "text": "Komitmen PT Pertamina Lubricants terhadap pembangunan sosial diwujudkan melalui pilar TJSL 'Pemberdayaan Masyarakat' yang selaras dengan agenda SDGs global. Program Enduro Sahabat Difabel secara langsung berkontribusi pada:"
+        },
+        {
+          "block_ref": "bab_2.B009",
+          "block_fingerprint": "bab_2__bullet_list__sdg_8__pekerjaan_layak",
+          "original_index": 8,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "SDG 8 — Pekerjaan Layak"
+            },
+            {
+              "text": "SDG 10 — Berkurangnya Ketimpangan"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_2.B010",
+          "block_fingerprint": "bab_2__heading_2__23_prinsip_dan_strategi_pengelolaan_pemb",
+          "original_index": 9,
+          "type": "heading_2",
+          "text": "2.3 Prinsip dan Strategi Pengelolaan Pemberdayaan"
+        },
+        {
+          "block_ref": "bab_2.B011",
+          "block_fingerprint": "bab_2__paragraph__pengelolaan_program_tjsl_pt_pertamina_lu",
+          "original_index": 10,
+          "type": "paragraph",
+          "text": "Pengelolaan program TJSL PT Pertamina Lubricants menganut pendekatan Beyond Compliance — Inovasi Sosial — sebuah paradigma yang menempatkan program sosial bukan sebagai kewajiban semata, melainkan sebagai investasi strategis yang menghasilkan nilai bersama bagi perusahaan dan masyarakat."
+        },
+        {
+          "block_ref": "bab_2.B012",
+          "block_fingerprint": "bab_2__callout_info__pendekatan_beyond_compliance_mengharuska",
+          "original_index": 11,
+          "type": "callout_info",
+          "text": "Pendekatan beyond compliance mengharuskan perusahaan untuk mengukur dampak program secara kuantitatif melalui SROI, membuktikan bahwa setiap rupiah yang diinvestasikan menghasilkan nilai sosial yang terukur.",
+          "source_refs": [
+            "program_positioning"
+          ]
+        },
+        {
+          "block_ref": "bab_2.B013",
+          "block_fingerprint": "bab_2__heading_2__24_jenis_dan_lingkup_program_pemberdayaa",
+          "original_index": 12,
+          "type": "heading_2",
+          "text": "2.4 Jenis dan Lingkup Program Pemberdayaan Masyarakat"
+        },
+        {
+          "block_ref": "bab_2.B014",
+          "block_fingerprint": "bab_2__paragraph__program_enduro_sahabat_difabel_merupakan",
+          "original_index": 13,
+          "type": "paragraph",
+          "text": "Program Enduro Sahabat Difabel merupakan salah satu program unggulan TJSL PT Pertamina Lubricants yang difokuskan pada Kelompok bengkel difabel, operator difabel, dan ekosistem pendamping usaha inklusif pada unit program dan legacy yang terhubung dengan ESD. ESD dirancang untuk menjembatani barrier dari skill ke livelihood pada kelompok difabel melalui aktivasi usaha bengkel yang inklusif, bukan sekadar pelatihan teknis."
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_3",
+      "chapter_type": "metodologi",
+      "blocks": [
+        {
+          "block_ref": "bab_3.B001",
+          "block_fingerprint": "bab_3__heading_1__bab_iii_metodologi_sroi_dan_triple_loop_",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB III METODOLOGI SROI DAN TRIPLE LOOP LEARNING"
+        },
+        {
+          "block_ref": "bab_3.B002",
+          "block_fingerprint": "bab_3__paragraph_lead__bab_ini_menjelaskan_kerangka_metodologi_",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini menjelaskan kerangka metodologi yang digunakan dalam kajian SROI program, mencakup prinsip-prinsip SROI, metode pengumpulan data, pendekatan LFA, parameter fiksasi dampak, dan kerangka pembelajaran triple loop."
+        },
+        {
+          "block_ref": "bab_3.B003",
+          "block_fingerprint": "bab_3__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_3.B004",
+          "block_fingerprint": "bab_3__heading_2__31_perhitungan_dampak_investasi_sosial_s",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "3.1 Perhitungan Dampak Investasi Sosial / Social Return on Investment"
+        },
+        {
+          "block_ref": "bab_3.B005",
+          "block_fingerprint": "bab_3__paragraph__sroi_adalah_kerangka_pengukuran_yang_men",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "SROI adalah kerangka pengukuran yang mengkuantifikasi nilai sosial, ekonomi, dan lingkungan dari suatu investasi. Berbeda dengan ROI finansial konvensional, SROI memasukkan nilai-nilai yang tidak selalu tercermin dalam transaksi pasar."
+        },
+        {
+          "block_ref": "bab_3.B006",
+          "block_fingerprint": "bab_3__paragraph__formula_dasar_sroi_dalam_kajian_ini_sroi",
+          "original_index": 5,
+          "type": "paragraph",
+          "text": "Formula dasar SROI dalam kajian ini: SROI = Total Net Benefit (compounded) ÷ Total Investasi. Nilai bersih dihitung setelah menerapkan DDAT adjustment per aspek monetisasi, kemudian di-compound ke terminal year menggunakan ORI reference rate."
+        },
+        {
+          "block_ref": "bab_3.B007",
+          "block_fingerprint": "bab_3__heading_2__32_metode_pengumpulan_data_analisis_data",
+          "original_index": 6,
+          "type": "heading_2",
+          "text": "3.2 Metode Pengumpulan Data, Analisis Data, dan Rumus SROI"
+        },
+        {
+          "block_ref": "bab_3.B008",
+          "block_fingerprint": "bab_3__paragraph__pengumpulan_data_menggunakan_pendekatan_",
+          "original_index": 7,
+          "type": "paragraph",
+          "text": "Pengumpulan data menggunakan pendekatan triangulasi:"
+        },
+        {
+          "block_ref": "bab_3.B009",
+          "block_fingerprint": "bab_3__bullet_list___",
+          "original_index": 8,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "— (—)"
+            },
+            {
+              "text": "— (—)"
+            },
+            {
+              "text": "— (—)"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_3.B010",
+          "block_fingerprint": "bab_3__heading_2__33_parameter_fiksasi_dampak_ddat",
+          "original_index": 9,
+          "type": "heading_2",
+          "text": "3.3 Parameter Fiksasi Dampak (DDAT)"
+        },
+        {
+          "block_ref": "bab_3.B011",
+          "block_fingerprint": "bab_3__paragraph__empat_parameter_fiksasi_diterapkan_untuk",
+          "original_index": 10,
+          "type": "paragraph",
+          "text": "Empat parameter fiksasi diterapkan untuk memastikan nilai sosial yang diklaim benar-benar mencerminkan kontribusi program:"
+        },
+        {
+          "block_ref": "bab_3.B012",
+          "block_fingerprint": "bab_3__table_borderless__parameter",
+          "original_index": 11,
+          "type": "table_borderless",
+          "headers": [
+            "Parameter",
+            "Definisi",
+            "Fungsi"
+          ],
+          "rows": [
+            [
+              "Deadweight (DW)",
+              "Manfaat yang terjadi tanpa intervensi program",
+              "Menghindari klaim berlebihan"
+            ],
+            [
+              "Displacement (DS)",
+              "Manfaat yang menggeser pihak lain",
+              "Mencegah double-counting"
+            ],
+            [
+              "Attribution (AT)",
+              "Kontribusi pihak lain terhadap outcome",
+              "Proporsionalitas klaim"
+            ],
+            [
+              "Drop-off (DO)",
+              "Penurunan manfaat dari waktu ke waktu",
+              "Realisme jangka menengah"
+            ]
+          ],
+          "column_widths": [
+            2400,
+            4000,
+            3238
+          ],
+          "source_refs": [
+            "ddat_params"
+          ]
+        },
+        {
+          "block_ref": "bab_3.B013",
+          "block_fingerprint": "bab_3__heading_2__34_ori_reference_rate_sebagai_discount_r",
+          "original_index": 12,
+          "type": "heading_2",
+          "text": "3.4 ORI Reference Rate sebagai Discount Rate"
+        },
+        {
+          "block_ref": "bab_3.B014",
+          "block_fingerprint": "bab_3__paragraph__nilai_bersih_setiap_tahun_dicompound_ke_",
+          "original_index": 13,
+          "type": "paragraph",
+          "text": "Nilai bersih setiap tahun di-compound ke terminal year menggunakan suku bunga ORI (Obligasi Ritel Indonesia) sebagai proxy biaya modal sosial yang konservatif dan terverifikasi:"
+        },
+        {
+          "block_ref": "bab_3.B015",
+          "block_fingerprint": "bab_3__table_borderless__tahun",
+          "original_index": 14,
+          "type": "table_borderless",
+          "headers": [
+            "Tahun",
+            "Seri ORI",
+            "Rate",
+            "Compound Factor"
+          ],
+          "rows": [
+            [
+              "2023",
+              "ORI023T3",
+              "5.90%",
+              "1.1252"
+            ],
+            [
+              "2024",
+              "ORI025T3",
+              "6.25%",
+              "1.0625"
+            ],
+            [
+              "2025",
+              "ORI027T3",
+              "6.50%",
+              "1"
+            ]
+          ],
+          "column_widths": [
+            1500,
+            3000,
+            2000,
+            3138
+          ],
+          "source_refs": [
+            "ori_rates"
+          ]
+        },
+        {
+          "block_ref": "bab_3.B016",
+          "block_fingerprint": "bab_3__heading_2__35_prinsip_sroi",
+          "original_index": 15,
+          "type": "heading_2",
+          "text": "3.5 Prinsip SROI"
+        },
+        {
+          "block_ref": "bab_3.B017",
+          "block_fingerprint": "bab_3__bullet_list__involve_stakeholders__pemangku_kepenting",
+          "original_index": 16,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Involve stakeholders — pemangku kepentingan dilibatkan dalam identifikasi outcome"
+            },
+            {
+              "text": "Understand what changes — fokus pada perubahan nyata yang dirasakan"
+            },
+            {
+              "text": "Value the things that matter — monetisasi nilai yang tidak selalu terwakili pasar"
+            },
+            {
+              "text": "Only include what is material — excludes minor outcomes"
+            },
+            {
+              "text": "Do not over-claim — DDAT adjustment diterapkan secara konsisten"
+            },
+            {
+              "text": "Be transparent — status data (observed/proxy/pending) ditampilkan eksplisit"
+            },
+            {
+              "text": "Verify the result — audit trail tersedia melalui calc_audit_log"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_3.B018",
+          "block_fingerprint": "bab_3__heading_2__36_logical_framework_approach_lfa",
+          "original_index": 17,
+          "type": "heading_2",
+          "text": "3.6 Logical Framework Approach (LFA)"
+        },
+        {
+          "block_ref": "bab_3.B019",
+          "block_fingerprint": "bab_3__paragraph__lfa_digunakan_untuk_memetakan_rantai_kau",
+          "original_index": 18,
+          "type": "paragraph",
+          "text": "LFA digunakan untuk memetakan rantai kausalitas program: dari input dan aktivitas menuju output, outcome, dan dampak jangka panjang."
+        },
+        {
+          "block_ref": "bab_3.B020",
+          "block_fingerprint": "bab_3__callout_gap__tabel_lfa_utuh_lintas_program_belum_ters",
+          "original_index": 19,
+          "type": "callout_gap",
+          "text": "Tabel LFA utuh lintas program belum tersedia dalam canonical JSON — memerlukan data dari laporan kegiatan detail per aktivitas per node.",
+          "gap_type": "data_unavailable",
+          "display_status": "present_as_inferred"
+        },
+        {
+          "block_ref": "bab_3.B021",
+          "block_fingerprint": "bab_3__heading_2__37_triple_loop_learning",
+          "original_index": 20,
+          "type": "heading_2",
+          "text": "3.7 Triple Loop Learning"
+        },
+        {
+          "block_ref": "bab_3.B022",
+          "block_fingerprint": "bab_3__paragraph__kajian_ini_mengadopsi_kerangka_triple_lo",
+          "original_index": 21,
+          "type": "paragraph",
+          "text": "Kajian ini mengadopsi kerangka triple loop learning untuk mengevaluasi bukan hanya apa yang terjadi (loop 1), tetapi juga mengapa program merespons seperti yang dilakukan (loop 2), dan nilai serta asumsi apa yang berubah dalam proses tersebut (loop 3)."
+        },
+        {
+          "block_ref": "bab_3.B023",
+          "block_fingerprint": "bab_3__bullet_list__loop_1_single_pembelajaran_dari_hasil_la",
+          "original_index": 22,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Loop 1 (Single): pembelajaran dari hasil langsung — apa yang berhasil dan tidak"
+            },
+            {
+              "text": "Loop 2 (Double): refleksi atas strategi — mengapa cara tertentu dipilih"
+            },
+            {
+              "text": "Loop 3 (Triple): transformasi nilai dan asumsi mendasar program"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_4",
+      "chapter_type": "kondisi_awal",
+      "blocks": [
+        {
+          "block_ref": "bab_4.B001",
+          "block_fingerprint": "bab_4__heading_1__bab_iv_identifikasi_kondisi_awal",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB IV IDENTIFIKASI KONDISI AWAL"
+        },
+        {
+          "block_ref": "bab_4.B002",
+          "block_fingerprint": "bab_4__paragraph_lead__bab_ini_mengidentifikasi_kondisi_awal_ya",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini mengidentifikasi kondisi awal yang menjadi dasar intervensi program — mencakup karakteristik kelompok sasaran, hambatan yang dihadapi, dan potensi yang dapat dimobilisasi melalui program."
+        },
+        {
+          "block_ref": "bab_4.B003",
+          "block_fingerprint": "bab_4__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_4.B004",
+          "block_fingerprint": "bab_4__callout_warning__catatan_keterbatasan_pemetaan_kondisi_aw",
+          "original_index": 3,
+          "type": "callout_warning",
+          "text": "Catatan keterbatasan: pemetaan kondisi awal dalam laporan ini disusun terutama dari data program dan problem framing yang diturunkan dari desain intervensi. Pembacaan kondisi awal pada bab ini perlu dipahami sebagai baseline programatik, bukan potret statistik wilayah yang lengkap.",
+          "source_refs": [
+            "context_baseline",
+            "problem_framing"
+          ]
+        },
+        {
+          "block_ref": "bab_4.B005",
+          "block_fingerprint": "bab_4__heading_2__41_profil_dan_kondisi_kelompok_sasaran",
+          "original_index": 4,
+          "type": "heading_2",
+          "text": "4.1 Profil dan Kondisi Kelompok Sasaran"
+        },
+        {
+          "block_ref": "bab_4.B006",
+          "block_fingerprint": "bab_4__paragraph__kelompok_sasaran_program_adalah_kelompok",
+          "original_index": 5,
+          "type": "paragraph",
+          "text": "Kelompok sasaran program adalah Kelompok bengkel difabel, operator difabel, dan ekosistem pendamping usaha inklusif pada unit program dan legacy yang terhubung dengan ESD. "
+        },
+        {
+          "block_ref": "bab_4.B007",
+          "block_fingerprint": "bab_4__paragraph__empty",
+          "original_index": 6,
+          "type": "paragraph",
+          "text": "",
+          "display_status": "present_as_inferred",
+          "source_refs": [
+            "context_baseline"
+          ]
+        },
+        {
+          "block_ref": "bab_4.B008",
+          "block_fingerprint": "bab_4__heading_2__42_permasalahan",
+          "original_index": 7,
+          "type": "heading_2",
+          "text": "4.2 Permasalahan"
+        },
+        {
+          "block_ref": "bab_4.B009",
+          "block_fingerprint": "bab_4__paragraph__berdasarkan_analisis_program_terdapat_ha",
+          "original_index": 8,
+          "type": "paragraph",
+          "text": "Berdasarkan analisis program, terdapat hambatan utama yang menjadi tantangan bagi Kelompok bengkel difabel, operator difabel, dan ekosistem pendamping usaha inklusif pada unit program dan legacy yang terhubung dengan ESD dalam mencapai penghidupan yang berkelanjutan:"
+        },
+        {
+          "block_ref": "bab_4.B010",
+          "block_fingerprint": "bab_4__paragraph__dalam_konteks_difabel_barrier_menuju_liv",
+          "original_index": 9,
+          "type": "paragraph",
+          "text": "Dalam konteks difabel, barrier menuju livelihood muncul berlapis: kompetensi dasar belum otomatis menjadi layanan, akses dan stigma membatasi transisi ke dunia usaha, dan legitimasi pasar belum selalu terbentuk. Karena itu, ESD tidak cukup dibaca sebagai program pelatihan, melainkan sebagai upaya mengubah skill menjadi usaha bengkel inklusif yang aktif bertransaksi, memperkuat kapasitas usaha, dan meningkatkan kemandirian ekonomi. Ukuran keberhasilan program bukan semata jumlah unit yang tercatat, melainkan berapa unit yang benar-benar hidup, bertransaksi, dan menciptakan manfaat bagi operator difabel.",
+          "display_status": "present_as_inferred",
+          "source_refs": [
+            "problem_framing"
+          ]
+        },
+        {
+          "block_ref": "bab_4.B011",
+          "block_fingerprint": "bab_4__callout_warning__data_di_atas_bersumber_dari_problem_fram",
+          "original_index": 10,
+          "type": "callout_warning",
+          "text": "Data di atas bersumber dari problem framing yang disusun berdasarkan inferensi dari desain program. Untuk laporan defensible, setiap poin perlu didukung data primer atau data sekunder terverifikasi.",
+          "source_refs": [
+            "problem_framing"
+          ]
+        },
+        {
+          "block_ref": "bab_4.B012",
+          "block_fingerprint": "bab_4__heading_2__43_potensi",
+          "original_index": 11,
+          "type": "heading_2",
+          "text": "4.3 Potensi"
+        },
+        {
+          "block_ref": "bab_4.B013",
+          "block_fingerprint": "bab_4__paragraph__program_mengidentifikasi_potensi_yang_da",
+          "original_index": 12,
+          "type": "paragraph",
+          "text": "Program mengidentifikasi potensi yang dapat dimobilisasi melalui intervensi yang tepat:"
+        },
+        {
+          "block_ref": "bab_4.B014",
+          "block_fingerprint": "bab_4__callout_gap__data_potensi_kelompok_sasaran_belum_ters",
+          "original_index": 13,
+          "type": "callout_gap",
+          "text": "Data potensi kelompok sasaran belum tersedia dalam canonical JSON.",
+          "gap_type": "data_unavailable",
+          "display_status": "present_as_inferred"
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_5",
+      "chapter_type": "kondisi_ideal",
+      "blocks": [
+        {
+          "block_ref": "bab_5.B001",
+          "block_fingerprint": "bab_5__heading_1__bab_v_identifikasi_kondisi_ideal_yang_di",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB V IDENTIFIKASI KONDISI IDEAL YANG DIHARAPKAN"
+        },
+        {
+          "block_ref": "bab_5.B002",
+          "block_fingerprint": "bab_5__paragraph_lead__keberhasilan_esd_ditandai_oleh_berubahny",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Keberhasilan ESD ditandai oleh berubahnya bengkel difabel dari ruang pelatihan menjadi unit usaha inklusif yang aktif, dipercaya, dan menopang penghidupan operator difabel."
+        },
+        {
+          "block_ref": "bab_5.B003",
+          "block_fingerprint": "bab_5__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_5.B004",
+          "block_fingerprint": "bab_5__heading_2__51_tujuan_utama",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "5.1 Tujuan Utama"
+        },
+        {
+          "block_ref": "bab_5.B005",
+          "block_fingerprint": "bab_5__paragraph__program_enduro_sahabat_difabel_bertujuan",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "Program Enduro Sahabat Difabel bertujuan menciptakan ekosistem produktif yang memungkinkan Kelompok bengkel difabel, operator difabel, dan ekosistem pendamping usaha inklusif pada unit program dan legacy yang terhubung dengan ESD mencapai kemandirian ekonomi dan kondisi kehidupan yang lebih baik secara berkelanjutan."
+        },
+        {
+          "block_ref": "bab_5.B006",
+          "block_fingerprint": "bab_5__bullet_list__empty",
+          "original_index": 5,
+          "type": "bullet_list",
+          "items": []
+        },
+        {
+          "block_ref": "bab_5.B007",
+          "block_fingerprint": "bab_5__heading_2__52_tujuan_spesifik_key_areas_of_improvem",
+          "original_index": 6,
+          "type": "heading_2",
+          "text": "5.2 Tujuan Spesifik: Key Areas of Improvement"
+        },
+        {
+          "block_ref": "bab_5.B008",
+          "block_fingerprint": "bab_5__paragraph__area_perbaikan_kunci_yang_menjadi_fokus_",
+          "original_index": 7,
+          "type": "paragraph",
+          "text": "Area perbaikan kunci yang menjadi fokus intervensi program:"
+        },
+        {
+          "block_ref": "bab_5.B009",
+          "block_fingerprint": "bab_5__heading_2__53_kesesuaian_masalah_intervensi_tujuan",
+          "original_index": 8,
+          "type": "heading_2",
+          "text": "5.3 Kesesuaian Masalah / Intervensi / Tujuan"
+        },
+        {
+          "block_ref": "bab_5.B010",
+          "block_fingerprint": "bab_5__paragraph__setiap_hambatan_yang_diidentifikasi_di_b",
+          "original_index": 9,
+          "type": "paragraph",
+          "text": "Setiap hambatan yang diidentifikasi di Bab IV dijawab secara langsung oleh komponen program:"
+        },
+        {
+          "block_ref": "bab_5.B011",
+          "block_fingerprint": "bab_5__callout_info__kondisi_ideal_program_selaras_dengan_sdg",
+          "original_index": 10,
+          "type": "callout_info",
+          "text": "Kondisi ideal program selaras dengan: SDG 8 — Pekerjaan Layak, SDG 10 — Berkurangnya Ketimpangan.",
+          "source_refs": [
+            "program_positioning"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_6",
+      "chapter_type": "strategi",
+      "blocks": [
+        {
+          "block_ref": "bab_6.B001",
+          "block_fingerprint": "bab_6__heading_1__bab_vi_strategi_untuk_mencapai_kondisi_i",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB VI STRATEGI UNTUK MENCAPAI KONDISI IDEAL YANG DIHARAPKAN"
+        },
+        {
+          "block_ref": "bab_6.B002",
+          "block_fingerprint": "bab_6__paragraph_lead__bab_ini_menyajikan_desain_strategis_prog",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini menyajikan desain strategis Program Enduro Sahabat Difabel — mencakup filosofi program, roadmap, value chain, dan kelembagaan yang terbentuk."
+        },
+        {
+          "block_ref": "bab_6.B003",
+          "block_fingerprint": "bab_6__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_6.B004",
+          "block_fingerprint": "bab_6__heading_2__61_nama_dan_filosofi_program",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "6.1 Nama dan Filosofi Program"
+        },
+        {
+          "block_ref": "bab_6.B005",
+          "block_fingerprint": "bab_6__paragraph__program_enduro_sahabat_difabel_esd_diran",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "Program 'Enduro Sahabat Difabel' (ESD) dirancang dengan filosofi: ESD dirancang untuk menjembatani barrier dari skill ke livelihood pada kelompok difabel melalui aktivasi usaha bengkel yang inklusif, bukan sekadar pelatihan teknis. Tagline program: \"Penguatan kemandirian ekonomi difabel melalui pelatihan otomotif dasar, aktivasi bengkel inklusif, dan pendampingan unit usaha produktif\"."
+        },
+        {
+          "block_ref": "bab_6.B006",
+          "block_fingerprint": "bab_6__heading_2__62_relevansi_program_dengan_visi_misi_pe",
+          "original_index": 5,
+          "type": "heading_2",
+          "text": "6.2 Relevansi Program dengan Visi Misi Perusahaan dan Program Pemerintah"
+        },
+        {
+          "block_ref": "bab_6.B007",
+          "block_fingerprint": "bab_6__paragraph__program_ini_selaras_dengan_pilar_pemberd",
+          "original_index": 6,
+          "type": "paragraph",
+          "text": "Program ini selaras dengan pilar 'Pemberdayaan Masyarakat' dan kategori 'Beyond Compliance — Inovasi Sosial' yang ditetapkan dalam regulasi PROPER. Dasar kebijakan: UU No. 40 Tahun 2007 tentang Perseroan Terbatas Pasal 74, Peraturan Menteri LHK No. 1 Tahun 2021."
+        },
+        {
+          "block_ref": "bab_6.B008",
+          "block_fingerprint": "bab_6__heading_2__63_roadmap_program",
+          "original_index": 7,
+          "type": "heading_2",
+          "text": "6.3 Roadmap Program"
+        },
+        {
+          "block_ref": "bab_6.B009",
+          "block_fingerprint": "bab_6__paragraph__program_dirancang_dalam_0_tahap_yang_men",
+          "original_index": 8,
+          "type": "paragraph",
+          "text": "Program dirancang dalam 0 tahap yang mencerminkan evolusi dari pembentukan kapasitas menuju stabilisasi:"
+        },
+        {
+          "block_ref": "bab_6.B010",
+          "block_fingerprint": "bab_6__heading_2__64_value_chain",
+          "original_index": 9,
+          "type": "heading_2",
+          "text": "6.4 Value Chain"
+        },
+        {
+          "block_ref": "bab_6.B011",
+          "block_fingerprint": "bab_6__paragraph__rantai_nilai_program_mengalir_secara_sek",
+          "original_index": 10,
+          "type": "paragraph",
+          "text": "Rantai nilai program mengalir secara sekuensial dari kapasitas teknis menuju dampak sosial:"
+        },
+        {
+          "block_ref": "bab_6.B012",
+          "block_fingerprint": "bab_6__paragraph__empty",
+          "original_index": 11,
+          "type": "paragraph",
+          "text": "",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "strategy_design"
+          ]
+        },
+        {
+          "block_ref": "bab_6.B013",
+          "block_fingerprint": "bab_6__heading_2__65_kelembagaan",
+          "original_index": 12,
+          "type": "heading_2",
+          "text": "6.5 Kelembagaan"
+        },
+        {
+          "block_ref": "bab_6.B014",
+          "block_fingerprint": "bab_6__paragraph__program_membentuk_dan_menguatkan_7_node_",
+          "original_index": 13,
+          "type": "paragraph",
+          "text": "Program membentuk dan menguatkan 7 node kelembagaan yang menjadi unit operasional program: Isyarat Hati, FPDB & Compac, Rusli Cuci Motor, Difabel PerDIK, Kelompok Baru 2025, SLB N4 Jakarta, Inul & Mbah Motor."
+        },
+        {
+          "block_ref": "bab_6.B015",
+          "block_fingerprint": "bab_6__table_borderless__node",
+          "original_index": 14,
+          "type": "table_borderless",
+          "headers": [
+            "Node",
+            "Status"
+          ],
+          "rows": [
+            [
+              "Isyarat Hati",
+              "Node aktif"
+            ],
+            [
+              "FPDB & Compac",
+              "Node aktif"
+            ],
+            [
+              "Rusli Cuci Motor",
+              "Node aktif"
+            ],
+            [
+              "Difabel PerDIK",
+              "Node aktif"
+            ],
+            [
+              "Kelompok Baru 2025",
+              "Node aktif"
+            ],
+            [
+              "SLB N4 Jakarta",
+              "Node aktif"
+            ],
+            [
+              "Inul & Mbah Motor",
+              "Node aktif"
+            ]
+          ],
+          "column_widths": [
+            4200,
+            5438
+          ],
+          "source_refs": [
+            "strategy_design"
+          ]
+        },
+        {
+          "block_ref": "bab_6.B016",
+          "block_fingerprint": "bab_6__metric_card_3col__node_program",
+          "original_index": 15,
+          "type": "metric_card_3col",
+          "items": [
+            {
+              "label": "Node Program",
+              "value": "7",
+              "sublabel": "total"
+            },
+            {
+              "label": "Stakeholder Utama",
+              "value": "5",
+              "sublabel": "pihak"
+            },
+            {
+              "label": "Aspek Monetisasi",
+              "value": "4",
+              "sublabel": "aspek"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_8",
+      "chapter_type": "learning",
+      "blocks": [
+        {
+          "block_ref": "bab_8.B001",
+          "block_fingerprint": "bab_8__heading_1__bab_viii_aspek_pembelajaran_dengan_tripl",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB VIII ASPEK PEMBELAJARAN DENGAN TRIPLE LOOP LEARNING"
+        },
+        {
+          "block_ref": "bab_8.B002",
+          "block_fingerprint": "bab_8__paragraph_lead__bab_ini_menyajikan_refleksi_pembelajaran",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini menyajikan refleksi pembelajaran program melalui kerangka triple loop learning — menganalisis tidak hanya apa yang terjadi, tetapi juga mengapa program merespons seperti yang dilakukan, dan perubahan mendasar apa yang muncul dari proses implementasi."
+        },
+        {
+          "block_ref": "bab_8.B003",
+          "block_fingerprint": "bab_8__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_8.B004",
+          "block_fingerprint": "bab_8__heading_2__81_identifikasi_masalah_dan_keterkaitan_",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "8.1 Identifikasi Masalah dan Keterkaitan LFA"
+        },
+        {
+          "block_ref": "bab_8.B005",
+          "block_fingerprint": "bab_8__paragraph__selama_implementasi_20232025_program_men",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "Selama implementasi 2023–2025, program menghadapi beberapa tantangan yang menjadi sumber pembelajaran:"
+        },
+        {
+          "block_ref": "bab_8.B006",
+          "block_fingerprint": "bab_8__heading_2__82_l1_l2_l3__analisis_triple_loop",
+          "original_index": 5,
+          "type": "heading_2",
+          "text": "8.2 L1, L2, L3 — Analisis Triple Loop"
+        },
+        {
+          "block_ref": "bab_8.B007",
+          "block_fingerprint": "bab_8__callout_info__sroi_blended_program_esd_adalah_1_112_an",
+          "original_index": 6,
+          "type": "callout_info",
+          "text": "SROI blended program ESD adalah 1 : 1.12. Angka ini mencerminkan nilai sosial-ekonomi total setelah monetisasi outcome, compound ORI, dan penyesuaian DDAT per aspek diperhitungkan.",
+          "source_refs": [
+            "sroi_metrics.calculated",
+            "monetization",
+            "ddat_params"
+          ]
+        },
+        {
+          "block_ref": "bab_8.B008",
+          "block_fingerprint": "bab_8__heading_3__loop_1__single_loop_learning_apa_yang_te",
+          "original_index": 7,
+          "type": "heading_3",
+          "text": "Loop 1 — Single Loop Learning (Apa yang terjadi?)"
+        },
+        {
+          "block_ref": "bab_8.B009",
+          "block_fingerprint": "bab_8__paragraph__pembelajaran_level_pertama_berfokus_pada",
+          "original_index": 8,
+          "type": "paragraph",
+          "text": "Pembelajaran level pertama berfokus pada hasil langsung dari implementasi aktivitas:"
+        },
+        {
+          "block_ref": "bab_8.B010",
+          "block_fingerprint": "bab_8__bullet_list__pelatihan_otomotif_dasar_perlu_segera_di",
+          "original_index": 9,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Pelatihan otomotif dasar perlu segera dikaitkan dengan ruang layanan nyata; tanpa itu skill difabel mudah berhenti sebagai pelatihan, bukan penghidupan."
+            },
+            {
+              "text": "Bantuan modal dan pendampingan operasional menjadi jembatan penting antara kompetensi dan transaksi riil pada unit bengkel difabel."
+            },
+            {
+              "text": "Dalam ESD, bantuan modal dan ruang kerja berfungsi sebagai pengubah skill menjadi layanan; tanpa itu, pembelajaran sulit menjadi livelihood."
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_8.B011",
+          "block_fingerprint": "bab_8__heading_3__loop_2__double_loop_learning_mengapa_res",
+          "original_index": 10,
+          "type": "heading_3",
+          "text": "Loop 2 — Double Loop Learning (Mengapa respons itu dipilih?)"
+        },
+        {
+          "block_ref": "bab_8.B012",
+          "block_fingerprint": "bab_8__paragraph__pembelajaran_level_kedua_merefleksikan_p",
+          "original_index": 11,
+          "type": "paragraph",
+          "text": "Pembelajaran level kedua merefleksikan penyesuaian strategi berdasarkan temuan implementasi:"
+        },
+        {
+          "block_ref": "bab_8.B013",
+          "block_fingerprint": "bab_8__bullet_list__perbedaan_antara_unit_terhubung_program_",
+          "original_index": 12,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Perbedaan antara unit terhubung program dan unit yang benar-benar bertransaksi harus dibaca secara tegas agar evaluasi dampak tidak bias administratif."
+            },
+            {
+              "text": "Node aktif yang dipercaya pelanggan adalah sinyal paling kuat bahwa program berhasil menembus barrier market trust dan transition-to-earning."
+            },
+            {
+              "text": "Observed transaction perlu dibaca sebagai bukti terbentuknya trust, bukan hanya omzet; ini penting karena legitimasi sosial adalah bagian inti dari cerita ESD."
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_8.B014",
+          "block_fingerprint": "bab_8__heading_3__loop_3__triple_loop_learning_apa_yang_be",
+          "original_index": 13,
+          "type": "heading_3",
+          "text": "Loop 3 — Triple Loop Learning (Apa yang berubah secara fundamental?)"
+        },
+        {
+          "block_ref": "bab_8.B015",
+          "block_fingerprint": "bab_8__paragraph__pembelajaran_level_ketiga_menandai_trans",
+          "original_index": 14,
+          "type": "paragraph",
+          "text": "Pembelajaran level ketiga menandai transformasi nilai dan asumsi mendasar:"
+        },
+        {
+          "block_ref": "bab_8.B016",
+          "block_fingerprint": "bab_8__bullet_list__replikasi_esd_perlu_menyeimbangkan_tiga_",
+          "original_index": 15,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Replikasi ESD perlu menyeimbangkan tiga hal sekaligus: aksesibilitas skill, legitimasi pasar, dan keberlanjutan unit usaha. Jika salah satu hilang, story of change menjadi lemah."
+            },
+            {
+              "text": "Story of change ESD paling kuat ketika dibaca sebagai transformasi dari skill difabel menuju usaha bengkel inklusif yang aktif dan menopang kemandirian ekonomi operator."
+            },
+            {
+              "text": "Flagship value ESD terletak pada kombinasi enterprise activation, dignity restoration, dan social inclusion; karena itu tidak semua outcome kunci boleh dibaca hanya dengan lensa ekonomi."
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_8.B017",
+          "block_fingerprint": "bab_8__callout_warning__analisis_triple_loop_di_atas_bersumber_d",
+          "original_index": 16,
+          "type": "callout_warning",
+          "text": "Analisis triple loop di atas bersumber dari learning signals yang tersedia. Untuk laporan final, refleksi ini perlu diperkaya dengan wawancara mendalam.",
+          "source_refs": [
+            "learning_signals"
+          ]
+        },
+        {
+          "block_ref": "bab_8.B018",
+          "block_fingerprint": "bab_8__heading_2__83_identifikasi_keunikan_program",
+          "original_index": 17,
+          "type": "heading_2",
+          "text": "8.3 Identifikasi Keunikan Program"
+        },
+        {
+          "block_ref": "bab_8.B019",
+          "block_fingerprint": "bab_8__paragraph__program_memiliki_karakteristik_unik_yang",
+          "original_index": 18,
+          "type": "paragraph",
+          "text": "Program memiliki karakteristik unik yang membedakannya dari program konvensional:"
+        },
+        {
+          "block_ref": "bab_8.B020",
+          "block_fingerprint": "bab_8__bullet_list__sasaran_spesifik_kelompok_bengkel_difabe",
+          "original_index": 19,
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Sasaran spesifik: Kelompok bengkel difabel, operator difabel, dan ekosistem pendamping usaha inklusif pada unit program dan legacy yang terhubung dengan ESD"
+            },
+            {
+              "text": "Model CSV (Creating Shared Value): ESD dirancang untuk menjembatani barrier dari skill ke livelihood pada kelompok difabel melalui aktivasi usaha bengkel yang inklusif, bukan sekadar pelatihan teknis."
+            },
+            {
+              "text": "Cakupan 7 node yang tersebar secara nasional"
+            },
+            {
+              "text": "Monetisasi 4 aspek nilai (2 observed, 2 proxy)"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_8.B021",
+          "block_fingerprint": "bab_8__heading_2__84_kontribusi_efisiensi_efektivitas_dan_",
+          "original_index": 20,
+          "type": "heading_2",
+          "text": "8.4 Kontribusi Efisiensi, Efektivitas, dan Keberlanjutan Sosial"
+        },
+        {
+          "block_ref": "bab_8.B022",
+          "block_fingerprint": "bab_8__paragraph__dari_sisi_efisiensi_program_menghasilkan",
+          "original_index": 21,
+          "type": "paragraph",
+          "text": "Dari sisi efisiensi, program menghasilkan SROI blended 1 : 1.12 — setiap Rp 1 investasi menghasilkan nilai sosial Rp 1.12. Dari sisi efektivitas, program mencakup 7 node aktif selama 2023–2025.",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "sroi_metrics.calculated",
+            "strategy_design"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_9",
+      "chapter_type": "penutup",
+      "blocks": [
+        {
+          "block_ref": "bab_9.B001",
+          "block_fingerprint": "bab_9__heading_1__bab_ix_penutup",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB IX PENUTUP"
+        },
+        {
+          "block_ref": "bab_9.B002",
+          "block_fingerprint": "bab_9__divider__structural_1",
+          "original_index": 1,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_9.B003",
+          "block_fingerprint": "bab_9__heading_2__91_kesimpulan",
+          "original_index": 2,
+          "type": "heading_2",
+          "text": "9.1 Kesimpulan"
+        },
+        {
+          "block_ref": "bab_9.B004",
+          "block_fingerprint": "bab_9__paragraph_lead__program_enduro_sahabat_difabel_esd_terbu",
+          "original_index": 3,
+          "type": "paragraph_lead",
+          "text": "Program Enduro Sahabat Difabel (ESD) terbukti menghasilkan nilai sosial-ekonomi yang melampaui investasi, dengan SROI blended 1 : 1.12 selama periode 2023–2025."
+        },
+        {
+          "block_ref": "bab_9.B005",
+          "block_fingerprint": "bab_9__paragraph__dari_total_investasi_rp_594781486_progra",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "Dari total investasi Rp 594,781,486, program menghasilkan net benefit compounded sebesar Rp 663,337,061 — mencerminkan positive return yang konsisten di seluruh tahun evaluasi.",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "sroi_metrics.calculated"
+          ]
+        },
+        {
+          "block_ref": "bab_9.B006",
+          "block_fingerprint": "bab_9__metric_card_3col__sroi_blended",
+          "original_index": 5,
+          "type": "metric_card_3col",
+          "items": [
+            {
+              "label": "SROI Blended",
+              "value": "1 : 1.12",
+              "sublabel": "2023–2025"
+            },
+            {
+              "label": "Total Investasi",
+              "value": "Rp 594,781,486",
+              "sublabel": "kumulatif"
+            },
+            {
+              "label": "Net Benefit Compounded",
+              "value": "Rp 663,337,061",
+              "sublabel": "terminal year"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_9.B007",
+          "block_fingerprint": "bab_9__heading_2__92_temuan_utama",
+          "original_index": 6,
+          "type": "heading_2",
+          "text": "9.2 Temuan Utama"
+        },
+        {
+          "block_ref": "bab_9.B008",
+          "block_fingerprint": "bab_9__paragraph__program_esd_berhasil_mendokumentasikan_s",
+          "original_index": 7,
+          "type": "paragraph",
+          "text": "Program ESD berhasil mendokumentasikan seluruh aspek nilai dengan tingkat kepercayaan yang memadai selama 2023–2025."
+        },
+        {
+          "block_ref": "bab_9.B009",
+          "block_fingerprint": "bab_9__heading_2__93_rekomendasi_usulan_tindak_lanjut",
+          "original_index": 8,
+          "type": "heading_2",
+          "text": "9.3 Rekomendasi / Usulan Tindak Lanjut"
+        },
+        {
+          "block_ref": "bab_9.B010",
+          "block_fingerprint": "bab_9__numbered_list__perbedaan_antara_unit_terhubung_program_",
+          "original_index": 9,
+          "type": "numbered_list",
+          "items": [
+            {
+              "text": "Perbedaan antara unit terhubung program dan unit yang benar-benar bertransaksi harus dibaca secara tegas agar evaluasi dampak tidak bias administratif."
+            },
+            {
+              "text": "Node aktif yang dipercaya pelanggan adalah sinyal paling kuat bahwa program berhasil menembus barrier market trust dan transition-to-earning."
+            },
+            {
+              "text": "Observed transaction perlu dibaca sebagai bukti terbentuknya trust, bukan hanya omzet; ini penting karena legitimasi sosial adalah bagian inti dari cerita ESD."
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_9.B011",
+          "block_fingerprint": "bab_9__paragraph_small__laporan_ini_disusun_berdasarkan_data_yan",
+          "original_index": 10,
+          "type": "paragraph_small",
+          "text": "Laporan ini disusun berdasarkan data yang tersedia per 2025 dan mencerminkan status evaluatif. Angka investasi berstatus under_confirmation dan perlu diverifikasi dari dokumen keuangan resmi."
+        }
+      ]
+    },
+    {
+      "chapter_id": "bab_7",
+      "chapter_type": "implementation_sroi",
+      "blocks": [
+        {
+          "block_ref": "bab_7.B001",
+          "block_fingerprint": "bab_7__heading_1__bab_vii_implementasi_pdis_dengan_sroi",
+          "original_index": 0,
+          "type": "heading_1",
+          "text": "BAB VII IMPLEMENTASI / PDIS DENGAN SROI"
+        },
+        {
+          "block_ref": "bab_7.B002",
+          "block_fingerprint": "bab_7__paragraph_lead__bab_ini_menyajikan_seluruh_rangkaian_imp",
+          "original_index": 1,
+          "type": "paragraph_lead",
+          "text": "Bab ini menyajikan seluruh rangkaian implementasi Program Enduro Sahabat Difabel (ESD) secara terukur — dari kegiatan, stakeholder, dan investasi hingga outcome, fiksasi dampak, monetisasi nilai sosial, dan hasil evaluasi SROI periode 2023–2025. Semua angka pada bab ini bersumber dari Financial Calculation Engine dan dapat ditelusuri melalui calc_audit_log."
+        },
+        {
+          "block_ref": "bab_7.B003",
+          "block_fingerprint": "bab_7__divider__structural_2",
+          "original_index": 2,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_7.B004",
+          "block_fingerprint": "bab_7__heading_2__71_proses_dan_kegiatan_yang_dilakukan",
+          "original_index": 3,
+          "type": "heading_2",
+          "text": "7.1 Proses dan Kegiatan yang Dilakukan"
+        },
+        {
+          "block_ref": "bab_7.B005",
+          "block_fingerprint": "bab_7__paragraph__program_esd_melaksanakan_6_aktivitas_ter",
+          "original_index": 4,
+          "type": "paragraph",
+          "text": "Program ESD melaksanakan 6 aktivitas terstruktur sepanjang periode 2023–2025. Menyajikan seluruh rangkaian implementasi program ESD secara terukur — dari aktivitas, stakeholder, investasi, dan output hingga outcome, fiksasi dampak, monetisasi, dan hasil SROI evaluatif."
+        },
+        {
+          "block_ref": "bab_7.B006",
+          "block_fingerprint": "bab_7__paragraph__tahun_2023_pelatihan_otomotif_dasar_bagi",
+          "original_index": 5,
+          "type": "paragraph",
+          "text": "Tahun 2023: Pelatihan otomotif dasar bagi kelompok inti · Pengenalan product knowledge Enduro · Penguatan kesiapan kerja operator difabel melalui pembelajaran teknis yang accessible · Penyediaan bantuan modal awal dan alat bengkel inklusif....",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B007",
+          "block_fingerprint": "bab_7__paragraph__tahun_2024_pendampingan_operasional_unit",
+          "original_index": 6,
+          "type": "paragraph",
+          "text": "Tahun 2024: Pendampingan operasional unit aktif · Penguatan ritme transaksi pada unit yang sudah berjalan · Pembentukan trust pelanggan melalui layanan yang lebih konsisten · Menjaga keberlanjutan empat kelompok inti....",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B008",
+          "block_fingerprint": "bab_7__paragraph__tahun_2025_penambahan_satu_kelompok_inti",
+          "original_index": 7,
+          "type": "paragraph",
+          "text": "Tahun 2025: Penambahan satu kelompok inti baru · Penguatan pembelajaran dari unit aktif ke unit baru/inkubasi · Perluasan makna program dari sekadar usaha menjadi ruang kerja inklusif yang lebih diakui · Menjaga lima unit transaksi riil tetap aktif....",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B009",
+          "block_fingerprint": "bab_7__heading_2__72_node_program",
+          "original_index": 8,
+          "type": "heading_2",
+          "text": "7.2 Node Program"
+        },
+        {
+          "block_ref": "bab_7.B010",
+          "block_fingerprint": "bab_7__paragraph__program_beroperasi_di_7_nodelokasi_isyar",
+          "original_index": 9,
+          "type": "paragraph",
+          "text": "Program beroperasi di 7 node/lokasi: Isyarat Hati, FPDB & Compac, Rusli Cuci Motor, Difabel PerDIK, Kelompok Baru 2025, SLB N4 Jakarta, Inul & Mbah Motor. Struktur node ESD perlu dibaca bertingkat: kelompok inti adalah titik intervensi utama, unit legacy menunjukkan kesinambungan ekosistem, sedangkan unit baru 2025 memperlihatkan ekspansi program. Storytelling paling kuat ketika dibedakan antara unit terhubung, unit transaksi riil, dan unit yang masih inkubasi."
+        },
+        {
+          "block_ref": "bab_7.B011",
+          "block_fingerprint": "bab_7__callout_info__program_esd_menjalankan_aktivitas_melalu",
+          "original_index": 10,
+          "type": "callout_info",
+          "text": "Program ESD menjalankan aktivitas melalui 7 node yang tersebar secara nasional. Setiap node memiliki karakteristik dan tingkat aktivitas yang berbeda sesuai dengan kapasitas dan tahap pengembangan masing-masing.",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B012",
+          "block_fingerprint": "bab_7__heading_2__73_identifikasi_stakeholder_yang_terliba",
+          "original_index": 11,
+          "type": "heading_2",
+          "text": "7.3 Identifikasi Stakeholder yang Terlibat"
+        },
+        {
+          "block_ref": "bab_7.B013",
+          "block_fingerprint": "bab_7__paragraph__program_melibatkan_5_pemangku_kepentinga",
+          "original_index": 12,
+          "type": "paragraph",
+          "text": "Program melibatkan 5 pemangku kepentingan utama dengan peran berbeda dalam ekosistem program."
+        },
+        {
+          "block_ref": "bab_7.B014",
+          "block_fingerprint": "bab_7__table_borderless__stakeholder",
+          "original_index": 13,
+          "type": "table_borderless",
+          "headers": [
+            "Stakeholder",
+            "Peran",
+            "Tipe Keterlibatan"
+          ],
+          "rows": [
+            [
+              "PT Pertamina Lubricants",
+              "Pemrakarsa dan penyelenggara program TJSL ESD.",
+              "initiator"
+            ],
+            [
+              "Kelompok / Bengkel Difabel",
+              "Penerima manfaat langsung dan unit usaha inti yang menjadi simpul utama aktivasi bengkel inklusif.",
+              "direct beneficiary"
+            ],
+            [
+              "Operator Difabel",
+              "Pelaksana layanan bengkel ringan dan penerima manfaat utama dari peningkatan kemandirian ekonomi.",
+              "direct beneficiary"
+            ],
+            [
+              "Pendamping / Keluarga",
+              "Pendukung mobilitas, operasional, dan keberlanjutan unit usaha inklusif.",
+              "indirect beneficiary"
+            ],
+            [
+              "Pelanggan / Komunitas Lokal",
+              "Pengguna jasa servis ringan, oli, dan pelumas yang ikut menopang keberlanjutan unit usaha.",
+              "ecosystem user"
+            ]
+          ],
+          "column_widths": [
+            3200,
+            1600,
+            4838
+          ],
+          "display_status": "present_as_final",
+          "source_refs": [
+            "stakeholders"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B015",
+          "block_fingerprint": "bab_7__heading_2__74_input_investasi",
+          "original_index": 14,
+          "type": "heading_2",
+          "text": "7.4 Input / Investasi"
+        },
+        {
+          "block_ref": "bab_7.B016",
+          "block_fingerprint": "bab_7__callout_warning__catatan_status_data_sebagian_investasi_p",
+          "original_index": 15,
+          "type": "callout_warning",
+          "text": "Catatan status data: sebagian investasi program berstatus under_confirmation atau planned — angka telah tersedia namun perlu diverifikasi dari laporan keuangan resmi.",
+          "display_status": "present_as_pending",
+          "source_refs": [
+            "investment"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B017",
+          "block_fingerprint": "bab_7__paragraph__total_investasi_program_selama_20232025_",
+          "original_index": 16,
+          "type": "paragraph",
+          "text": "Total investasi program selama 2023–2025 mencapai Rp 594,781,486, dengan distribusi yang meningkat setiap tahun seiring penguatan aktivitas."
+        },
+        {
+          "block_ref": "bab_7.B018",
+          "block_fingerprint": "bab_7__table__investasi_program_per_node_per_tahun",
+          "original_index": 17,
+          "type": "table",
+          "table_id": "table_investment_per_node",
+          "title": "Investasi Program per Node per Tahun",
+          "headers": [
+            "Node Program",
+            "Tahun",
+            "Investasi (Rp)",
+            "Status"
+          ],
+          "rows": [
+            [
+              "—",
+              "2023",
+              "Rp 145,742,286",
+              "under_confirmation"
+            ],
+            [
+              "—",
+              "2024",
+              "Rp 204,039,200",
+              "under_confirmation"
+            ],
+            [
+              "—",
+              "2025",
+              "Rp 245,000,000",
+              "under_confirmation"
+            ],
+            [
+              "TOTAL",
+              "—",
+              "Rp 594,781,486",
+              "final"
+            ]
+          ],
+          "column_widths": [
+            3200,
+            1200,
+            3000,
+            2238
+          ],
+          "note": "2023–2024 under_confirmation — ditampilkan dengan badge pending",
+          "display_status": "present_as_pending",
+          "source_refs": [
+            "investment"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B019",
+          "block_fingerprint": "bab_7__metric_card_3col__investasi_2023",
+          "original_index": 18,
+          "type": "metric_card_3col",
+          "items": [
+            {
+              "label": "Investasi 2023",
+              "value": "Rp 145,742,286",
+              "sublabel": "under confirmation"
+            },
+            {
+              "label": "Investasi 2024",
+              "value": "Rp 204,039,200",
+              "sublabel": "under confirmation"
+            },
+            {
+              "label": "Investasi 2025",
+              "value": "Rp 245,000,000",
+              "sublabel": "under confirmation"
+            }
+          ]
+        },
+        {
+          "block_ref": "bab_7.B020",
+          "block_fingerprint": "bab_7__heading_2__75_proses_dan_output_yang_dihasilkan",
+          "original_index": 19,
+          "type": "heading_2",
+          "text": "7.5 Proses dan Output yang Dihasilkan"
+        },
+        {
+          "block_ref": "bab_7.B021",
+          "block_fingerprint": "bab_7__paragraph__program_menghasilkan_6_output_terukur_se",
+          "original_index": 20,
+          "type": "paragraph",
+          "text": "Program menghasilkan 6 output terukur sepanjang periode evaluasi."
+        },
+        {
+          "block_ref": "bab_7.B022",
+          "block_fingerprint": "bab_7__table_borderless__output",
+          "original_index": 21,
+          "type": "table_borderless",
+          "headers": [
+            "Output",
+            "Tahun",
+            "Jumlah",
+            "Satuan",
+            "Status"
+          ],
+          "rows": [
+            [
+              "Empat kelompok inti dibentuk sebagai basis capability building dan enterprise activation pada bengkel inklusif.",
+              "2023",
+              "4",
+              "kelompok inti",
+              "under_confirmation"
+            ],
+            [
+              "Enam unit terhubung ke ekosistem program dan lima unit mulai menunjukkan transaksi riil, menandai market entry awal.",
+              "2023",
+              "5",
+              "unit transaksi riil",
+              "under_confirmation"
+            ],
+            [
+              "Empat kelompok inti berlanjut dengan penguatan operasional dan trust building; enam unit tetap terhubung dalam ekosistem program.",
+              "2024",
+              "6",
+              "unit terhubung program",
+              "under_confirmation"
+            ],
+            [
+              "Lima unit mempertahankan transaksi riil sehingga program memiliki basis observed value yang lebih stabil.",
+              "2024",
+              "5",
+              "unit transaksi riil",
+              "under_confirmation"
+            ],
+            [
+              "Satu kelompok inti baru ditambahkan sehingga ekosistem berkembang menjadi tujuh unit terhubung program.",
+              "2025",
+              "7",
+              "unit terhubung program",
+              "under_confirmation"
+            ],
+            [
+              "Lima unit transaksi riil tetap aktif, sementara dua unit berada pada tahap inkubasi atau belum menunjukkan transaksi stabil.",
+              "2025",
+              "2",
+              "unit inkubasi",
+              "under_confirmation"
+            ]
+          ],
+          "column_widths": [
+            3000,
+            1000,
+            1200,
+            1200,
+            3238
+          ],
+          "display_status": "present_as_final",
+          "source_refs": [
+            "outputs"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B023",
+          "block_fingerprint": "bab_7__heading_2__76_outcome_program",
+          "original_index": 22,
+          "type": "heading_2",
+          "text": "7.6 Outcome Program"
+        },
+        {
+          "block_ref": "bab_7.B024",
+          "block_fingerprint": "bab_7__paragraph__program_menghasilkan_6_outcome_yang_dimo",
+          "original_index": 23,
+          "type": "paragraph",
+          "text": "Program menghasilkan 6 outcome yang dimonetisasi melalui 2 aspek observed dan 2 aspek proxy."
+        },
+        {
+          "block_ref": "bab_7.B025",
+          "block_fingerprint": "bab_7__paragraph___observed__transaksi_jasa_dan_sparepart_",
+          "original_index": 24,
+          "type": "paragraph",
+          "text": "✓ Observed — Transaksi jasa dan sparepart bengkel difabel meningkat: Unit bengkel inklusif yang aktif mulai menangkap permintaan servis ringan dan transaksi sparepart secara lebih konsisten, sehingga keterampilan teknis berubah menjadi layanan yang benar-benar dibeli pelanggan.",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "tjsl_scripts_master"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B026",
+          "block_fingerprint": "bab_7__paragraph___observed__penjualan_pelumas_meningkat_p",
+          "original_index": 25,
+          "type": "paragraph",
+          "text": "✓ Observed — Penjualan pelumas meningkat pada unit program: Kelompok bengkel difabel aktif memonetisasi product knowledge Enduro sebagai bagian dari layanan usaha, menandai bertambahnya market capture dan legitimasi teknis unit.",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "tjsl_scripts_master"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B027",
+          "block_fingerprint": "bab_7__paragraph___proxy__kapasitas_usaha_bengkel_inklusif",
+          "original_index": 26,
+          "type": "paragraph",
+          "text": "~ Proxy — Kapasitas usaha bengkel inklusif teraktivasi: Integrasi antara skill, alat, stok awal, dan pendampingan membuat unit bengkel difabel lebih siap beroperasi sebagai usaha yang viable, bukan sekadar ruang latihan.",
+          "display_status": "present_as_proxy",
+          "source_refs": [
+            "evidence_registry"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B028",
+          "block_fingerprint": "bab_7__paragraph___proxy__operator_difabel_lebih_aktif_dan",
+          "original_index": 27,
+          "type": "paragraph",
+          "text": "~ Proxy — Operator difabel lebih aktif dan mandiri secara ekonomi: Keterlibatan operator difabel dalam usaha bengkel meningkat sehingga mereka memperoleh peran kerja yang lebih nyata, kesempatan menghasilkan pendapatan, dan sinyal kemandirian ekonomi.",
+          "display_status": "present_as_proxy",
+          "source_refs": [
+            "evidence_registry"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B029",
+          "block_fingerprint": "bab_7__paragraph___proxy__kepercayaan_diri_dan_selfefficac",
+          "original_index": 28,
+          "type": "paragraph",
+          "text": "~ Proxy — Kepercayaan diri dan self-efficacy operator difabel menguat: Pengalaman menjalankan layanan, menerima pelanggan, dan mempertahankan operasi bengkel memperkuat rasa mampu dan identitas diri operator difabel sebagai pelaku kerja produktif.",
+          "display_status": "present_as_proxy",
+          "source_refs": [
+            "evidence_registry"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B030",
+          "block_fingerprint": "bab_7__paragraph___proxy__pengakuan_sosial_terhadap_difabe",
+          "original_index": 29,
+          "type": "paragraph",
+          "text": "~ Proxy — Pengakuan sosial terhadap difabel sebagai aktor ekonomi meningkat: Ketika bengkel difabel aktif, bertransaksi, dan dipercaya pelanggan, komunitas lokal mulai melihat difabel bukan hanya sebagai penerima bantuan melainkan sebagai penyedia layanan yang produktif.",
+          "display_status": "present_as_proxy",
+          "source_refs": [
+            "evidence_registry"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B031",
+          "block_fingerprint": "bab_7__heading_2__77_fiksasi_dampak_ddat_adjustment",
+          "original_index": 30,
+          "type": "heading_2",
+          "text": "7.7 Fiksasi Dampak (DDAT Adjustment)"
+        },
+        {
+          "block_ref": "bab_7.B032",
+          "block_fingerprint": "bab_7__paragraph__fiksasi_dampak_diterapkan_untuk_memastik",
+          "original_index": 31,
+          "type": "paragraph",
+          "text": "Fiksasi dampak diterapkan untuk memastikan bahwa nilai sosial yang diklaim benar-benar mencerminkan kontribusi program secara nyata. Empat parameter: Deadweight (DW), Displacement (DS), Attribution (AT), Drop-off (DO)."
+        },
+        {
+          "block_ref": "bab_7.B033",
+          "block_fingerprint": "bab_7__table__ddat_adjustment_per_aspek",
+          "original_index": 32,
+          "type": "table",
+          "table_id": "table_ddat_per_aspek",
+          "title": "DDAT Adjustment per Aspek",
+          "headers": [
+            "Aspek",
+            "DW",
+            "DS",
+            "AT",
+            "DO",
+            "Net ×",
+            "Haircut"
+          ],
+          "rows": [
+            [
+              "JSP",
+              "15%",
+              "5%",
+              "25%",
+              "0%",
+              "×0.6068",
+              "39%"
+            ],
+            [
+              "LUB",
+              "20%",
+              "5%",
+              "25%",
+              "0%",
+              "×0.5415",
+              "46%"
+            ],
+            [
+              "ENT",
+              "20%",
+              "0%",
+              "30%",
+              "0%",
+              "×0.5",
+              "50%"
+            ],
+            [
+              "JOB",
+              "10%",
+              "0%",
+              "37%",
+              "0%",
+              "×0.63",
+              "37%"
+            ]
+          ],
+          "column_widths": [
+            1200,
+            1100,
+            1100,
+            1100,
+            1100,
+            1100,
+            2938
+          ],
+          "note": "DW=Deadweight DS=Displacement AT=Attribution DO=Drop-off",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B034",
+          "block_fingerprint": "bab_7__paragraph_small__ratarata_fiksasi_dampak_keseluruhan_432_",
+          "original_index": 33,
+          "type": "paragraph_small",
+          "text": "Rata-rata fiksasi dampak keseluruhan: −43.2%. Haircut tertinggi pada aspek ENT (50%): Aktivasi kapasitas usaha cukup dipengaruhi program, tetapi tetap dipengaruhi kesiapan awal kelompok, pendampingan non-program, dan variasi kemampuan kewirausahaan masing-masing unit.."
+        },
+        {
+          "block_ref": "bab_7.B035",
+          "block_fingerprint": "bab_7__divider__structural_34",
+          "original_index": 34,
+          "type": "divider"
+        },
+        {
+          "block_ref": "bab_7.B036",
+          "block_fingerprint": "bab_7__heading_2__78_monetisasi_dampak",
+          "original_index": 35,
+          "type": "heading_2",
+          "text": "7.8 Monetisasi Dampak"
+        },
+        {
+          "block_ref": "bab_7.B037",
+          "block_fingerprint": "bab_7__paragraph_lead__monetisasi_nilai_sosial_dilakukan_melalu",
+          "original_index": 36,
+          "type": "paragraph_lead",
+          "text": "Monetisasi nilai sosial dilakukan melalui 4 aspek. Aspek JSP dan LUB dimonetisasi berdasarkan data transaksi aktual (observed). Aspek ENT dan JOB dimonetisasi menggunakan proxy konservatif: ENT: proxy aktivasi kapasitas usaha bengkel inklusif per tahun · JOB: proxy operator difabel aktif dan kemandirian ekonomi per tahun."
+        },
+        {
+          "block_ref": "bab_7.B038",
+          "block_fingerprint": "bab_7__callout_info__aspek_jsp_dan_lub_dimonetisasi_berdasark",
+          "original_index": 37,
+          "type": "callout_info",
+          "text": "Aspek JSP dan LUB dimonetisasi berdasarkan data transaksi aktual (observed). Aspek ENT dan JOB dimonetisasi menggunakan proxy konservatif: ENT: proxy aktivasi kapasitas usaha bengkel inklusif per tahun · JOB: proxy operator difabel aktif dan kemandirian ekonomi per tahun.",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B039",
+          "block_fingerprint": "bab_7__table__monetisasi_nilai_sosial_per_aspek_per_ta",
+          "original_index": 38,
+          "type": "table",
+          "table_id": "table_monetization_per_aspek",
+          "title": "Monetisasi Nilai Sosial per Aspek per Tahun",
+          "headers": [
+            "Aspek",
+            "Tahun",
+            "Gross (Rp)",
+            "Adj DDAT",
+            "Net (Rp)",
+            "Status"
+          ],
+          "rows": [
+            [
+              "ENT",
+              "2023",
+              "Rp 120,000,000",
+              "×0.5",
+              "Rp 60,000,000",
+              "final"
+            ],
+            [
+              "ENT",
+              "2024",
+              "Rp 140,000,000",
+              "×0.5",
+              "Rp 70,000,000",
+              "final"
+            ],
+            [
+              "ENT",
+              "2025",
+              "Rp 160,000,000",
+              "×0.5",
+              "Rp 80,000,000",
+              "final"
+            ],
+            [
+              "JOB",
+              "2023",
+              "Rp 60,000,000",
+              "×0.63",
+              "Rp 37,800,000",
+              "final"
+            ],
+            [
+              "JOB",
+              "2024",
+              "Rp 84,000,000",
+              "×0.63",
+              "Rp 52,920,000",
+              "final"
+            ],
+            [
+              "JOB",
+              "2025",
+              "Rp 96,000,000",
+              "×0.63",
+              "Rp 60,480,000",
+              "final"
+            ],
+            [
+              "JSP",
+              "2023",
+              "Rp 90,210,000",
+              "×0.6068",
+              "Rp 54,739,428",
+              "final"
+            ],
+            [
+              "JSP",
+              "2024",
+              "Rp 126,300,000",
+              "×0.6068",
+              "Rp 76,638,840",
+              "final"
+            ],
+            [
+              "JSP",
+              "2025",
+              "Rp 176,820,000",
+              "×0.6068",
+              "Rp 107,294,376",
+              "final"
+            ],
+            [
+              "LUB",
+              "2023",
+              "Rp 12,880,000",
+              "×0.5415",
+              "Rp 6,974,520",
+              "final"
+            ],
+            [
+              "LUB",
+              "2024",
+              "Rp 18,030,000",
+              "×0.5415",
+              "Rp 9,763,245",
+              "final"
+            ],
+            [
+              "LUB",
+              "2025",
+              "Rp 25,250,000",
+              "×0.5415",
+              "Rp 13,672,875",
+              "final"
+            ],
+            [
+              "TOTAL",
+              "—",
+              "Rp 1,109,490,000",
+              "—",
+              "Rp 630,283,284",
+              "—"
+            ]
+          ],
+          "column_widths": [
+            900,
+            800,
+            2100,
+            900,
+            2100,
+            2838
+          ],
+          "note": "LUB & SVC = observed. REINT & CONF = proxy S10.",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "monetization",
+            "ddat_params"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B040",
+          "block_fingerprint": "bab_7__callout_warning__aspek_ent_job_adalah_proxy_monetisasi__e",
+          "original_index": 39,
+          "type": "callout_warning",
+          "text": "Aspek ENT, JOB adalah proxy monetisasi — estimasi nilai sosial berdasarkan referensi kebijakan dan data sekunder, bukan pengukuran langsung. Nilai ini perlu dikonfirmasi melalui survei peserta pada periode evaluasi berikutnya.",
+          "display_status": "present_as_proxy",
+          "source_refs": [
+            "evidence_registry"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B041",
+          "block_fingerprint": "bab_7__bar_chart_text__distribusi_nilai_bersih_per_aspek_rp_jut",
+          "original_index": 40,
+          "type": "bar_chart_text",
+          "data_points": [
+            {
+              "label": "JSP   ",
+              "value": 238.7
+            },
+            {
+              "label": "ENT   ",
+              "value": 210
+            },
+            {
+              "label": "JOB   ",
+              "value": 151.2
+            },
+            {
+              "label": "LUB   ",
+              "value": 30.4
+            }
+          ],
+          "max_value": 263,
+          "title": "Distribusi nilai bersih per aspek (Rp juta, kumulatif 2023–2025)"
+        },
+        {
+          "block_ref": "bab_7.B042",
+          "block_fingerprint": "bab_7__divider_thick__structural_41",
+          "original_index": 41,
+          "type": "divider_thick"
+        },
+        {
+          "block_ref": "bab_7.B043",
+          "block_fingerprint": "bab_7__heading_2__79_nilai_sroi_dan_penjelasan",
+          "original_index": 42,
+          "type": "heading_2",
+          "text": "7.9 Nilai SROI dan Penjelasan"
+        },
+        {
+          "block_ref": "bab_7.B044",
+          "block_fingerprint": "bab_7__paragraph_lead__berdasarkan_kalkulasi_evaluatif_dengan_c",
+          "original_index": 43,
+          "type": "paragraph_lead",
+          "text": "Berdasarkan kalkulasi evaluatif dengan compound ORI-adjusted dan DDAT net multiplier per aspek, program ESD menghasilkan SROI blended 1 : 1.12 — artinya setiap Rp 1 yang diinvestasikan menghasilkan Rp 1.12 nilai sosial-ekonomi terukur."
+        },
+        {
+          "block_ref": "bab_7.B045",
+          "block_fingerprint": "bab_7__metric_card_3col__total_investasi",
+          "original_index": 44,
+          "type": "metric_card_3col",
+          "items": [
+            {
+              "label": "Total Investasi",
+              "value": "Rp 594,781,486",
+              "sublabel": "2023–2025"
+            },
+            {
+              "label": "Net Benefit (compounded)",
+              "value": "Rp 663,337,061",
+              "sublabel": "terminal year"
+            },
+            {
+              "label": "SROI Blended",
+              "value": "1 : 1.12",
+              "sublabel": "positive return"
+            }
+          ],
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B046",
+          "block_fingerprint": "bab_7__table__kalkulasi_sroi_per_tahun_program",
+          "original_index": 45,
+          "type": "table",
+          "table_id": "table_sroi_per_tahun",
+          "title": "Kalkulasi SROI per Tahun Program",
+          "headers": [
+            "Tahun",
+            "Investasi",
+            "Gross",
+            "Net",
+            "Compound",
+            "Net Compounded",
+            "SROI"
+          ],
+          "rows": [
+            [
+              "2023",
+              "Rp 145,742,286",
+              "Rp 283,090,000",
+              "Rp 159,513,948",
+              "×1.1252 (ORI023T3)",
+              "Rp 179,485,094",
+              "1 : 1.23"
+            ],
+            [
+              "2024",
+              "Rp 204,039,200",
+              "Rp 368,330,000",
+              "Rp 209,322,085",
+              "×1.0625 (ORI025T3)",
+              "Rp 222,404,715",
+              "1 : 1.09"
+            ],
+            [
+              "2025",
+              "Rp 245,000,000",
+              "Rp 458,070,000",
+              "Rp 261,447,251",
+              "×1.0000 (ORI027T3)",
+              "Rp 261,447,251",
+              "1 : 1.07"
+            ],
+            [
+              "TOTAL",
+              "Rp 594,781,486",
+              "Rp 1,109,490,000",
+              "Rp 630,283,284",
+              "—",
+              "Rp 663,337,061",
+              "1 : 1.12"
+            ]
+          ],
+          "column_widths": [
+            800,
+            1500,
+            1400,
+            1400,
+            1700,
+            1638,
+            1200
+          ],
+          "note": "Net compounded = nilai bersih yang di-compound ke terminal year 2025",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "sroi_metrics.calculated"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B047",
+          "block_fingerprint": "bab_7__table__ringkasan_sroi_evaluatif_20232025",
+          "original_index": 46,
+          "type": "table",
+          "table_id": "table_sroi_blended",
+          "title": "Ringkasan SROI Evaluatif 2023–2025",
+          "headers": [
+            "Metrik",
+            "Nilai"
+          ],
+          "rows": [
+            [
+              "Total Investasi",
+              "Rp 594,781,486"
+            ],
+            [
+              "Total Gross Kumulatif",
+              "Rp 1,109,490,000"
+            ],
+            [
+              "Total Net Kumulatif",
+              "Rp 630,283,284"
+            ],
+            [
+              "Total Net Compounded",
+              "Rp 663,337,061"
+            ],
+            [
+              "Avg Fiksasi",
+              "−43.2%"
+            ],
+            [
+              "SROI Blended",
+              "1 : 1.12"
+            ]
+          ],
+          "column_widths": [
+            4819,
+            4819
+          ],
+          "note": "Evaluatif · Compound ORI-adjusted · DDAT net multiplier per aspek · Terminal year 2025",
+          "display_status": "present_as_final",
+          "source_refs": [
+            "sroi_metrics.calculated"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B048",
+          "block_fingerprint": "bab_7__paragraph__tahun_2023_ori023t3_590_investasi_rp_145",
+          "original_index": 47,
+          "type": "paragraph",
+          "text": "Tahun 2023 (ORI023T3, 5.90%): investasi Rp 145,742,286, gross Rp 283,090,000, nilai bersih setelah DDAT Rp 159,513,948, di-compound ×1.1252 menjadi Rp 179,485,094, SROI 1 : 1.23.",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B049",
+          "block_fingerprint": "bab_7__paragraph__tahun_2024_ori025t3_625_investasi_rp_204",
+          "original_index": 48,
+          "type": "paragraph",
+          "text": "Tahun 2024 (ORI025T3, 6.25%): investasi Rp 204,039,200, gross Rp 368,330,000, nilai bersih setelah DDAT Rp 209,322,085, di-compound ×1.0625 menjadi Rp 222,404,715, SROI 1 : 1.09.",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B050",
+          "block_fingerprint": "bab_7__paragraph__tahun_2025_ori027t3_650_investasi_rp_245",
+          "original_index": 49,
+          "type": "paragraph",
+          "text": "Tahun 2025 (ORI027T3, 6.50%): investasi Rp 245,000,000, gross Rp 458,070,000, nilai bersih setelah DDAT Rp 261,447,251, di-compound ×1.0000 menjadi Rp 261,447,251, SROI 1 : 1.07.",
+          "display_status": "present_as_final"
+        },
+        {
+          "block_ref": "bab_7.B051",
+          "block_fingerprint": "bab_7__heading_2__710_interpretasi_dan_temuan_program",
+          "original_index": 50,
+          "type": "heading_2",
+          "text": "7.10 Interpretasi dan Temuan Program"
+        },
+        {
+          "block_ref": "bab_7.B052",
+          "block_fingerprint": "bab_7__paragraph__evaluasi_sroi_menunjukkan_bahwa_program_",
+          "original_index": 51,
+          "type": "paragraph",
+          "text": "Evaluasi SROI menunjukkan bahwa program ESD menghasilkan nilai sosial yang melampaui investasi. Struktur monetisasi perlu dibaca dengan memahami komposisi aspek observed dan proxy, serta distribusi nilai antar tahun."
+        },
+        {
+          "block_ref": "bab_7.B053",
+          "block_fingerprint": "bab_7__paragraph__pelatihan_otomotif_dasar_perlu_segera_di",
+          "original_index": 52,
+          "type": "paragraph",
+          "text": "Pelatihan otomotif dasar perlu segera dikaitkan dengan ruang layanan nyata; tanpa itu skill difabel mudah berhenti sebagai pelatihan, bukan penghidupan.",
+          "display_status": "present_as_inferred",
+          "source_refs": [
+            "learning_signals"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B054",
+          "block_fingerprint": "bab_7__paragraph__bantuan_modal_dan_pendampingan_operasion",
+          "original_index": 53,
+          "type": "paragraph",
+          "text": "Bantuan modal dan pendampingan operasional menjadi jembatan penting antara kompetensi dan transaksi riil pada unit bengkel difabel.",
+          "display_status": "present_as_inferred",
+          "source_refs": [
+            "learning_signals"
+          ]
+        },
+        {
+          "block_ref": "bab_7.B055",
+          "block_fingerprint": "bab_7__paragraph_small__catatan_metodologis_seluruh_angka_pada_b",
+          "original_index": 54,
+          "type": "paragraph_small",
+          "text": "Catatan metodologis: seluruh angka pada bab ini dihasilkan oleh Financial Calculation Engine (deterministik, non-LLM) dan dapat ditelusuri melalui calc_audit_log. Evaluasi ini bersifat evaluatif — mengukur nilai yang dihasilkan selama 2023–2025 berdasarkan data yang tersedia."
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_chapters": 9,
+    "total_blocks": 183,
+    "fingerprint_collisions": 0,
+    "empty_content_blocks": 3,
+    "warnings_count": 30,
+    "failure_count": 0
+  },
+  "warnings": [
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_1.B010",
+      "source_used": "items[0].text",
+      "message": "bab_1.B010: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_1.B013",
+      "source_used": "headers[0]",
+      "message": "bab_1.B013: field 'text' tidak tersedia, prefix dari 'headers[0]'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_1.B016",
+      "source_used": "items[0].text",
+      "message": "bab_1.B016: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_2.B009",
+      "source_used": "items[0].text",
+      "message": "bab_2.B009: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_3.B009",
+      "source_used": "items[0].text",
+      "message": "bab_3.B009: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_3.B012",
+      "source_used": "headers[0]",
+      "message": "bab_3.B012: field 'text' tidak tersedia, prefix dari 'headers[0]'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_3.B015",
+      "source_used": "headers[0]",
+      "message": "bab_3.B015: field 'text' tidak tersedia, prefix dari 'headers[0]'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_3.B017",
+      "source_used": "items[0].text",
+      "message": "bab_3.B017: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_3.B023",
+      "source_used": "items[0].text",
+      "message": "bab_3.B023: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "EMPTY_CONTENT_BLOCK",
+      "block_ref": "bab_4.B007",
+      "message": "bab_4.B007: tidak ada content source (type=paragraph)"
+    },
+    {
+      "code": "EMPTY_CONTENT_BLOCK",
+      "block_ref": "bab_5.B006",
+      "message": "bab_5.B006: tidak ada content source (type=bullet_list)"
+    },
+    {
+      "code": "EMPTY_CONTENT_BLOCK",
+      "block_ref": "bab_6.B012",
+      "message": "bab_6.B012: tidak ada content source (type=paragraph)"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_6.B015",
+      "source_used": "headers[0]",
+      "message": "bab_6.B015: field 'text' tidak tersedia, prefix dari 'headers[0]'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_6.B016",
+      "source_used": "items[0].label",
+      "message": "bab_6.B016: field 'text' tidak tersedia, prefix dari 'items[0].label'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_8.B010",
+      "source_used": "items[0].text",
+      "message": "bab_8.B010: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_8.B013",
+      "source_used": "items[0].text",
+      "message": "bab_8.B013: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_8.B016",
+      "source_used": "items[0].text",
+      "message": "bab_8.B016: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_8.B020",
+      "source_used": "items[0].text",
+      "message": "bab_8.B020: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_9.B006",
+      "source_used": "items[0].label",
+      "message": "bab_9.B006: field 'text' tidak tersedia, prefix dari 'items[0].label'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_9.B010",
+      "source_used": "items[0].text",
+      "message": "bab_9.B010: field 'text' tidak tersedia, prefix dari 'items[0].text'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B014",
+      "source_used": "headers[0]",
+      "message": "bab_7.B014: field 'text' tidak tersedia, prefix dari 'headers[0]'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B018",
+      "source_used": "title",
+      "message": "bab_7.B018: field 'text' tidak tersedia, prefix dari 'title'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B019",
+      "source_used": "items[0].label",
+      "message": "bab_7.B019: field 'text' tidak tersedia, prefix dari 'items[0].label'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B022",
+      "source_used": "headers[0]",
+      "message": "bab_7.B022: field 'text' tidak tersedia, prefix dari 'headers[0]'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B033",
+      "source_used": "title",
+      "message": "bab_7.B033: field 'text' tidak tersedia, prefix dari 'title'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B039",
+      "source_used": "title",
+      "message": "bab_7.B039: field 'text' tidak tersedia, prefix dari 'title'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B041",
+      "source_used": "title",
+      "message": "bab_7.B041: field 'text' tidak tersedia, prefix dari 'title'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B045",
+      "source_used": "items[0].label",
+      "message": "bab_7.B045: field 'text' tidak tersedia, prefix dari 'items[0].label'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B046",
+      "source_used": "title",
+      "message": "bab_7.B046: field 'text' tidak tersedia, prefix dari 'title'"
+    },
+    {
+      "code": "PRIMARY_SOURCE_ABSENT",
+      "block_ref": "bab_7.B047",
+      "source_used": "title",
+      "message": "bab_7.B047: field 'text' tidak tersedia, prefix dari 'title'"
+    }
+  ],
+  "failures": []
+}
