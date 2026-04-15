@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -517,8 +518,9 @@ let state = {
 const CONTENT_SOURCE_PRIORITY = [
   ['text'],
   ['items', 0, 'text'],
+  ['items', 0, 'label'],   // fix: metric_card dan block dengan items.label
+  ['title'],               // fix: pindah sebelum headers[0]
   ['headers', 0],
-  ['title'],
   ['caption'],
   ['rows', 0, 0],
   ['label'],
