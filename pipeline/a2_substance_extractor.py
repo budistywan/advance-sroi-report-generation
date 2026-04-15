@@ -86,75 +86,200 @@ NON_CONTENT_BLOCK_TYPES_DEFAULT = {"divider", "divider_thick", "spacer"}
 # PROMPTS
 # ─────────────────────────────────────────────
 
-SYSTEM_PASS1 = """Kamu adalah analis dokumen SROI (Social Return on Investment) yang berpengalaman.
-Tugasmu adalah membaca blocks dari chapter substansi sebuah laporan SROI dan mengekstrak elemen-elemen substantif yang material dan reusable untuk penulisan bab-bab lain.
+SYSTEM_PASS1 = """Kamu adalah analis substansi dokumen SROI yang bekerja dalam sebuah pipeline editorial.
 
-PENTING:
-- Ekstraksi SELEKTIF, bukan exhaustive copy. Pilih elemen yang benar-benar material.
-- Setiap elemen harus mewakili satu unit makna yang koheren.
-- Summary harus abstraktif (1-3 kalimat), bukan salinan mentah teks.
-- Provenance harus akurat — gunakan block_ref, block_fingerprint, dan type persis dari input.
-- Non-content blocks (divider, spacer, divider_thick) TIDAK boleh menjadi elemen mandiri.
-- Evidence status mengikuti interpretasi teraman (weakest safe interpretation).
+== A. POSISI KERJA ==
 
-PERHATIAN PENTING — dua field berbeda, JANGAN dicampur:
+Tugasmu bukan merangkum Bab 7. Tugasmu adalah mengidentifikasi substansi inti dokumen yang akan menjadi sumber bagi bab-bab lain. Elemen yang kamu hasilkan akan dipakai oleh penulis Bab 1 (pendahuluan), Bab 3 (metodologi), Bab 4 (kondisi awal), Bab 8 (pembelajaran), dan Bab 9 (penutup). Setiap elemen harus bisa hidup di luar Bab 7 dan tetap bermakna.
 
-1. element_type — KATEGORI elemen. Harus salah satu dari daftar ini PERSIS:
-   evaluative_mandate, program_positioning, scope_definition, stakeholder_structure,
-   investment_structure, output_structure, outcome_structure, adjustment_logic,
-   monetization_logic, evaluative_metric, interpretive_finding, learning_signal,
-   problem_signal, ideal_state_signal, strategy_signal, program_structure, other
+== B. PRINSIP SELEKSI DAN GROUPING ==
 
-2. use_affordances — FUNGSI elemen untuk bab lain. Harus dari daftar ini PERSIS:
-   opening_mandate, program_positioning, scope_definition, methodological_reference,
-   problem_justification, baseline_context, ideal_state_anchor, strategy_alignment,
-   implementation_reference, outcome_reference, adjustment_reference,
-   monetization_reference, learning_anchor, closing_summary, recommendation_basis,
-   visual_candidate
-   Extension boleh dengan prefix x_ (contoh: x_transition_pathway)
+Pilih elemen yang menjadi urat saraf dokumen, bukan yang sekadar mengisi halaman.
 
-JANGAN gunakan nilai dari element_type sebagai use_affordances, dan sebaliknya.
-Contoh SALAH: use_affordances = ["stakeholder_structure"] → ini element_type, bukan affordance
-Contoh BENAR: use_affordances = ["implementation_reference", "visual_candidate"]
+KAPAN MENGGABUNGKAN BLOCKS:
+- Beberapa blocks yang membangun satu unit makna harus digabung menjadi satu elemen
+- Contoh: callout_warning status data + paragraph angka + tabel rincian = satu elemen investasi, bukan tiga elemen terpisah
+- Contoh: paragraph observed outcome + paragraph proxy outcome = dua elemen terpisah, karena berbeda level evidensinya
 
-Jika element_type = other, wajib isi element_type_note.
+KAPAN MEMISAHKAN:
+- Pisahkan jika dua blocks membawa klaim dengan level evidence yang berbeda (observed vs proxy)
+- Pisahkan jika dua blocks akan dipakai oleh bab yang berbeda secara fungsi
 
-Output HANYA JSON array of elements. Tidak ada teks lain. Format tiap elemen:
+KAPAN MELEWATI:
+- Blocks yang hanya memperkuat angka yang sudah ditangkap elemen lain
+- Blocks yang hanya relevan lokal di Bab 7 dan tidak akan dibawa ke bab lain
+- Non-content blocks (divider, spacer, divider_thick) tidak boleh menjadi elemen mandiri
+
+TANDA ELEMEN YANG TERLALU DANGKAL (hindari):
+- Label hanya menyalin heading subjudul (contoh: "investment_section")
+- Summary hanya mengulang angka tanpa konteks epistemik
+- Satu block → satu elemen tanpa pertimbangan grouping
+- Elemen yang isinya hanya bisa dimengerti dalam konteks Bab 7
+
+== C. TIGA FIELD KRITIS — BEDA FUNGSI, BEDA ISI ==
+
+1. element_type — KATEGORI ONTOLOGIS elemen.
+Harus salah satu dari:
+evaluative_mandate, program_positioning, scope_definition, stakeholder_structure,
+investment_structure, output_structure, outcome_structure, adjustment_logic,
+monetization_logic, evaluative_metric, interpretive_finding, learning_signal,
+problem_signal, ideal_state_signal, strategy_signal, program_structure, other
+
+2. use_affordances — FUNGSI LINTAS BAB elemen ini.
+Tanya: "Di bab mana saja elemen ini relevan dipakai, dan dalam kapasitas apa?"
+Pilih SEMUA yang berlaku, bukan hanya yang paling dekat.
+Elemen penting harus punya minimal 3–5 affordances.
+Jika elemen hanya punya 1 affordance, curigai apakah elemen itu terlalu sempit.
+
+Affordances yang tersedia:
+opening_mandate — cocok jadi mandat pembuka Bab 1
+program_positioning — menjelaskan posisi program dalam ekosistem
+scope_definition — mendefinisikan ruang lingkup evaluasi
+methodological_reference — mendukung penjelasan metode di Bab 3
+problem_justification — mendukung argumen masalah di Bab 4
+baseline_context — memberi konteks kondisi awal
+ideal_state_anchor — memberi gambaran kondisi ideal
+strategy_alignment — mendukung narasi strategi
+implementation_reference — merujuk pada pelaksanaan program
+outcome_reference — merujuk pada hasil/dampak program
+adjustment_reference — merujuk pada proses penyesuaian (DDAT, dll)
+monetization_reference — merujuk pada monetisasi nilai sosial
+learning_anchor — cocok untuk pembelajaran di Bab 8
+closing_summary — cocok untuk sintesis penutup Bab 9
+recommendation_basis — menjadi dasar rekomendasi
+visual_candidate — cocok divisualisasikan sebagai tabel/grafik
+
+Extension boleh dengan prefix x_ (contoh: x_inclusion_signal)
+
+JANGAN gunakan nilai dari element_type sebagai use_affordances.
+SALAH: use_affordances = ["investment_structure"] → ini element_type
+BENAR: use_affordances = ["opening_mandate", "methodological_reference", "closing_summary"]
+
+3. guardrail_notes — LARANGAN DAN SYARAT PEMAKAIAN DOWNSTREAM.
+Tulis sebagai instruksi operasional untuk penulis bab lain.
+Minimal 1–3 guardrail per elemen yang material.
+Wajib kosong HANYA untuk elemen dengan materiality sangat rendah.
+
+FORMAT YANG BENAR (operasional, melarang, atau mensyaratkan):
+✓ "Jangan tampilkan angka ini sebagai headline tanpa menyebut komposisi observed vs proxy."
+✓ "Jika dibawa ke Bab I, perlakukan sebagai mandat evaluatif, bukan kesimpulan instan."
+✓ "Jangan gabungkan elemen ini dengan outcome proxy tanpa membedakan level evidensinya."
+
+FORMAT YANG SALAH (aspiratif, generik):
+✗ "Ensure accuracy of data."
+✗ "Verify alignment with program objectives."
+
+== D. EVIDENCE RUBRIC — PILIH DENGAN SADAR ==
+
+final   = data dari transaksi aktual, dokumen keuangan terverifikasi, atau pengukuran langsung
+proxy   = estimasi berdasarkan referensi kebijakan, benchmark, atau proxy value — BUKAN data langsung
+inferred = ditarik dari pola atau implikasi logis, belum dikonfirmasi data apapun
+mixed   = campuran: sebagian blocks punya evidence final, sebagian proxy atau inferred
+pending = data ada di sumber tapi belum diverifikasi pada saat ekstraksi ini
+
+ATURAN PESSIMISTIC INFERENCE:
+Jika provenance elemen mencakup blocks dengan evidence yang berbeda, gunakan yang paling lemah.
+Contoh: satu block "final" + satu block bertanda "under confirmation" → evidence_status = "mixed"
+Jangan memaksa "final" jika ada sinyal kehati-hatian di blocks sumber.
+
+== E. CONTOH OUTPUT YANG DITOLAK ==
+
+Contoh 1 — terlalu atomik, guardrail kosong, affordance sempit:
 {
-  "label": "snake_case_name",
+  "label": "investment_summary",
+  "use_affordances": ["implementation_reference"],
+  "guardrail_notes": [],
+  "evidence_status": "final"
+}
+DITOLAK karena: satu block, satu affordance, guardrail kosong, tidak menangkap sinyal under confirmation.
+
+Contoh 2 — label hanya menyalin heading:
+{
+  "label": "section_74_investasi",
+  "summary": "Bagian ini membahas investasi program."
+}
+DITOLAK karena: label tidak substantif, summary tidak abstraktif.
+
+== OUTPUT FORMAT ==
+
+Output HANYA JSON array of elements (bungkus dalam object dengan key 'elements').
+Tidak ada teks lain di luar JSON.
+
+{
+  "label": "snake_case_substantif",
   "element_type": "...",
   "element_type_note": null,
-  "summary": "...",
+  "summary": "1-3 kalimat abstraktif yang bisa berdiri sendiri di luar Bab 7",
   "source_block_refs": ["..."],
   "source_block_fingerprints": ["..."],
   "source_block_types": ["..."],
-  "evidence_status": "final|proxy|pending|inferred|mixed",
-  "use_affordances": ["..."],
-  "guardrail_notes": ["..."]
+  "evidence_status": "final|proxy|inferred|mixed|pending",
+  "use_affordances": ["min 2, idealnya 3-5 untuk elemen material"],
+  "guardrail_notes": ["larangan atau syarat operasional, bukan aspirasi"]
 }"""
 
-SYSTEM_PASS2 = """Kamu adalah analis SROI yang mengevaluasi kualitas elemen substansi dokumen.
-Tugasmu adalah memberi skor materiality dan reusability untuk setiap elemen, lalu menyusun guardrails global dan per-elemen.
+SYSTEM_PASS2 = """Kamu adalah analis SROI yang mengevaluasi hierarki kepentingan elemen substansi dan menyusun pagar penggunaan downstream.
 
-Aturan scoring:
-- materiality_score: 1-5 (1=minor, 5=inti dokumen)
-- reusability_score: 1-5 (1=sempit, 5=sangat reusable lintas bab)
-- priority: "high" jika sum>=8, "medium" jika 5-7, "low" jika <=4
+== A. FUNGSI PASS INI ==
 
-Guardrail rules:
-- global_guardrails: aturan yang berlaku seluruh dokumen (scope: document)
-- element_guardrails: aturan spesifik per elemen (scope: element, applies_to: element_id)
-- severity: low | medium | high | critical
-- Guardrail harus spesifik terhadap risiko pemakaian, bukan generik.
+Pass ini memiliki tiga tugas yang berbeda:
+1. Menetapkan scoring — hierarki kepentingan elemen dalam dokumen
+2. Menulis guardrail_notes per elemen — larangan pemakaian spesifik (dimasukkan ke registry)
+3. Menyusun guardrails packet — aturan global dan per-elemen untuk dokumen
 
-Output HANYA JSON object. Format:
+== B. SCORING ANCHORS (konteks SROI) ==
+
+materiality_score — seberapa penting elemen ini untuk klaim evaluatif dokumen:
+5 = elemen episentrum: klaim SROI inti, struktur outcome, basis investasi utama
+4 = elemen penting: mendukung klaim inti, perlu di hampir semua bab
+3 = elemen kontekstual: relevan tapi bukan penentu narasi
+2 = elemen pendukung: detail lokal yang kadang diperlukan
+1 = elemen minor: informatif tapi bisa diabaikan
+
+reusability_score — seberapa banyak bab yang akan memakai elemen ini:
+5 = dipakai di 5+ bab dengan fungsi berbeda
+4 = dipakai di 3–4 bab
+3 = dipakai di 2 bab
+2 = hanya relevan di 1–2 konteks terbatas
+1 = hanya relevan di Bab 7
+
+priority = "high" jika sum >= 8, "medium" jika 5–7, "low" jika <= 4
+
+CATATAN: Elemen SROI metric, outcome structure, dan investment basis hampir selalu 4–5.
+Jangan memberi skor medium untuk elemen yang jelas menjadi tesis evaluatif dokumen.
+
+== C. GUARDRAIL_NOTES PER ELEMEN (masuk ke registry) ==
+
+Untuk setiap elemen, tulis 1–3 guardrail_notes dalam format operasional.
+Ini berbeda dari element_guardrails — guardrail_notes adalah instruksi ringkas
+yang akan dibaca langsung oleh penulis bab saat menggunakan elemen ini.
+
+Format: kalimat larangan atau syarat, bukan aspirasi.
+Minimal untuk elemen dengan materiality >= 4.
+Boleh kosong untuk elemen materiality <= 2.
+
+== D. GUARDRAILS PACKET ==
+
+global_guardrails: 1–3 aturan yang berlaku untuk seluruh dokumen.
+Tulis sebagai larangan atau prasyarat, bukan pernyataan umum.
+Contoh BENAR: "Jangan gunakan angka SROI tanpa menyebut komposisi observed vs proxy yang menopangnya."
+Contoh SALAH: "Ensure all elements are aligned with program objectives."
+
+element_guardrails: 1 guardrail per elemen material (materiality >= 3).
+Fokus pada risiko pemakaian yang paling mungkin terjadi di downstream bab.
+applies_to: gunakan label elemen (bukan SUB-xxx) — akan diresolve oleh sistem.
+
+== OUTPUT FORMAT ==
+
+Output HANYA JSON object:
 {
   "scored_elements": [
     {
+      "temp_element_key": "TMP-001",
       "label": "label_dari_pass1",
       "materiality_score": 1-5,
       "reusability_score": 1-5,
-      "priority": "high|medium|low"
+      "guardrail_notes": ["larangan operasional 1", "larangan operasional 2"]
     }
   ],
   "global_guardrails": [
@@ -162,7 +287,7 @@ Output HANYA JSON object. Format:
       "guardrail_id": "SG-001",
       "scope": "document",
       "applies_to": "all",
-      "rule": "...",
+      "rule": "larangan atau prasyarat operasional",
       "severity": "low|medium|high|critical"
     }
   ],
@@ -170,8 +295,8 @@ Output HANYA JSON object. Format:
     {
       "guardrail_id": "SG-E-001",
       "scope": "element",
-      "applies_to": "SUB-001",
-      "rule": "...",
+      "applies_to": "label_elemen",
+      "rule": "larangan atau prasyarat operasional untuk elemen ini",
       "severity": "low|medium|high|critical"
     }
   ]
@@ -266,6 +391,106 @@ def validate_element(
     return errors
 
 
+def semantic_lint(elements: list[dict]) -> list[dict]:
+    """
+    Semantic lint — deteksi pola suspicious yang lolos schema validation.
+    Returns list of warning dicts. Tidak fatal, tapi harus di-review manual.
+
+    Pola yang dicek:
+    - Semua evidence_status = "final" (possible over-confidence)
+    - Semua guardrail_notes = [] (incomplete specification)
+    - Mayoritas elemen punya 1 affordance (possible under-specification)
+    - Guardrails mengandung pola aspiratif "Ensure.*" atau "Verify.*"
+    - Elemen high materiality tanpa guardrail_notes
+    """
+    warnings = []
+    if not elements:
+        return warnings
+
+    # 1. Semua evidence_status final
+    all_final = all(el.get("evidence_status") == "final" for el in elements)
+    if all_final and len(elements) > 3:
+        warnings.append({
+            "code": "LINT_ALL_EVIDENCE_FINAL",
+            "message": (
+                f"Semua {len(elements)} elemen punya evidence_status='final'. "
+                "Periksa apakah ada elemen yang seharusnya 'proxy', 'mixed', atau 'inferred'."
+            ),
+        })
+
+    # 2. Semua guardrail_notes kosong
+    all_empty_notes = all(not el.get("guardrail_notes") for el in elements)
+    if all_empty_notes:
+        warnings.append({
+            "code": "LINT_ALL_GUARDRAIL_NOTES_EMPTY",
+            "message": "Semua elemen punya guardrail_notes kosong. Pass 1 dan Pass 2 tidak mengisi field ini.",
+        })
+
+    # 3. Mayoritas affordance = 1
+    single_aff = sum(1 for el in elements if len(el.get("use_affordances", [])) <= 1)
+    if single_aff / len(elements) > 0.6:
+        warnings.append({
+            "code": "LINT_AFFORDANCES_UNDERSPECIFIED",
+            "message": (
+                f"{single_aff}/{len(elements)} elemen hanya punya 1 affordance. "
+                "Elemen material biasanya punya 3–5 affordances."
+            ),
+        })
+
+    # 4. Grouping quality — Q_group: deteksi atomistic extraction drift
+    # Elemen material (materiality >= 4) yang hanya berasal dari 1 block
+    # menunjukkan bahwa abstraction bergeser kembali ke extraction.
+    # Denominator = material_elements (bukan len(elements)) agar proporsi akurat.
+    if any(el.get("materiality_score", 0) is not None for el in elements):
+        single_block_material = sum(
+            1 for el in elements
+            if len(el.get("source_block_refs", [])) == 1
+            and el.get("materiality_score", 0) >= 4
+        )
+        material_elements = sum(1 for el in elements if el.get("materiality_score", 0) >= 4)
+        if material_elements > 0 and (single_block_material / material_elements) > 0.6:
+            drift_ratio = single_block_material / material_elements
+            severity = "high" if drift_ratio >= 0.8 else "medium"
+            warnings.append({
+                "code": "LINT_ATOMIC_EXTRACTION_DRIFT",
+                "severity": severity,
+                "message": (
+                    f"{single_block_material}/{material_elements} elemen material "
+                    f"({drift_ratio:.0%}) hanya berasal dari 1 block. "
+                    f"Mayoritas elemen material seharusnya menggabungkan beberapa blocks. "
+                    f"Periksa apakah abstraction berubah menjadi extraction."
+                ),
+            })
+
+    # 4. High materiality tanpa guardrail_notes
+    import re as _re
+    aspirational_pattern = _re.compile(r'^(Ensure|Verify|Make sure|Check|Confirm)', _re.IGNORECASE)
+    for el in elements:
+        mat = el.get("materiality_score", 0)
+        notes = el.get("guardrail_notes", [])
+        if mat >= 4 and not notes:
+            warnings.append({
+                "code": "LINT_HIGH_MATERIALITY_NO_GUARDRAIL",
+                "element_id": el.get("element_id", "?"),
+                "message": (
+                    f"{el.get('element_id','?')} ({el.get('label','?')}): "
+                    f"materiality={mat} tapi guardrail_notes kosong."
+                ),
+            })
+        # 5. Guardrail aspiratif
+        for note in notes:
+            if aspirational_pattern.match(note):
+                warnings.append({
+                    "code": "LINT_ASPIRATIONAL_GUARDRAIL",
+                    "element_id": el.get("element_id", "?"),
+                    "message": (
+                        f"{el.get('element_id','?')}: guardrail_note terdengar aspiratif: '{note[:80]}'"
+                    ),
+                })
+
+    return warnings
+
+
 def validate_provenance_against_packet(
     elements: list[dict],
     block_identity_packet: dict,
@@ -347,7 +572,9 @@ def build_pass1_prompt(
     return (
         f"Chapter sumber substansi: {chapter_id}\n\n"
         f"Blocks:\n\n{blocks_text}\n\n"
-        f"Ekstrak elemen-elemen substantif yang material dan reusable dari blocks di atas. "
+        f"Ekstrak elemen-elemen substantif yang material dan reusable dari blocks di atas.\n"
+        f"Setiap elemen WAJIB menyertakan field 'temp_element_key' dengan format 'TMP-001', 'TMP-002', dst. "
+        f"Key ini digunakan untuk menghubungkan Pass 1 dan Pass 2 secara stabil — lebih reliable dari label.\n"
         f"Output HANYA JSON array (bungkus dalam object dengan key 'elements')."
     )
 
@@ -358,8 +585,11 @@ def build_pass2_prompt(pass1_elements: list[dict], document_context: str) -> str
     return (
         f"Konteks dokumen: {document_context}\n\n"
         f"Elemen hasil ekstraksi Pass 1:\n{elements_json}\n\n"
-        f"Berikan scoring (materiality_score, reusability_score, priority) "
-        f"untuk setiap elemen, dan susun global_guardrails serta element_guardrails. "
+        f"Berikan scoring untuk setiap elemen. Gunakan field 'temp_element_key' (TMP-001, TMP-002, dst.) "
+        f"sebagai identifier di scored_elements — BUKAN label. "
+        f"Ini memastikan scoring tidak hilang meski ada perbedaan kecil di label.\n"
+        f"Sertakan juga 'guardrail_notes' per elemen di scored_elements.\n"
+        f"Susun global_guardrails dan element_guardrails (applies_to menggunakan label elemen).\n"
         f"Output HANYA JSON object sesuai format yang diberikan."
     )
 
@@ -381,17 +611,46 @@ def assemble_registry(
     Gabungkan hasil Pass 1 + Pass 2 menjadi substance_registry dan substance_guardrails.
     Returns (registry, guardrails).
     """
-    scored = {e["label"]: e for e in pass2_data.get("scored_elements", [])}
-    now    = datetime.now(timezone.utc).isoformat()
+    # Index scored elements: primary via temp_element_key, fallback via label
+    # Ini mencegah scoring hilang silent saat LLM typo label di Pass 2
+    scored_by_key   = {}
+    scored_by_label = {}
+    for e in pass2_data.get("scored_elements", []):
+        key   = e.get("temp_element_key", "")
+        label = e.get("label", "")
+        if key:
+            scored_by_key[key] = e
+        if label:
+            scored_by_label[label] = e
+
+    now = datetime.now(timezone.utc).isoformat()
+    miss_count = 0
 
     elements = []
     for i, el in enumerate(pass1_elements):
         label = el.get("label", f"element_{i}")
-        score = scored.get(label, {})
+        key   = el.get("temp_element_key", f"TMP-{(i+1):03d}")
+
+        # Resolve scoring: key primary, label fallback
+        score = scored_by_key.get(key) or scored_by_label.get(label)
+        if score is None:
+            miss_count += 1
+            score = {}
+
         mat   = int(score.get("materiality_score", 3))
         reu   = int(score.get("reusability_score", 3))
         total = mat + reu
         pri   = "high" if total >= 8 else "medium" if total >= 5 else "low"
+
+        # Merge guardrail_notes: Pass 1 (dari extraction) + Pass 2 (dari evaluation)
+        # Pass 2 punya konteks scoring sehingga guardrailnya lebih terarah
+        pass1_notes = el.get("guardrail_notes", []) or []
+        pass2_notes = score.get("guardrail_notes", []) or []
+        # Deduplikasi — prioritaskan Pass 2, tambah Pass 1 yang tidak overlap
+        merged_notes = list(pass2_notes)
+        for note in pass1_notes:
+            if note not in merged_notes:
+                merged_notes.append(note)
 
         elements.append({
             "element_id":          f"SUB-{(i+1):03d}",
@@ -404,7 +663,7 @@ def assemble_registry(
             "source_block_types":  el.get("source_block_types", []),
             "evidence_status":     el.get("evidence_status", "inferred"),
             "use_affordances":     el.get("use_affordances", []),
-            "guardrail_notes":     el.get("guardrail_notes", []),
+            "guardrail_notes":     merged_notes,
             "materiality_score":   mat,
             "reusability_score":   reu,
             "priority":            pri,
@@ -439,6 +698,18 @@ def assemble_registry(
         "warnings":  [],
         "failures":  [],
     }
+
+    # Warning jika ada elemen yang scoring-nya tidak ter-resolve
+    if miss_count > 0:
+        registry["warnings"].append({
+            "level": "warning",
+            "code": "SCORING_KEY_MISS",
+            "message": (
+                f"{miss_count} elemen tidak ter-resolve oleh Pass 2 scoring "
+                f"(baik via temp_element_key maupun label). "
+                f"Skor default digunakan (materiality=3, reusability=3)."
+            ),
+        })
 
     # Guardrails: re-number IDs secara berurutan
     global_guardrails  = []
@@ -564,6 +835,12 @@ def run(
     else:
         raise RuntimeError(f"Pass 1 unexpected type: {type(data1)}")
 
+    # Inject temp_element_key deterministik jika LLM tidak mengisinya
+    # Ini menjamin Pass 2 punya identifier stabil — tidak bergantung pada label
+    for i, el in enumerate(pass1_elements):
+        if not el.get("temp_element_key"):
+            el["temp_element_key"] = f"TMP-{(i+1):03d}"
+
     print(f"[A2] Pass 1 complete : {len(pass1_elements)} elemen diekstrak")
 
     # ── Step 9: Pass 2 — Scoring + Guardrails ─
@@ -616,6 +893,16 @@ def run(
                     f"Diizinkan, tetapi perlu review."
                 ),
             })
+
+    # Semantic lint — deteksi pola suspicious (warning, tidak fatal)
+    lint_warnings = semantic_lint(registry["elements"])
+    for lw in lint_warnings:
+        registry["warnings"].append({
+            "level": "warning",
+            **lw,
+        })
+    if lint_warnings:
+        print(f"[A2] Semantic lint   : {len(lint_warnings)} suspicious pattern(s)")
 
     if all_errors:
         registry["failures"] = [
