@@ -21,6 +21,7 @@ from pipeline.a2_substance_extractor import (
     build_pass1_prompt,
     build_pass2_prompt,
     parse_json_response,
+    semantic_lint,
     CORE_AFFORDANCES,
     VALID_ELEMENT_TYPES,
     VALID_EVIDENCE_STATUSES,
@@ -860,3 +861,202 @@ class TestRunMockedLLM:
                 is_core = aff in CORE_AFFORDANCES
                 is_ext  = bool(__import__("re").match(r"^x_[a-z0-9_]+$", aff))
                 assert is_core or is_ext, f"Affordance tidak valid: {aff}"
+
+
+# ─────────────────────────────────────────────
+# SEMANTIC LINT
+# ─────────────────────────────────────────────
+
+class TestSemanticLint:
+    def _make_elements(self, n=4, **overrides):
+        base = {
+            "element_id": "SUB-001", "label": "test_el", "element_type": "evaluative_metric",
+            "summary": "Test.", "source_block_refs": ["bab_7.B001"],
+            "source_block_fingerprints": ["fp1"], "source_block_types": ["paragraph"],
+            "evidence_status": "final", "use_affordances": ["opening_mandate"],
+            "guardrail_notes": ["Jangan pakai tanpa konteks."],
+            "materiality_score": 3, "reusability_score": 3, "priority": "medium", "status": "active",
+        }
+        base.update(overrides)
+        return [dict(base, element_id=f"SUB-{i+1:03d}", label=f"el_{i}") for i in range(n)]
+
+    def test_all_final_triggers_lint(self):
+        els = self._make_elements(4, evidence_status="final")
+        warnings = semantic_lint(els)
+        assert any(w["code"] == "LINT_ALL_EVIDENCE_FINAL" for w in warnings)
+
+    def test_mixed_evidence_no_lint(self):
+        els = self._make_elements(4)
+        els[0]["evidence_status"] = "proxy"
+        warnings = semantic_lint(els)
+        assert not any(w["code"] == "LINT_ALL_EVIDENCE_FINAL" for w in warnings)
+
+    def test_all_empty_guardrail_notes_triggers_lint(self):
+        els = self._make_elements(4, guardrail_notes=[])
+        warnings = semantic_lint(els)
+        assert any(w["code"] == "LINT_ALL_GUARDRAIL_NOTES_EMPTY" for w in warnings)
+
+    def test_majority_single_affordance_triggers_lint(self):
+        els = self._make_elements(5, use_affordances=["opening_mandate"])
+        warnings = semantic_lint(els)
+        assert any(w["code"] == "LINT_AFFORDANCES_UNDERSPECIFIED" for w in warnings)
+
+    def test_multi_affordance_no_lint(self):
+        els = self._make_elements(5, use_affordances=["opening_mandate", "closing_summary", "outcome_reference"])
+        warnings = semantic_lint(els)
+        assert not any(w["code"] == "LINT_AFFORDANCES_UNDERSPECIFIED" for w in warnings)
+
+    def test_high_materiality_no_guardrail_triggers_lint(self):
+        els = self._make_elements(1, materiality_score=4, guardrail_notes=[])
+        warnings = semantic_lint(els)
+        assert any(w["code"] == "LINT_HIGH_MATERIALITY_NO_GUARDRAIL" for w in warnings)
+
+    def test_aspirational_guardrail_triggers_lint(self):
+        els = self._make_elements(1, guardrail_notes=["Ensure accuracy of data."])
+        warnings = semantic_lint(els)
+        assert any(w["code"] == "LINT_ASPIRATIONAL_GUARDRAIL" for w in warnings)
+
+    def test_operational_guardrail_no_lint(self):
+        els = self._make_elements(1, guardrail_notes=["Jangan tampilkan tanpa konteks metodologi."])
+        warnings = semantic_lint(els)
+        assert not any(w["code"] == "LINT_ASPIRATIONAL_GUARDRAIL" for w in warnings)
+
+    def test_empty_elements_no_lint(self):
+        assert semantic_lint([]) == []
+
+
+class TestGuardrailNotesMerge:
+    def test_pass2_notes_take_priority(self):
+        p1 = [{"label": "el", "element_type": "evaluative_metric", "element_type_note": None,
+                "summary": "S.", "source_block_refs": ["r"], "source_block_fingerprints": ["f"],
+                "source_block_types": ["paragraph"], "evidence_status": "final",
+                "use_affordances": ["opening_mandate"], "guardrail_notes": ["note from pass1"]}]
+        p2 = {"scored_elements": [{"label": "el", "materiality_score": 4, "reusability_score": 4,
+                                    "guardrail_notes": ["note from pass2"]}],
+              "global_guardrails": [], "element_guardrails": []}
+        registry, _ = assemble_registry(p1, p2, "doc", "TST", "bab_7", "confirmed", "manual_audit")
+        notes = registry["elements"][0]["guardrail_notes"]
+        assert notes[0] == "note from pass2"
+        assert "note from pass1" in notes
+
+    def test_pass1_notes_added_if_no_pass2(self):
+        p1 = [{"label": "el", "element_type": "evaluative_metric", "element_type_note": None,
+                "summary": "S.", "source_block_refs": ["r"], "source_block_fingerprints": ["f"],
+                "source_block_types": ["paragraph"], "evidence_status": "final",
+                "use_affordances": ["opening_mandate"], "guardrail_notes": ["only from pass1"]}]
+        p2 = {"scored_elements": [{"label": "el", "materiality_score": 3, "reusability_score": 3}],
+              "global_guardrails": [], "element_guardrails": []}
+        registry, _ = assemble_registry(p1, p2, "doc", "TST", "bab_7", "confirmed", "manual_audit")
+        notes = registry["elements"][0]["guardrail_notes"]
+        assert "only from pass1" in notes
+
+    def test_deduplication(self):
+        same_note = "Jangan pakai tanpa konteks."
+        p1 = [{"label": "el", "element_type": "evaluative_metric", "element_type_note": None,
+                "summary": "S.", "source_block_refs": ["r"], "source_block_fingerprints": ["f"],
+                "source_block_types": ["paragraph"], "evidence_status": "final",
+                "use_affordances": ["opening_mandate"], "guardrail_notes": [same_note]}]
+        p2 = {"scored_elements": [{"label": "el", "materiality_score": 3, "reusability_score": 3,
+                                    "guardrail_notes": [same_note]}],
+              "global_guardrails": [], "element_guardrails": []}
+        registry, _ = assemble_registry(p1, p2, "doc", "TST", "bab_7", "confirmed", "manual_audit")
+        notes = registry["elements"][0]["guardrail_notes"]
+        assert notes.count(same_note) == 1
+
+
+class TestAtomicExtractionDrift:
+    def _make_el(self, n_refs, mat, idx=0):
+        return {
+            "element_id": f"SUB-{idx+1:03d}", "label": f"el_{idx}",
+            "element_type": "evaluative_metric", "element_type_note": None,
+            "summary": "S.", "source_block_refs": [f"bab_7.B{i:03d}" for i in range(n_refs)],
+            "source_block_fingerprints": [f"fp{i}" for i in range(n_refs)],
+            "source_block_types": ["paragraph"] * n_refs,
+            "evidence_status": "final", "use_affordances": ["opening_mandate", "closing_summary"],
+            "guardrail_notes": ["Jangan pakai tanpa konteks."],
+            "materiality_score": mat, "reusability_score": 3, "priority": "medium", "status": "active",
+        }
+
+    def test_majority_single_block_material_triggers_lint(self):
+        # 4 dari 5 elemen material (mat>=4) hanya punya 1 block → 80% > 0.6 → trigger
+        els = [self._make_el(1, 4, i) for i in range(4)]
+        els.append(self._make_el(3, 4, 4))
+        warnings = semantic_lint(els)
+        drift = [w for w in warnings if w["code"] == "LINT_ATOMIC_EXTRACTION_DRIFT"]
+        assert len(drift) == 1
+        assert drift[0]["severity"] == "high"  # 80% > 0.8 threshold
+
+    def test_drift_medium_severity(self):
+        # 7 dari 10 elemen material single-block → 70%, antara 0.6 dan 0.8 → medium
+        els = [self._make_el(1, 4, i) for i in range(7)]
+        els += [self._make_el(2, 4, i+7) for i in range(3)]
+        warnings = semantic_lint(els)
+        drift = [w for w in warnings if w["code"] == "LINT_ATOMIC_EXTRACTION_DRIFT"]
+        assert len(drift) == 1
+        assert drift[0]["severity"] == "medium"
+
+    def test_denominator_is_material_not_total(self):
+        # 2 dari 3 elemen material single-block (67%), tapi total 10 elemen termasuk non-material
+        # Dengan denominator len(elements)=10: 2/10=20% → tidak trigger (BUG LAMA)
+        # Dengan denominator material_elements=3: 2/3=67% → trigger (BENAR)
+        els = [self._make_el(1, 4, i) for i in range(2)]   # 2 material, single block
+        els.append(self._make_el(2, 4, 2))                 # 1 material, multi block
+        els += [self._make_el(1, 2, i+3) for i in range(7)]  # 7 non-material
+        warnings = semantic_lint(els)
+        assert any(w["code"] == "LINT_ATOMIC_EXTRACTION_DRIFT" for w in warnings)
+
+    def test_multi_block_material_no_drift(self):
+        # Semua elemen material punya 2+ blocks
+        els = [self._make_el(2, 4, i) for i in range(5)]
+        warnings = semantic_lint(els)
+        assert not any(w["code"] == "LINT_ATOMIC_EXTRACTION_DRIFT" for w in warnings)
+
+    def test_low_materiality_single_block_no_drift(self):
+        # Single block tapi materiality rendah — tidak trigger
+        els = [self._make_el(1, 2, i) for i in range(5)]
+        warnings = semantic_lint(els)
+        assert not any(w["code"] == "LINT_ATOMIC_EXTRACTION_DRIFT" for w in warnings)
+
+
+class TestKeyBasedScoring:
+    def _p1(self, label, key):
+        return {
+            "label": label, "temp_element_key": key,
+            "element_type": "evaluative_metric", "element_type_note": None,
+            "summary": "S.", "source_block_refs": ["bab_7.B001"],
+            "source_block_fingerprints": ["fp1"], "source_block_types": ["paragraph"],
+            "evidence_status": "final", "use_affordances": ["opening_mandate"],
+            "guardrail_notes": [],
+        }
+
+    def test_key_match_takes_score(self):
+        p1 = [self._p1("investment_basis", "TMP-001")]
+        p2 = {"scored_elements": [{"temp_element_key": "TMP-001", "label": "investment_basis_typo",
+                                    "materiality_score": 5, "reusability_score": 4}],
+              "global_guardrails": [], "element_guardrails": []}
+        registry, _ = assemble_registry(p1, p2, "doc", "TST", "bab_7", "confirmed", "manual_audit")
+        el = registry["elements"][0]
+        # Key match harus menang meski label typo
+        assert el["materiality_score"] == 5
+        assert el["reusability_score"] == 4
+
+    def test_label_fallback_when_no_key(self):
+        p1 = [self._p1("investment_basis", "TMP-001")]
+        # Pass 2 tidak kirim temp_element_key
+        p2 = {"scored_elements": [{"label": "investment_basis",
+                                    "materiality_score": 4, "reusability_score": 3}],
+              "global_guardrails": [], "element_guardrails": []}
+        registry, _ = assemble_registry(p1, p2, "doc", "TST", "bab_7", "confirmed", "manual_audit")
+        el = registry["elements"][0]
+        assert el["materiality_score"] == 4
+
+    def test_miss_triggers_warning(self):
+        p1 = [self._p1("investment_basis", "TMP-001")]
+        # Pass 2 kirim key dan label yang berbeda — tidak ada match
+        p2 = {"scored_elements": [{"temp_element_key": "TMP-999", "label": "wrong_label",
+                                    "materiality_score": 5, "reusability_score": 5}],
+              "global_guardrails": [], "element_guardrails": []}
+        registry, _ = assemble_registry(p1, p2, "doc", "TST", "bab_7", "confirmed", "manual_audit")
+        assert any(w.get("code") == "SCORING_KEY_MISS" for w in registry["warnings"])
+        # Default skor digunakan
+        assert registry["elements"][0]["materiality_score"] == 3
