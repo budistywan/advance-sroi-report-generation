@@ -322,3 +322,135 @@ jobs:
           print(f"- Warnings       : {s.get('warnings_count', 0)}")
           print(f"- Failures       : {s.get('failure_count', 0)}")
           EOF
+
+  # ───────────────────────────────────────────
+  # A3 — Repair Backlog Builder
+  # Trigger: setelah A2 PR di-merge (substance_registry.json tersedia)
+  # ───────────────────────────────────────────
+  a3_repair_backlog_builder:
+    name: "A3 · Repair Backlog Builder"
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.stage == 'A3' ||
+      github.event.inputs.stage == 'ALL'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Run tests — A3
+        run: python -m pytest tests/test_a3_repair_backlog_builder.py -v
+
+      - name: Check prerequisites
+        run: |
+          for f in \
+            data/input/pipeline_control_block.json \
+            data/output/block_identity_packet.json \
+            data/output/substance_registry.json \
+            data/output/substance_guardrails.json; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: $f tidak ditemukan."
+              exit 1
+            fi
+          done
+
+      - name: Merge input for A3
+        run: |
+          python - << 'PYEOF'
+          import json
+          from pathlib import Path
+
+          pcb  = json.loads(Path("data/input/pipeline_control_block.json").read_text())
+          bip  = json.loads(Path("data/output/block_identity_packet.json").read_text())
+          reg  = json.loads(Path("data/output/substance_registry.json").read_text())
+          grd  = json.loads(Path("data/output/substance_guardrails.json").read_text())
+
+          merged = {
+              "pipeline_control_block": pcb,
+              "block_identity_packet":  bip,
+              "substance_registry":     reg,
+              "substance_guardrails":   grd,
+          }
+          Path("data/input/_merged_for_a3.json").write_text(
+              json.dumps(merged, ensure_ascii=False, indent=2)
+          )
+          print("OK: merged input A3 ready")
+          PYEOF
+
+      - name: Run A3
+        run: |
+          python pipeline/a3_repair_backlog_builder.py \
+            data/input/_merged_for_a3.json \
+            data/output/repair_backlog_packet.json
+
+      - name: Validate output
+        run: |
+          python - << 'PYEOF'
+          import json, sys, os
+          from pathlib import Path
+
+          p = Path("data/output/repair_backlog_packet.json")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+          def write_summary(lines):
+              if summary_path:
+                  with open(summary_path, "a") as f:
+                      f.write("\n".join(lines) + "\n")
+
+          if not p.exists():
+              write_summary(["## ❌ A3 — Output tidak ditemukan"])
+              sys.exit(1)
+
+          data = json.loads(p.read_text())
+
+          if data.get("failures"):
+              lines = ["## ❌ A3 — Failures", ""]
+              for f in data["failures"]:
+                  print(f"  {f.get('message')}", file=sys.stderr)
+                  lines.append(f"- {f.get('message')}")
+              write_summary(lines)
+              sys.exit(1)
+
+          s = data.get("summary", {})
+          n = s.get("total_issues", 0)
+          h = s.get("chapters_by_health", {})
+          print(f"OK: {n} issues, health={h}")
+          write_summary([
+              "## ✅ A3 — Repair Backlog Builder",
+              f"- Total issues : **{n}**",
+              f"- Health       : {h}",
+              f"- Warnings     : {s.get('warning_count', 0)}",
+          ])
+          PYEOF
+
+      - name: Upload output artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-repair-backlog
+          path: data/output/repair_backlog_packet.json
+          if-no-files-found: warn
+
+      - name: Cleanup temp file
+        if: always()
+        run: rm -f data/input/_merged_for_a3.json
+
+      - name: Commit output
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/output/repair_backlog_packet.json
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan pada output, skip commit."
+          else
+            git commit -m "[A3] repair_backlog_packet.json — auto-generated"
+            git push origin HEAD
+          fi
