@@ -1,0 +1,96 @@
+{
+  "activity": "substance_extractor",
+  "document_id": "esd_report_v1",
+  "program_code": "ESD",
+  "substance_chapter_id": "bab_7",
+  "generated_at": "2026-04-15T06:45:07.187408+00:00",
+  "pipeline_version": "v1",
+  "global_guardrails": [
+    {
+      "guardrail_id": "SG-001",
+      "scope": "document",
+      "applies_to": "all",
+      "rule": "Ensure all elements are consistently aligned with the overall program objectives and accurately reflect the SROI methodology.",
+      "severity": "high"
+    }
+  ],
+  "element_guardrails": [
+    {
+      "guardrail_id": "SG-E-001",
+      "scope": "element",
+      "applies_to": "SUB-001",
+      "rule": "Verify that the scope definition accurately encompasses all relevant activities and outcomes for the specified period.",
+      "severity": "medium"
+    },
+    {
+      "guardrail_id": "SG-E-002",
+      "scope": "element",
+      "applies_to": "SUB-002",
+      "rule": "Ensure detailed documentation of each activity to prevent misinterpretation of program structure.",
+      "severity": "high"
+    },
+    {
+      "guardrail_id": "SG-E-003",
+      "scope": "element",
+      "applies_to": "SUB-003",
+      "rule": "Confirm that node operations are clearly defined and support program continuity and expansion.",
+      "severity": "medium"
+    },
+    {
+      "guardrail_id": "SG-E-004",
+      "scope": "element",
+      "applies_to": "SUB-004",
+      "rule": "Ensure stakeholder roles are clearly delineated to avoid conflicts and ensure effective collaboration.",
+      "severity": "medium"
+    },
+    {
+      "guardrail_id": "SG-E-005",
+      "scope": "element",
+      "applies_to": "SUB-005",
+      "rule": "Verify accuracy of investment figures and ensure they reflect the actual financial commitment.",
+      "severity": "high"
+    },
+    {
+      "guardrail_id": "SG-E-006",
+      "scope": "element",
+      "applies_to": "SUB-006",
+      "rule": "Ensure outputs are measurable and directly linked to program activities.",
+      "severity": "medium"
+    },
+    {
+      "guardrail_id": "SG-E-007",
+      "scope": "element",
+      "applies_to": "SUB-007",
+      "rule": "Validate that outcomes are accurately monetized and reflect true program impact.",
+      "severity": "high"
+    },
+    {
+      "guardrail_id": "SG-E-008",
+      "scope": "element",
+      "applies_to": "SUB-008",
+      "rule": "Ensure impact fixation parameters are correctly applied to reflect actual program contribution.",
+      "severity": "medium"
+    },
+    {
+      "guardrail_id": "SG-E-009",
+      "scope": "element",
+      "applies_to": "SUB-009",
+      "rule": "Confirm that monetization logic is transparent and based on reliable data sources.",
+      "severity": "high"
+    },
+    {
+      "guardrail_id": "SG-E-010",
+      "scope": "element",
+      "applies_to": "SUB-010",
+      "rule": "Ensure SROI calculations are transparent and comprehensible to stakeholders.",
+      "severity": "high"
+    },
+    {
+      "guardrail_id": "SG-E-011",
+      "scope": "element",
+      "applies_to": "SUB-011",
+      "rule": "Interpretations should be clearly linked to findings and supported by data.",
+      "severity": "medium"
+    }
+  ]
+}

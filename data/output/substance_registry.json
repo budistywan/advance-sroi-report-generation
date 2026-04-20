@@ -1,0 +1,329 @@
+{
+  "activity": "substance_extractor",
+  "document_id": "esd_report_v1",
+  "program_code": "ESD",
+  "substance_mode": "confirmed",
+  "substance_chapter_id": "bab_7",
+  "substance_basis": "manual_audit",
+  "generated_at": "2026-04-15T06:45:07.187408+00:00",
+  "pipeline_version": "v1",
+  "elements": [
+    {
+      "element_id": "SUB-001",
+      "label": "program_implementation_scope",
+      "element_type": "scope_definition",
+      "element_type_note": null,
+      "summary": "Bab ini mencakup implementasi Program Enduro Sahabat Difabel (ESD) dari kegiatan hingga hasil evaluasi SROI untuk periode 2023–2025.",
+      "source_block_refs": [
+        "bab_7.B002"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph_lead__bab_ini_menyajikan_seluruh_rangkaian_imp"
+      ],
+      "source_block_types": [
+        "paragraph_lead"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "scope_definition"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-002",
+      "label": "program_activities_2023_2025",
+      "element_type": "program_structure",
+      "element_type_note": null,
+      "summary": "Program ESD melaksanakan 6 aktivitas terstruktur dari 2023 hingga 2025, termasuk pelatihan otomotif, pendampingan operasional, dan penambahan kelompok inti.",
+      "source_block_refs": [
+        "bab_7.B005",
+        "bab_7.B006",
+        "bab_7.B007",
+        "bab_7.B008"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__program_esd_melaksanakan_6_aktivitas_ter",
+        "bab_7__paragraph__tahun_2023_pelatihan_otomotif_dasar_bagi",
+        "bab_7__paragraph__tahun_2024_pendampingan_operasional_unit",
+        "bab_7__paragraph__tahun_2025_penambahan_satu_kelompok_inti"
+      ],
+      "source_block_types": [
+        "paragraph",
+        "paragraph",
+        "paragraph",
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "implementation_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 5,
+      "reusability_score": 4,
+      "priority": "high",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-003",
+      "label": "program_node_structure",
+      "element_type": "program_structure",
+      "element_type_note": null,
+      "summary": "Program ESD beroperasi di 7 node dengan struktur bertingkat, menunjukkan kesinambungan dan ekspansi program.",
+      "source_block_refs": [
+        "bab_7.B010",
+        "bab_7.B011"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__program_beroperasi_di_7_nodelokasi_isyar",
+        "bab_7__callout_info__program_esd_menjalankan_aktivitas_melalu"
+      ],
+      "source_block_types": [
+        "paragraph",
+        "callout_info"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "implementation_reference",
+        "visual_candidate"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-004",
+      "label": "stakeholder_involvement",
+      "element_type": "stakeholder_structure",
+      "element_type_note": null,
+      "summary": "Program melibatkan 5 pemangku kepentingan utama dengan peran berbeda dalam ekosistem program.",
+      "source_block_refs": [
+        "bab_7.B013"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__program_melibatkan_5_pemangku_kepentinga"
+      ],
+      "source_block_types": [
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "implementation_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-005",
+      "label": "investment_summary",
+      "element_type": "investment_structure",
+      "element_type_note": null,
+      "summary": "Total investasi program selama 2023–2025 mencapai Rp 594,781,486, dengan distribusi meningkat setiap tahun.",
+      "source_block_refs": [
+        "bab_7.B017"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__total_investasi_program_selama_20232025_"
+      ],
+      "source_block_types": [
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "implementation_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-006",
+      "label": "program_outputs",
+      "element_type": "output_structure",
+      "element_type_note": null,
+      "summary": "Program menghasilkan 6 output terukur sepanjang periode evaluasi.",
+      "source_block_refs": [
+        "bab_7.B021"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__program_menghasilkan_6_output_terukur_se"
+      ],
+      "source_block_types": [
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "outcome_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-007",
+      "label": "program_outcomes",
+      "element_type": "outcome_structure",
+      "element_type_note": null,
+      "summary": "Program menghasilkan 6 outcome yang dimonetisasi melalui 2 aspek observed dan 2 aspek proxy.",
+      "source_block_refs": [
+        "bab_7.B024"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__program_menghasilkan_6_outcome_yang_dimo"
+      ],
+      "source_block_types": [
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "outcome_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 5,
+      "reusability_score": 4,
+      "priority": "high",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-008",
+      "label": "impact_fixation",
+      "element_type": "adjustment_logic",
+      "element_type_note": null,
+      "summary": "Fiksasi dampak diterapkan untuk memastikan nilai sosial yang diklaim mencerminkan kontribusi program dengan parameter: Deadweight, Displacement, Attribution, Drop-off.",
+      "source_block_refs": [
+        "bab_7.B032"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__fiksasi_dampak_diterapkan_untuk_memastik"
+      ],
+      "source_block_types": [
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "adjustment_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-009",
+      "label": "monetization_logic",
+      "element_type": "monetization_logic",
+      "element_type_note": null,
+      "summary": "Monetisasi nilai sosial dilakukan melalui 4 aspek, dengan aspek JSP dan LUB dimonetisasi berdasarkan data transaksi aktual, sementara ENT dan JOB menggunakan proxy konservatif.",
+      "source_block_refs": [
+        "bab_7.B037",
+        "bab_7.B038"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph_lead__monetisasi_nilai_sosial_dilakukan_melalu",
+        "bab_7__callout_info__aspek_jsp_dan_lub_dimonetisasi_berdasark"
+      ],
+      "source_block_types": [
+        "paragraph_lead",
+        "callout_info"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "monetization_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 5,
+      "reusability_score": 4,
+      "priority": "high",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-010",
+      "label": "sroi_value_explanation",
+      "element_type": "evaluative_metric",
+      "element_type_note": null,
+      "summary": "Program ESD menghasilkan SROI blended 1 : 1.12, menunjukkan bahwa setiap Rp 1 yang diinvestasikan menghasilkan Rp 1.12 nilai sosial-ekonomi terukur.",
+      "source_block_refs": [
+        "bab_7.B044"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph_lead__berdasarkan_kalkulasi_evaluatif_dengan_c"
+      ],
+      "source_block_types": [
+        "paragraph_lead"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "outcome_reference"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 5,
+      "reusability_score": 4,
+      "priority": "high",
+      "status": "active"
+    },
+    {
+      "element_id": "SUB-011",
+      "label": "interpretation_and_findings",
+      "element_type": "interpretive_finding",
+      "element_type_note": null,
+      "summary": "Evaluasi SROI menunjukkan bahwa program ESD menghasilkan nilai sosial yang melampaui investasi, dengan struktur monetisasi yang perlu dipahami dari aspek observed dan proxy.",
+      "source_block_refs": [
+        "bab_7.B052"
+      ],
+      "source_block_fingerprints": [
+        "bab_7__paragraph__evaluasi_sroi_menunjukkan_bahwa_program_"
+      ],
+      "source_block_types": [
+        "paragraph"
+      ],
+      "evidence_status": "final",
+      "use_affordances": [
+        "closing_summary"
+      ],
+      "guardrail_notes": [],
+      "materiality_score": 4,
+      "reusability_score": 3,
+      "priority": "medium",
+      "status": "active"
+    }
+  ],
+  "summary": {
+    "total_elements": 11,
+    "by_type": {
+      "scope_definition": 1,
+      "program_structure": 2,
+      "stakeholder_structure": 1,
+      "investment_structure": 1,
+      "output_structure": 1,
+      "outcome_structure": 1,
+      "adjustment_logic": 1,
+      "monetization_logic": 1,
+      "evaluative_metric": 1,
+      "interpretive_finding": 1
+    },
+    "by_evidence_status": {
+      "final": 11
+    },
+    "by_priority": {
+      "medium": 7,
+      "high": 4
+    },
+    "failure_count": 0,
+    "warning_count": 0
+  },
+  "warnings": [],
+  "failures": []
+}
